@@ -1,32 +1,39 @@
 # Convenção de nomes — código e artefatos
 
-> Por que este doc existe: o framework cresceu com nomes abreviados/crípticos que dificultavam a
-> manutenção (`sfx`, `fase0`…). Esta convenção fixa as regras e — o mais importante — documenta o
-> **contrato estável** (nomes que NÃO podem ser renomeados sem migração) que antes só vivia na cabeça
-> de quem escreveu. Vale para `framework/` e para os `projects/<obra>/`.
+> Por que este doc existe: o framework cresceu com nomes abreviados/crípticos que dificultavam a manutenção (`sfx`, `fase0`…).
+> Esta convenção fixa as regras e, o mais importante, documenta o **contrato estável** (nomes que NÃO podem ser renomeados sem
+> migração) que antes só vivia na cabeça de quem escreveu. Vale para `framework/` e para os `projects/<obra>/`.
+
+```mermaid
+flowchart TB
+  q{"Vou renomear algo?"} --> a{"É um nome persistido, comando CLI<br/>ou chave de project.json?"}
+  a -->|sim| c["CONGELADO (§4)<br/>exige migração + revalidar round-trip"]
+  a -->|não| b{"É interno (_prefixo, não exportado)<br/>ou chave regenerada a cada run?"}
+  b -->|sim| s["Seguro (§5)<br/>atualizar todos os call sites + pytest"]
+  b -->|não| c
+```
 
 ## 1. Idioma
 
-- **Identificadores de código (módulos, funções, variáveis, chaves) em INGLÊS.** O framework é
-  genérico/neutro de idioma (ver `framework/README.md`): nenhum nome de personagem, termo de lore ou
-  idioma-alvo vive em `framework/`. Inglês mantém o código portável entre obras e pares de idioma.
+- **Identificadores de código (módulos, funções, variáveis, chaves) em INGLÊS.** O framework é genérico/neutro de idioma (ver
+  [`framework/README.md`](../framework/README.md)): nenhum nome de personagem, termo de lore ou idioma-alvo vive em
+  `framework/`. Inglês mantém o código portável entre obras e pares de idioma.
 - **Comentários e docstrings em pt-BR** (house style do projeto). É onde o "porquê" é explicado.
-- **Conteúdo de obra** (diálogo, tradução) NUNCA aparece hardcoded em `.py` — vem dos artefatos
-  (travado pelo teste `test_no_work_text_in_runtime_scripts`).
+- **Conteúdo de obra** (diálogo, tradução) NUNCA aparece hardcoded em `.py`: vem dos artefatos (travado pelo teste
+  `test_no_work_text_in_runtime_scripts`).
 
 ## 2. Clareza > brevidade
 
-- **Sem abreviações não-explicadas.** Prefira o nome por extenso: `scene_id` (não `sfx`),
-  `build_plan_script` (não `bp`), `verify_script` (não `vf`).
-- Aliases de import curtos são tolerados quando idiomáticos e locais ao módulo: `import model as M`,
-  `import run_scene as RS`. Não invente abreviação nova fora desse padrão.
-- Nome de arquivo de módulo = comando CLI (ver §4): escolha um nome auto-explicativo em inglês
-  (`kb_phase.py`, não `fase0.py`).
+- **Sem abreviações não explicadas.** Prefira o nome por extenso: `scene_id` (não `sfx`), `build_plan_script` (não `bp`),
+  `verify_script` (não `vf`).
+- Aliases de import curtos são tolerados quando idiomáticos e locais ao módulo: `import model as M`, `import run_scene as RS`.
+  Não invente abreviação nova fora desse padrão.
+- Nome de arquivo de módulo = comando CLI (ver §4): escolha um nome auto-explicativo em inglês (`kb_phase.py`, não `fase0.py`).
 
 ## 3. Glossário de abreviações ACEITAS
 
-Estas são as ÚNICAS abreviações permitidas sem escrever por extenso (são jargão estabelecido do
-domínio). Qualquer outra deve ser expandida.
+Estas são as ÚNICAS abreviações permitidas sem escrever por extenso (jargão estabelecido do domínio). Qualquer outra deve ser
+expandida.
 
 | Sigla | Significado | Onde aparece |
 |---|---|---|
@@ -38,65 +45,64 @@ domínio). Qualquer outra deve ser expandida.
 
 ## 3.1. Itens de planejamento têm NOME, não código
 
-Itens de risco/hardening/gap são identificados por **nome descritivo** — em código **e** nos
-documentos. Códigos crípticos (`H2`, `R5`, `R-CUSTO`, `GAP D`, `D1`–`D6`, `B1`–`B4`, `P1.7`,
-`P2.5`…) estão **aposentados**: eram mal desenhados (o mesmo `R3` chegou a significar coisas
-diferentes em tabelas diferentes) e obrigavam quem lia a abrir o ROADMAP para decifrar. Use sempre
-o nome (ex.: "Fonte única de paths", não "H2"; `# paths.py: fonte única do contrato de caminhos`,
-não `# H2`).
+Itens de risco/hardening/gap são identificados por **nome descritivo**, em código **e** nos documentos. Códigos crípticos
+(`H2`, `R5`, `R-CUSTO`, `GAP D`, `D1`–`D6`, `B1`–`B4`, `P1.7`, `P2.5`…) estão **aposentados**: eram mal desenhados (o mesmo
+`R3` chegou a significar coisas diferentes em tabelas diferentes) e obrigavam quem lia a abrir o ROADMAP para decifrar. Use
+sempre o nome (ex.: "Fonte única de paths", não "H2"; `# paths.py: fonte única do contrato de caminhos`, não `# H2`).
 
-A mesma regra vale para tiers numerados: o tier de descoberta de engine usa `known_engine` /
-`unknown_engine` / `blocked` (não `T1`/`T2`/`T3`); a cascata de encaixe de bytes na reinserção usa
-nomes descritivos por conector (ex.: `in_place`/`residuo` no Utawarerumono, `unchanged`/`shrunk`/
-`expanded`/`individual_overflow` no BoF4, `direct`/`repoint`/`trimmed`/`residue` no template) — não
-`T1`–`T4`. `T4` foi retirado do glossário de abreviações aceitas (§3) por esse motivo.
+A mesma regra vale para tiers numerados: o tier de descoberta de engine usa `known_engine` / `unknown_engine` / `blocked` (não
+`T1`/`T2`/`T3`); a cascata de encaixe de bytes na reinserção usa nomes descritivos por conector (ex.: `in_place`/`residuo` no
+Utawarerumono, `unchanged`/`shrunk`/`expanded`/`individual_overflow` no BoF4, `direct`/`repoint`/`trimmed`/`residue` no
+template), não `T1`–`T4`. `T4` foi retirado do glossário de abreviações aceitas (§3) por esse motivo.
 
-O **de-para** código-antigo → nome-atual vive em [`GLOSSARIO.md`](GLOSSARIO.md) (só para quem
-encontrar um código em commits/PRs antigos).
+O **de-para** código antigo → nome atual vive em [`GLOSSARIO.md`](GLOSSARIO.md) (só para quem encontrar um código em
+commits/PRs antigos).
 
 > Regra de manutenção: quem lê um comentário, log ou tabela não deveria precisar de um decodificador.
 
 ## 4. Contrato CONGELADO (APIs estáveis — NÃO renomear sem migração)
 
-Estes nomes são **load-bearing**: há dados em disco, comandos que usuários digitam e config que o
-runtime lê. Renomear quebra os capítulos já traduzidos (11–19+) e/ou scripts/documentação. Mudança aqui
-exige script de migração + revalidação de round-trip — não é um "rename de clareza".
+Estes nomes são **load-bearing**: há dados em disco, comandos que usuários digitam e config que o runtime lê. Renomear quebra
+os capítulos já traduzidos (11–19+) e/ou scripts/documentação. Mudança aqui exige script de migração + revalidação de
+round-trip; não é um "rename de clareza".
 
-> **Onde os termos são EXPLICADOS (não só listados):** este doc é o *contrato* de nomes (para
-> mantenedores). Quem está chegando deve ler o **glossário** no [`README`](../README.md) e o guia
-> conceitual [`CONCEPTS.md`](CONCEPTS.md) — lá os conceitos (Context Pack, TM, KB, round-trip…) são
-> ensinados, não apenas nomeados.
+> **Onde os termos são EXPLICADOS (não só listados):** este doc é o *contrato* de nomes (para mantenedores). Quem está chegando
+> deve ler o **glossário** no [`README`](../README.md) e o guia conceitual [`CONCEPTS.md`](CONCEPTS.md): lá os conceitos
+> (Context Pack, TM, KB, round-trip…) são ensinados, não apenas nomeados.
 
-> **Fonte única de paths (`framework/runtime/paths.py`):** os nomes de artefato persistidos abaixo NÃO são
-> mais f-strings espalhadas — vivem como helpers em `paths.py` (ex.: `paths.translations(root, scene,
-> scene_id)`), e o `test_paths_contract` FIXA cada string. Código novo deve usar `paths.*`, nunca montar
-> `root / "artifacts" / ...` à mão. Mudar um nome aqui = mudar em `paths.py` + rodar o teste (que vai
-> falhar, lembrando da migração de dados em disco).
+> **Fonte única de paths (`framework/runtime/paths.py`):** os nomes de artefato persistidos abaixo NÃO são mais f-strings
+> espalhadas; vivem como helpers em `paths.py` (ex.: `paths.translations(root, scene, scene_id)`), e o `test_paths_contract`
+> FIXA cada string. Código novo deve usar `paths.*`, nunca montar `root / "artifacts" / ...` à mão. Mudar um nome aqui =
+> mudar em `paths.py` + rodar o teste (que vai falhar, lembrando da migração de dados em disco).
 
 **a) Nomes de artefato persistidos** (gerados/consumidos entre execuções):
 `dialogs.csv`, `glossary.csv`, `entities.csv`, `translations_<scene_id>.json`,
 `translation_plan_<scene_id>.json`, `back_translation_<scene_id>.json`, `approved_<scene_id>.csv`,
 `pack.json`, `scene_prompt.md`, `run_state.json`, `api_ledger.jsonl`, `metrics.jsonl`,
 `translation_memory.jsonl`, `voice_cards.json`, `decision_index.json`, `spoiler_ledger.json`,
-`research_log.md`, `universe_knowledge_base.md`, `tone_analysis.md`.
-> O **infixo** `<scene_id>` é o VALOR (ex.: `12_03`), não o nome da variável — renomear a variável
-> `scene_id` no código NÃO muda o nome do arquivo gerado.
+`research_log.md`, `universe_knowledge_base.md`, `tone_analysis.md`, `hitl_log.jsonl`, `events.jsonl`,
+`alerts.jsonl`, `kb_ratified.csv`, `back_a_<scene_id>.json` (passagem A da retrotradução cega).
+
+> O **infixo** `<scene_id>` é o VALOR (ex.: `12_03`), não o nome da variável: renomear a variável `scene_id` no código NÃO
+> muda o nome do arquivo gerado.
 
 **b) Comandos CLI** (caminho do módulo = comando que o usuário roda):
 `context_pack.py`, `state_index.py`, `model.py`, `run_scene.py`, `run_chapter.py`, `kb_gate.py`,
-`kb_phase.py`, `cost_report.py`, e os conectores `build_plan_chapter.py` / `verify_chapter.py`.
+`kb_phase.py`, `cost_report.py`, `wave.py`, `hitl.py`, `session_lot.py`, e os conectores `build_plan_chapter.py` / `verify_chapter.py`.
 
 **c) Chaves de `project.json`:**
 `connector.build_plan_script`, `connector.verify_script`, `kb_frontier`, `formatting_tokens`,
-`system_line_convention`, `length_constraints`, `target_charset_supported`, e o resto de `connector`.
+`system_line_convention`, `length_constraints`, `target_charset_supported`, e o resto de `connector`; mais `hitl`,
+`hitl_fila`, `back_translation_risk`, `back_translation_cega`, `byte_budget_exceptions`, `line_width`/`line_width_max`
+e `extraction_scope`/`system_scenes`.
 
 ## 5. O que É seguro renomear (clareza interna)
 
-- Variáveis e funções **internas** (`_`-prefixadas ou não exportadas), desde que TODOS os call sites
-  do repo sejam atualizados juntos. Ex.: `sfx`→`scene_id`, `sfx_of`→`scene_id_of` (feito).
-- Chaves de dicionário que são **contrato interno entre dois módulos** e cujo arquivo em disco é
-  **regenerado** a cada run (ex.: a chave `scene_id` do `pack.json`) — não são estado durável.
+- Variáveis e funções **internas** (`_`-prefixadas ou não exportadas), desde que TODOS os call sites do repo sejam atualizados
+  juntos. Ex.: `sfx`→`scene_id`, `sfx_of`→`scene_id_of` (feito).
+- Chaves de dicionário que são **contrato interno entre dois módulos** e cujo arquivo em disco é **regenerado** a cada run
+  (ex.: a chave `scene_id` do `pack.json`); não são estado durável.
 - Comentários/docstrings, sempre.
 
-Regra de ouro: rodar `pytest framework/runtime/test_runtime.py` (determinismo + idempotência + guard de
-work-text) DEPOIS de qualquer rename. Verde = seguro.
+Regra de ouro: rodar `pytest framework/runtime/test_runtime.py` (determinismo + idempotência + guard de work-text) DEPOIS de
+qualquer rename. Verde = seguro.

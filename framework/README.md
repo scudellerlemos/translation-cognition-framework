@@ -1,292 +1,119 @@
-# Translation Cognition Framework — guia do framework
+# framework/ — o motor e o processo
 
-> O processo + o motor para localizar obras narrativas longas: IA cercada na cognição, estado externalizado, gates determinísticos.
-> **Validado em produção:** 16 capítulos, 146 cenas, ~45.100 linhas, R$ 0 desperdiçado.
+Tudo aqui é **genérico**: não há dado de nenhuma obra. O que é específico de um jogo vive em `projects/<obra>/`.
 
-Esta página mostra a **organização do código** e como **instanciar um projeto novo**.
-Conceitos, arquitetura e o "porquê" das decisões → [README raiz](../README.md).
-
----
-
-## Estrutura de pastas
-
-| Pasta | Papel | Camadas |
-|---|---|---|
-| `framework/skills/` | Passos 00..09 do SDD (inclui 04b, 05b, 06b, 08b, 08c) — o processo, em prosa | Cognition + Validation |
-| `framework/media-profiles/` | Preocupações por tipo de mídia (jogos/filmes/séries) | — |
-| `framework/connectors/` | I/O binário ↔ corpus (extração + reinserção, round-trip) | Execution + Validation |
-| `framework/runtime/` | Harness executável — cena = job stateless | State + Execution + Cognition |
-| `projects/<título>/` | A instância: `project.json` + artefatos + conector | — |
-
-> **Princípio:** as skills genéricas resolvem tudo que é específico de uma obra lendo o `project.json`.
-> Nenhum nome de personagem, termo de lore ou idioma vive dentro de `framework/`.
-
----
-
-## Arquivos
-
-```
-framework/
-  skills/           ← 00..09 — o processo genérico (comece por skills/_index.md)
-  schemas/          ← artifacts_schema.md (outputs) + project_schema.md (manifesto)
-  media-profiles/   ← games.md (validado), films.md / series.md (stubs)
-  connectors/       ← 00_index.md, hex_binary.md, _skeleton/ (extract.py, reinsert.py, table_schema.md)
-  SDD_RUNTIME.md    ← mapa skill→runtime: qual módulo executa cada etapa do SDD (00–09) + quem produz/consome cada artefato
-  runtime/          ← harness (cena = job stateless): orquestração (run_scene/run_chapter/run_game,
-                       kernel.py como fachada), contexto (context_pack), estado (state_index), IA
-                       (model + back_translate), KB (kb_gate/kb_review/kb_phase/kb_fetch/
-                       kb_build_ollama/kb_reconcile — pipeline híbrido Ollama + ratificação humana),
-                       conector (connector_gate/connector_mgr/fingerprint_monitor), spoiler
-                       (spoiler_check), TM por série (tm_lookup/tm_updater), qualidade
-                       (quality_review/gate/fix, tm_correct), custo (cost, cost_report) — ~59
-                       módulos (`ls runtime/*.py` sem testes). Ver runtime/README.md
-  db/               ← store.py (SQLite: TM, glossário, voice cards, ledger), embedder, migrate_from_flat/export_to_flat
-  distribution/     ← build_package.py, build_exe.py, patcher.py — delta + patcher .exe de um clique (skill 09)
-  cli.py            ← CLI unificada (subcomandos do pipeline)
-  validation/       ← validate.py, naturalness_lint.py, cost_model.py (gates determinísticos)
-  templates/        ← project.template.json + profile/ para novos projetos
-  README.md         ← este arquivo
-
-docs/               ← (raiz do repo) ARCHITECTURE, STACK (modelo/embedding/RAG/execução), GOVERNANCE,
-                       STATE_MANAGEMENT, MODEL_INTERFACE, TRANSLATION_PIPELINE, OBSERVABILITY, NAMING,
-                       ROADMAP, adr/
-
-projects/
-  utawarerumono/    ← primeira instância de referência (jogo, EN→pt-BR) — completa
-    connector/      ← extract.py, reinsert.py, table_schema (adaptados ao binário)
-  bof4/             ← BoF4 em modo banco + busca semântica obrigatória
-  souldiers/        ← terceira instância (Unity Addressables) — concluída
-  trails_sky_sc/    ← quarta instância (Falcom) — em andamento
-  demo/             ← cena de 5 falas do quickstart
-```
-
----
-
-## COMO INSTANCIAR UM PROJETO NOVO
-
-### 1. Criar a pasta do projeto
-```
-projects/<seu-título>/
-  artifacts/      ← onde os outputs do pipeline vão viver (e o binário-fonte, para jogos)
-  connector/      ← scripts do conector (para jogos antigos)
-  profile/        ← dados curados de referência (opcional, mas recomendado)
-```
-
-### 2. Preencher o manifesto
-Copiar `framework/templates/project.template.json` para `projects/<seu-título>/project.json` e
-preencher. Campos essenciais (schema completo em `framework/schemas/project_schema.md`):
-
-- `title`, `media_type`, `media_profile`
-- `source_language`, `target_language` (códigos BCP-47 — ex: `en`, `ja`, `pt-BR`)
-- `source` — caminho e formato do corpus + colunas de ID/texto
-- `connector` — para jogos: tipo, binário-fonte, tabela, scripts, estratégia de espaço, formato de patch
-- `formatting_tokens` — tokens de engine a preservar (para jogos)
-- `system_line_convention`, `length_constraints`, `batch_size`
-
-### 3. Fornecer o binário e escrever o conector (jogos antigos)
-O usuário coloca o binário em `artifacts/` e declara o `connector` no manifesto. A IA escreve
-`connector/extract.py` e `reinsert.py` a partir de `framework/connectors/_skeleton/`, guiada por
-`framework/connectors/hex_binary.md`. **O Passo 00 só avança se o round-trip passar** (extrair →
-reinserir sem mudanças === binário original).
-
-**Ferramentas de apoio à descoberta/debug de formato** (não substituem o contrato acima, aceleram
-chegar lá — nunca dependência de pipeline em produção):
-- **Kaitai Struct** (compiler ou Web IDE em [ide.kaitai.io](https://ide.kaitai.io)) + **ImHex** — mapear
-  e documentar formato binário desconhecido antes de escrever o `extract.py` à mão.
-- **Hypothesis** — fuzzing de propriedade sobre `test_roundtrip_synthetic.py`, além dos fixtures manuais.
-- **vbindiff** — localizar o byte exato de divergência quando um teste de round-trip falha.
-- **binwalk** — primeiro passe num blob binário desconhecido (assinatura de arquivo/compressão embutida).
-- **GARbro** — referência quando o jogo novo usa engine de visual novel já conhecida (+50 suportadas).
-- **UABEA** — companion do UnityPy quando ele não parsear uma versão nova do Unity.
-- **FModel** / **UndertaleModTool** — se o jogo novo for Unreal Engine ou GameMaker, respectivamente.
-
-### 4. (Opcional) Curar o perfil
-Copiar os templates de `framework/templates/profile/` e preencher com o que já se sabe da obra.
-No pipeline real, o conteúdo equivalente é **gerado** pelos passos 1–4; o perfil curado serve de
-semente e referência.
-
-Executar as skills em ordem de leitura (`framework/skills/_index.md` tem o fluxo `00..09` e os três blocos: preparação, laço por cena, fechamento). Cada skill:
-Executar as skills em ordem (`framework/skills/_index.md` tem o fluxo `00..09`). Cada skill:
-- Lê `project.json` + os artefatos do passo anterior
-- Tem um **Input Gate** que bloqueia execução fora de ordem
-- Produz artefatos em `projects/<seu-título>/artifacts/`
-
-A entrega final (Passo 08) é o **binário traduzido + um patch** (ips/bps/xdelta); o Passo 09 empacota o delta e o patcher `.exe` para o jogador.
-
----
-
-## O QUE É GENÉRICO vs. O QUE O PROJETO FORNECE
-
-| Genérico (framework) | Específico (projeto) |
-|----------------------|----------------------|
-| Os passos 00..09 e seus gates | Título, idiomas, tipo de mídia |
-| Schemas de artefatos | Corpus-fonte e seu formato |
-| Regra de geração de suites de teste | Tokens de engine deste jogo |
-| Categorias de `handling_rule` | Quais termos caem em cada categoria |
-| Verificação de voz por `voice_criticality` | Os perfis de voz reais (gerados/curados) |
-| Verificação de identidade dupla | Os pares de identidade reais |
-| Verificação de tom por fase | As fases narrativas reais |
-
----
-
-## MÍDIA SUPORTADA
-
-- **Jogos** — ✅ validado em três engines distintos:
-  - *Utawarerumono* (Aquaplus): **CONCLUÍDO** — 16 capítulos, 146 cenas, ~45.100 linhas, pt-BR in-game.
-  - *Breath of Fire IV* (Capcom DAT): **CONCLUÍDO** — 305 cenas `verified` (27.021 falas), patcher em beta, release pendente (ver `projects/bof4/`).
-  - *Souldiers* (Unity Addressables): **CONCLUÍDO** — 470 cenas, round-trip 100%, KB via Ollama híbrido.
-  - *Trails in the Sky SC* (Falcom): **EM ANDAMENTO** — 4º engine, conector novo (`target_charset_supported`),
-    cena-piloto com round-trip real fechado; 67 cenas extraídas, tradução em curso.
-  - Ver `media-profiles/games.md`.
-- **Filmes** — 🚧 ponto de extensão. Ver `media-profiles/films.md`.
-- **Séries** — 🚧 ponto de extensão. Ver `media-profiles/series.md`.
-
----
-
-## RUNTIME (harness de escala)
-
-Além das skills (o *processo*), `framework/runtime/` é o *harness* que torna a execução sustentável:
-cada cena é um **job stateless e limitado** (contexto O(cena), não O(histórico)), o que elimina o
-estouro de sessão e viabiliza Sonnet a custo previsível. A LLM faz só cognição (traduzir / verificar
-alto risco); orquestração, estado, contexto e validação são determinísticos. Ver
-[`runtime/README.md`](runtime/README.md), [`docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md), a governança
-com desenhos em [`docs/GOVERNANCE.md`](../docs/GOVERNANCE.md) e a convenção de nomes em
-[`docs/NAMING.md`](../docs/NAMING.md).
-
----
-
-## PROMPTS — engenharia de prompt
-
-O framework não faz fine-tuning: todo o comportamento da IA é controlado via prompt. As técnicas
-usadas são deliberadas — chain-of-thought só na back-translation (CoT em tradução comum
-custaria ~5× mais), role-based prompting na Doutrina cacheada que define o papel do tradutor,
-instruction tuning no `context_pack` que mantém o contexto em O(cena), e RAG em duas camadas
-(TM determinística + KB semântica com embeddings). Detalhes, custos reais e aprendizados de
-produção em [`docs/PROMPTS.md`](../docs/PROMPTS.md).
-
----
-
-## INSTÂNCIAS
-
-**`projects/utawarerumono/`** — primeira instância de referência. Visual novel, EN→pt-BR, com múltiplos
-pares de identidade dupla e gestão crítica de spoilers. **CONCLUÍDO:** 16 capítulos, 146 cenas,
-~45.100 linhas, round-trip byte-idêntico, custo ~R$ 338,46, pt-BR in-game. Use como
-exemplo de manifesto, perfil e artefatos do pipeline.
-
-**`projects/bof4/`** — segunda instância. Valida a portabilidade para engine Capcom, em modo banco com busca
-semântica obrigatória; é o conector de referência Capcom e fixture de testes. Substituiu `projects/breath_of_fire_4/`
-(arquivos; 125 cenas, pipeline 00–08 completo, custo ~$11 USD), removido do repositório.
-
-**`projects/souldiers/`** — terceira instância. Valida engine Unity Addressables (CSV tilde-delimited
-em bundle) e o pipeline de onboarding de baixo custo (P1.7: scaffold + templates + KB híbrida via
-Ollama local). **CONCLUÍDO:** 470 cenas, round-trip byte-idêntico 100%, back-translation 100%,
-custo ~$3,06 USD.
-
-**`projects/trails_sky_sc/`** — quarta instância, **EM ANDAMENTO**. Valida engine Falcom (remake
-*Sora no Kiseki 2nd Chapter*), conector escrito do zero (`target_charset_supported: true`, grava
-UTF-8 real). 67 cenas extraídas; cena-piloto `mp0010_01` fechou round-trip real contra o `.pac`.
-Ainda sem `README.md` próprio — ver `docs/CHANGELOG.md` e `artifacts/decision_log.md` pelo estado atual.
-
----
-
-## CI — esteira de verificação (paralela, sem encadeamento)
-
-Existem 8 workflows do GitHub Actions no repo; cada PR (e cada push no `main`) dispara **3** deles
-(`quality.yml` + `test.yml` + `perf.yml`, este só mede tendência e não bloqueia). Os checks rodam em paralelo, em runners isoladas — o tempo
-total é o do maior job, não a soma, e uma falha aparece nomeada por job no PR. Os únicos `needs:`
-são os dois jobs finais do `test.yml`: `all-checks` (agregador exigido pela branch protection) e
-`mark-staging` (só em push no `main`). Os outros 5 são sob demanda: `api-smoke.yml`,
-`dep-audit-optional.yml` e `ml-coverage-optional.yml` (cron e/ou `workflow_dispatch`),
-`branch-hygiene.yml` (`workflow_dispatch` + cron semanal, dry-run por padrão) e `release.yml` (só
-dispara em tag `v*.*.*`). (O único
-"sequencial" do projeto é o pipeline de tradução 00→08, que é dependência real de dado do domínio,
-não CI.)
+## O que tem dentro (C2)
 
 ```mermaid
 flowchart LR
-  subgraph quality["quality.yml — estilo & segurança (4 jobs)"]
-    direction TB
-    ql["lint — ruff (F/I/UP/B) em framework/ e projects/"]
-    qs["sast — bandit (severidade medium+)"]
-    qc["secrets — gitleaks (diff + histórico)"]
-    qd["deps — pip-audit (CVEs em requirements-dev)"]
+  subgraph fw["framework/"]
+    skills["skills/<br/>processo 00→09 em prosa<br/>+ operacao/ (4 skills do dia a dia)<br/>+ _pre_task, governança"]
+    runtime["runtime/<br/>os módulos do motor"]
+    connectors["connectors/<br/>base, discover, template"]
+    validation["validation/<br/>validate, naturalidade, custo"]
+    db[("db/<br/>SQLite + embeddings<br/>opcional")]
+    dist["distribution/<br/>pacote, patcher, .exe"]
+    media["media-profiles/<br/>games ✅ · films, series (stubs)"]
+    schemas["schemas/ e templates/<br/>contratos e molde de projeto"]
+    cli["cli.py<br/>comando tcf"]
   end
-  subgraph tests["test.yml — verificação funcional (11 checks + agregador)"]
-    direction TB
-    te["env-guard — .env nunca rastreado no git"]
-    tm["mypy — type-check do núcleo já tipado"]
-    tcov["coverage — runtime+db+skills+validation ≥90% (matrix 3.11 · 3.12)"]
-    tb["connector-bof4 — contrato round-trip BoF4"]
-    tu["connector-uta — contrato round-trip Utawarerumono"]
-    tsoul["connector-souldiers — contrato round-trip Souldiers"]
-    ttr["connector-trails — contrato round-trip Trails Sky SC"]
-    tdemo["connector-demo — contrato do projeto demo"]
-    tsk["connector-skeleton — contrato do template"]
-    tio["connector-io — utilitários compartilhados (framework/connectors/*.py) ≥90%"]
-    thk["hooks — testes de .claude/hooks/"]
-  end
-  subgraph smoke["api-smoke.yml — só cron/manual (1 job)"]
-    sm["batch smoke da Batch API (~$0.002; pula sem ANTHROPIC_API_KEY)"]
-  end
-  classDef qual fill:#e8dff5,stroke:#6a3d9b,color:#000;
-  classDef test fill:#d6e8f6,stroke:#1f6f9b,color:#000;
-  classDef smoke fill:#eceff1,stroke:#607d8b,color:#000;
-  class quality,ql,qs,qc,qd qual;
-  class tests,te,tm,tcov,tb,tu,tsoul,ttr,tdemo,tsk,tio,thk test;
-  class smoke,sm smoke;
+  cli --> runtime
+  skills -. "guia" .-> runtime
+  runtime --> validation
+  runtime --> connectors
+  runtime -.-> db
+  runtime --> media
+  schemas -. "valida" .-> validation
+  dist --> connectors
 ```
 
-> **Por que tantos jobs em `test.yml` e não 1?** Antes eram 5 passos sequenciais na mesma runner
-> (guard → mypy → coverage → conectores); qualquer falha cedo mascarava o resto e o tempo era a
-> soma. Divididos em jobs independentes, cada check falha isolado e o wall-clock cai para o do
-> maior job. Os conectores ficam em jobs separados porque `test_roundtrip.py` tem basename repetido
-> entre os projetos e colidiria numa coleta única do pytest. Parte dos testes de conector é pulada
-> no CI porque depende do binário/bundle do jogo (gitignored). Cobertura do core e de
-> `framework/connectors` **≥90%** (gate `--cov-fail-under=90`).
-> O `main` tem branch protection: os 4 jobs do `quality.yml` e o agregador `all-checks` são status
-> checks obrigatórios — check vermelho bloqueia o merge.
+| Pasta | Para que serve | Leia |
+|---|---|---|
+| `skills/` | As etapas `00`…`09` do processo (15 arquivos numerados), a pasta `operacao/` (4 skills do dia a dia), o `_index.md`, o `_pre_task.md` e a Carta de Governança de tradução. | [`skills/_index.md`](skills/_index.md) |
+| `runtime/` | O motor: cada cena vira um job isolado e limitado. | [`runtime/README.md`](runtime/README.md) |
+| `connectors/` | Contrato dos conectores e o `discover.py` (identifica o engine de um jogo novo). | `connectors/` |
+| `validation/` | Gates executáveis dos artefatos. | [`validation/README.md`](validation/README.md) |
+| `db/` | Modo banco: SQLite como store e busca semântica local. | `db/` |
+| `distribution/` | `build_package.py`, `build_exe.py`, `verificar_exe.py` e o `patcher.py` que instala a tradução. | `distribution/` |
+| `media-profiles/` | O que muda por tipo de mídia. Só `games` está validado em produção. | `media-profiles/` |
+| `schemas/`, `templates/` | Esquema do `project.json` e molde para projeto novo. | `schemas/project_schema.md` |
+| `SDD_RUNTIME.md` | Mapa: qual módulo executa cada etapa do processo. | [`SDD_RUNTIME.md`](SDD_RUNTIME.md) |
 
----
+## Ideia central: quatro camadas
 
-## STATUS DO FRAMEWORK — setembro 2026
+Só a primeira é estocástica. As outras três são código que dá o mesmo resultado sempre.
 
-### Objetivos alcançados
+```mermaid
+flowchart TB
+  c1["① COGNIÇÃO<br/>traduzir e retraduzir (a única IA paga)"]:::a
+  c2["② ESTADO<br/>memória fora da janela do modelo:<br/>translation memory, glossário, voice cards, decisões"]:::b
+  c3["③ EXECUÇÃO<br/>cada cena é um job isolado,<br/>com checkpoint e retomada"]:::c
+  c4["④ VALIDAÇÃO<br/>gates que bloqueiam:<br/>round-trip, back-translation, fonte da KB, spoiler, naturalidade"]:::d
+  c3 -->|"monta contexto limitado"| c1
+  c2 -->|"alimenta"| c3
+  c1 -->|"proposta"| c4
+  c4 -->|"aprovado grava"| c2
+  classDef a fill:#f6d6e8,stroke:#c0397b,color:#000;
+  classDef b fill:#fde6c4,stroke:#c97b1f,color:#000;
+  classDef c fill:#d6e8f6,stroke:#1f6f9b,color:#000;
+  classDef d fill:#d9f2d9,stroke:#2e7d32,color:#000;
+```
 
-- Harness stateless (cena = job isolado, contexto O(cena)): sem estouro de sessão ✅
-- Batch API (−50%) + tiering Haiku/Sonnet/Opus: validado em escala; batch segmentado (translate +
-  back-translation) reduz blast radius de cancelamento ✅
-- Gates de cognição: KB-gate (cobertura + profundidade de ratificação por entidade), gate de
-  completude de conector, controle de spoiler, controle de gênero (auditoria obrigatória) ✅
-- Revisão humana via XLSX → verbatim (R$ 0) ou nota cirúrgica ✅
-- Ledger auditável: toda chamada cobrada registrada, inclusive falhas ✅
-- Generic Connector System **completo**: descoberta automática (evidence collector + tier
-  classifier) → geração de candidato (engine desconhecida) → coverage gate + adversarial validator
-  → round-trip → manifesto/fingerprint versionado → gates de autonomia AI-agnostic. Três engines
-  (Aquaplus, Capcom, Unity Addressables) com round-trip byte-idêntico ✅
-- KB híbrida via Ollama local (`kb_fetch.py`/`kb_build_ollama.py`) — extração sem custo de API,
-  sempre em rascunho (`draft_ollama`) até ratificação humana por entidade (`kb_reconcile.py`);
-  governança preservada mesmo com raciocínio fora da sessão Claude ✅
-- `run_game.py`: driver ponta-a-ponta (todos os capítulos, teto de gasto global, retomada
-  automática) + `progress_report.py` (linhas/min, % do jogo, ETA, taxa de falha) ✅
-- `kernel.py`: fachada única consolidando as primitivas de orquestração (`run_scene`/`run_chapter`/
-  `run_game`/`validate_project`/`write_pack`) — contratos tipados, sem dependência de Claude/MCP ✅
-- TM por série (`tm_lookup.py`/`tm_updater.py`): jogos da mesma franquia compartilham termos
-  recorrentes, isolamento estrutural entre séries, alimentada pelo QA aprovado ✅
-- CI paralela reestruturada: 2 workflows por PR (+ 5 sob demanda: cron/dispatch/tag), checks sem
-  encadeamento (só o agregador `all-checks` usa `needs:`), falha nomeada por job ✅
-- Versionamento SemVer manual (`VERSION` + tag `vX.Y.Z`, ADR 0013): versão `2.1.0` (tag `v2.1.0` depois do merge) ✅
-- Suíte verde no CI (cobertura ≥90%)
+Por que assim e o que foi medido: [`docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md).
 
-### Dívidas técnicas do framework
+## O pipeline 00 → 09
 
-| Dívida | Prioridade |
+```mermaid
+flowchart LR
+  subgraph A["A. Preparação (1× por obra)"]
+    s00["00 extração"] --> s01["01 discovery"] --> s02["02 entidades"] --> s03["03 conhecimento"] --> s04["04 glossário"] --> s04b["04b decision log"] --> s05["05 plano"] --> s05b["05b corpus sintético"]
+  end
+  subgraph B["B. Laço por cena ou onda"]
+    s06["06 tradução"] --> s06b["06b micro-QA"]
+  end
+  subgraph C["C. Fechamento"]
+    s07["07 QA final"] --> s08["08 reinserção"] --> s08b["08b texto de sistema"] --> s08c["08c teste no jogo"] --> s09["09 distribuição"]
+  end
+  A --> B --> C
+```
+
+Cada etapa só começa se o gate da anterior fechou. O gate que falha se resolve na causa; **não se contorna**.
+
+## Começar um projeto novo
+
+1. Copie `templates/project.template.json` para `projects/<obra>/project.json` e preencha.
+2. Descubra o engine: `python framework/connectors/discover.py <dir-do-jogo>`.
+3. Escreva o conector. A régua é o **round-trip byte-idêntico** no passo 00.
+4. Rode as etapas 00…09 (a skill `skills/_index.md` mostra a ordem e os gates).
+
+Campos do `project.json`: `title`, `media_type`, `media_profile`, `source_language`, `target_language`, `source`,
+`connector`, `formatting_tokens`, `system_line_convention`, `length_constraints`, `batch_size`.
+Esquema completo em [`schemas/project_schema.md`](schemas/project_schema.md).
+
+| Genérico (aqui) | Específico do projeto (`projects/<obra>/`) |
 |---|---|
-| Filmes / séries: pontos de extensão sem validação em produção (sem projeto real pra justificar) | quando houver piloto |
-| Packaging `.exe` / README de produto (E2-E4; a CLI instalável `tcf` já existe) | pós-validação, só se for publicar |
-| Bundle de custo: tiering + back-batch codados, sem medição viva pós-Souldiers | quando rodar próximo capítulo pago |
-| `connector_gate.assert_fresh_read()` (D5): testada, sem caller em produção ainda | quando formalizar fluxo de edição de conector |
+| Processo, motor, gates, esquemas | Conector do engine, glossário, KB, vozes, `project.json` |
+| Nenhum texto de obra | Artefatos gerados, pesquisa, decisões |
 
-### Próximos passos
+## Custo
 
-1. Piloto multi-game: questões de TM/registry/onboarding já respondidas na prática (3 engines validados)
-2. Filmes/séries: aguardando projeto-piloto real antes de investir em `subtitle_file`/CPS/ASR
+- **Estimativa antes de gastar** e teto duro (`--max-usd`).
+- **Conserto por linha**, não por cena.
+- **`api_ledger.jsonl`** audita cada chamada.
+- **Alavancas:** TM que só acrescenta, escolha de modelo por risco (Haiku/Sonnet/Opus), Batch API (−50%) e caminho de sessão sem API.
+
+## Papéis
+
+| Quem | Papel |
+|---|---|
+| IA-tradutora, IA-revisora | propõem e apontam |
+| Gates | decidem o que passa |
+| Humano ratificador, revisor, tester | aprovam a KB, leem o texto, jogam |
+
+Governança completa: [`docs/GOVERNANCE.md`](../docs/GOVERNANCE.md). Nomes e contratos congelados: [`docs/NAMING.md`](../docs/NAMING.md).
+
+## Ferramentas de apoio ao conector
+
+Só no *bring-up* (primeiro dia de um engine novo) ou para depurar round-trip. Nunca fazem parte do pipeline em produção:
+Kaitai/ImHex (formato binário desconhecido), Hypothesis (testes sintéticos), vbindiff e binwalk (diferenças e
+conteúdo de binário), GARbro (visual novels), UABEA (Unity), FModel (Unreal), UndertaleModTool (GameMaker).

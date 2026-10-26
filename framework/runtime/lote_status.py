@@ -6,7 +6,7 @@ Mostra: execucao viva (PID do `logs/.lock` esta de pe?), `estado.json` contra o 
 (defasado = onda fechada fora do `rodar_ondas.ps1`: numeracao errada), ultimo log de onda e a idade dele,
 e o batimento do projeto (`estimar_lote.estado`).
 
-Uso:  python lote_status.py projects/<nome> [pasta de logs, padrao .claude/skills/rodar-onda/logs]
+Uso:  python lote_status.py projects/<nome> [pasta de logs, padrao framework/skills/operacao/rodar-onda/logs]
 """
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ from pathlib import Path
 
 import estimar_lote
 
-LOGS_PADRAO = Path(".claude/skills/rodar-onda/logs")
+LOGS_PADRAO = Path("framework/skills/operacao/rodar-onda/logs")
 DEFASAGEM_MIN = 10          # mesma regra do rodar_ondas.ps1
 
 

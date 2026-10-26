@@ -130,3 +130,25 @@ def test_espera_esperada_nao_alerta_so_com_marca_de_espera_e_sem_erro():
     assert wave.espera_esperada("run_scene", corrige) and wave.espera_esperada("run_scene_copias", corrige)
     assert not wave.espera_esperada("run_scene", corrige + "\nTraceback (most recent call last)")
     assert not wave.espera_esperada("quality_gate", corrige)
+
+
+def test_precheck_aponta_chave_errada_quebra_e_estouro(tmp_path):
+    import json
+
+    import context_pack
+    (tmp_path / "project.json").write_text("{}", encoding="utf-8")
+    sc = "ch_1_01"
+    paths.scene_dir(tmp_path, sc).mkdir(parents=True)
+    nl = context_pack.TOKEN
+    rows = [{"offset": "a.DAT:1:1", "source": f"x{nl}y", "byte_budget": 10},
+            {"offset": "a.DAT:1:2", "source": "ok", "byte_budget": 4}]
+    paths.pack(tmp_path, sc).write_text(json.dumps({"lines": rows}), encoding="utf-8")
+    tp = paths.translations(tmp_path, sc, context_pack.scene_id_of(sc))
+    tp.write_text(json.dumps({"lines": {"a.DAT:1:1": {"t": "xy"}, "a.DAT:1:2": {"t": "demais"}, "2": {"t": "z"}}}),
+                  encoding="utf-8")
+    bad = wave.precheck(str(tmp_path), [sc])
+    assert any("chave '2'" in b for b in bad)
+    assert any("quebras (nl) esperado 1 veio 0" in b for b in bad)
+    assert any("6 bytes > orcamento 4" in b for b in bad)
+    tp.write_text(json.dumps({"lines": {"a.DAT:1:1": {"t": f"x{nl}y"}, "a.DAT:1:2": {"t": "ok"}}}), encoding="utf-8")
+    assert wave.precheck(str(tmp_path), [sc]) == []

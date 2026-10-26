@@ -5,6 +5,17 @@ Feitos a partir do código e de [`ARCHITECTURE.md`](ARCHITECTURE.md), [`SDD_RUNT
 e de `framework/distribution/`. Estão em `flowchart` do Mermaid (a sintaxe `C4*` do Mermaid ainda é experimental e
 renderiza mal no GitHub). Nenhum diagrama traz fala de jogo.
 
+**Como ler:** cada nível amplia o anterior.
+
+| Nível | Pergunta que responde | Pipeline | Patcher |
+|---|---|---|---|
+| Fluxo | em que ordem as coisas acontecem e quem decide | seção 1, "Fluxo de ponta a ponta" | seção 2, "Sequência" |
+| C1 · Contexto | quem usa e com quem o sistema fala | seção 1, "Nível 1" | seção 2, "Nível 1" |
+| C2 · Contêineres | de que blocos é feito | seção 1, "Nível 2" | seção 2, "Nível 2" |
+| C3 · Componentes | o que há dentro de um bloco | seção 1, "Nível 3" | seção 2, "Nível 3" |
+
+Cores: rosa = modelo (IA); laranja = decisão humana; o resto é código determinístico.
+
 ## 1. Pipeline de tradução
 
 ### Fluxo de ponta a ponta (hoje)
@@ -34,7 +45,7 @@ flowchart TB
       g2{{"2 traduz (IA), após scene_dedup"}}
       g3["3 build_plan: cobertura, tokens, bytes"]
       g4["4 verify_chapter: round-trip byte a byte"]
-      g5{{"5 retrotradução (IA)<br/>por fala, risco alto + 5%"}}
+      g5{{"5 retrotradução (IA)<br/>por fala, risco exigido + 5%"}}
       g6["6 checkpoint: verified, TM e banco crescem"]
       g0 --> g1 --> g2 --> g3 --> g4 --> g5 --> g6
     end
@@ -153,7 +164,7 @@ flowchart TB
   tr{{"model.translate<br/>IA"}}
   bp["build_plan_chapter<br/>cobertura, tokens, orçamento de bytes"]
   vf["verify_chapter<br/>round-trip byte a byte"]
-  bt{{"back_translate<br/>IA, só risco alto"}}
+  bt{{"back_translate<br/>IA, só o risco exigido"}}
   si["state_index<br/>TM, voice cards, decisões"]
   ob["cost_report / obs_report / session_usage<br/>custo e tempo"]
   st[("run_state.json<br/>api_ledger.jsonl")]
@@ -188,7 +199,7 @@ sequenceDiagram
   S->>R: run_scene de novo
   R->>C: build_plan e verify_chapter
   C-->>R: exit 0 (round-trip igual)
-  R-->>S: AGUARDANDO back-translation (se risco alto)
+  R-->>S: AGUARDANDO back-translation (se o risco for exigido pelo projeto)
   S->>R: run_scene de novo
   R->>R: checkpoint verified, state_index
   R-->>W: uma linha de status

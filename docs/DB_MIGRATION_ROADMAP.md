@@ -254,3 +254,8 @@ além do único par medido antes.
 
 Isso é validação **operacional** por projeto, não migração de dado — roda uma vez ao ligar
 `db`/RAG num projeto novo, fora da CI (precisa da stack de `requirements-ml.txt`).
+
+## Limite conhecido: colunas novas do glossário (v2.2.0)
+
+A coluna `forma_curta` do glossário (ADR 0024) vale nos projetos em arquivos; o `store` do modo DB ainda não a
+carrega, então um projeto em modo DB não mostra a coluna `forma curta` no prompt. Entra quando um projeto em DB precisar dela.

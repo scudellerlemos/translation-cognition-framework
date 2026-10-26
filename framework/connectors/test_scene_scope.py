@@ -29,3 +29,14 @@ def test_without_order_file_the_commonest_shape_is_the_story_and_order_is_unconf
 
 def test_empty_project(tmp_path):
     assert ss.scan(tmp_path)["cats"] == {}
+
+
+def test_report_conta_falas_com_falante_extraido(tmp_path):
+    d = tmp_path / "artifacts" / "scenes" / "1_a"
+    d.mkdir(parents=True)
+    (d / "dialogs.csv").write_text("offset,speaker,text_en,byte_budget\n1,Ana,oi,5\n2,,tchau,5\n", encoding="utf-8")
+    res = ss.scan(tmp_path)
+    assert (res["falas"], res["com_falante"]) == (2, 1)
+    assert "FALANTE: 1 de 2 falas" in ss.report(res)
+    (d / "dialogs.csv").write_text("offset,text_en,byte_budget\n1,oi,5\n", encoding="utf-8")
+    assert "nenhuma" in ss.report(ss.scan(tmp_path))

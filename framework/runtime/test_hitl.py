@@ -275,3 +275,14 @@ def test_csv_terms_returns_rows_the_db_loader_does_not_see_yet(tmp_path):
         fh.write("Novo,grupo,Novo,manter_original,,2026-01-01" + chr(10))
     assert hitl._csv_terms(root, {"warmaster": "Warmaster"}) == {"novo": "Novo"}
     assert hitl._csv_terms(root, {"novo": "Novo", "warmaster": "Warmaster"}) == {}
+
+
+def test_fila_agrupa_por_termo_e_responde_o_termo_de_uma_vez(tmp_path):
+    root = _project(tmp_path)
+    mk = lambda sc, off, term: {"scene": sc, "offset": off, "kind": "glossario", "term": term,  # noqa: E731
+                                "expected": "x", "source_en": "s", "target_pt": "t", "reason": "r"}
+    hitl.enqueue(root, [mk("A", "1", "Ring"), mk("B", "2", "Ring"), mk("B", "3", "Ring"), mk("A", "4", "Gem")])
+    assert hitl.grupos(root) == [("Ring", 3, 2), ("Gem", 1, 1)]
+    assert hitl.responder_termo(root, "Ring", "Anel") == 3
+    assert hitl.grupos(root) == [("Gem", 1, 1)]                  # respondidos saem dos abertos
+    assert hitl.responder_termo(root, "Ring", "outro") == 0      # ja respondido: nao sobrescreve

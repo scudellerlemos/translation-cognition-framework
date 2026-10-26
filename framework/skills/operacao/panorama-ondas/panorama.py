@@ -9,6 +9,9 @@ import sys
 from collections import Counter, OrderedDict
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[4] / "framework" / "runtime"))
+from paths import atomic_write  # noqa: E402
+
 
 def _shape(sid):
     return re.sub(r"[A-Za-z]+", "a", re.sub(r"\d+", "0", sid))
@@ -64,5 +67,5 @@ _out.__exit__(None, None, None)
 txt = buf.getvalue()
 lim = n_plan or 10**6
 print(chr(10).join(l for l in txt.split(chr(10)) if not l.startswith(" onda +") or int(l.split("+")[1].split(":")[0]) <= lim))
-(art / "panorama_ondas.md").write_text(f"```{chr(10)}{txt}```{chr(10)}", encoding="utf-8")
+atomic_write(art / "panorama_ondas.md", f"```{chr(10)}{txt}```{chr(10)}")
 print("gravado em", art / "panorama_ondas.md")

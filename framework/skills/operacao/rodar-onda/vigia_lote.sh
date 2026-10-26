@@ -8,11 +8,11 @@
 #     LIMITE_7D (env, padrao 85) -- o vigia so avisa, quem para o lote e voce (Ctrl+C na janela);
 #   - ao acabar: "LOTE ENCERRADO" com o diagnostico (ondas fechadas x pedidas, ultima linha do ultimo log, estado, lock),
 #     marcando "ENCERROU ANTES DO FIM" quando fecharam menos ondas do que o -Lote pedido.
-# Uso: bash .claude/skills/rodar-onda/vigia_lote.sh [projects/<nome>] [segundos entre checagens, padrao 60]
+# Uso: bash framework/skills/operacao/rodar-onda/vigia_lote.sh [projects/<nome>] [segundos entre checagens, padrao 60]
 cd "$(dirname "$0")/../../.." || exit 1
 projeto="${1:-projects/utawarerumono_prelude}"
 passo="${2:-60}"
-logs=".claude/skills/rodar-onda/logs"
+logs="framework/skills/operacao/rodar-onda/logs"
 
 consulta() {
   # Vivo = o rodar_ondas.ps1 esta rodando = existe o .lock (ele o apaga ao sair). Nao serve olhar a janela: ela abre com

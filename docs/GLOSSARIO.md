@@ -1,13 +1,17 @@
 # Glossário — nomes dos itens de planejamento
 
-> **Política:** os itens de risco/hardening/gap são identificados por **nome descritivo**, tanto no
-> código quanto nos documentos. Não usamos mais códigos crípticos (`H2`, `R5`, `GAP D`…) — eles foram
-> aposentados por serem mal desenhados (o mesmo `R3`, por exemplo, significava coisas diferentes em
-> tabelas diferentes).
+> **Política:** os itens de risco/hardening/gap são identificados por **nome descritivo**, tanto no código quanto nos
+> documentos. Não usamos mais códigos crípticos (`H2`, `R5`, `GAP D`…): foram aposentados por serem mal desenhados (o mesmo
+> `R3`, por exemplo, significava coisas diferentes em tabelas diferentes).
 >
-> Esta página existe por dois motivos: (1) listar os nomes canônicos em um lugar; (2) servir de
-> **de-para** para quem encontrar um código antigo em **commits, PRs ou históricos** anteriores a
-> 2026-06.
+> Esta página serve para: (1) listar os nomes canônicos num só lugar; (2) servir de **de-para** para quem encontrar um código
+> antigo em **commits, PRs ou históricos** anteriores a 2026-06.
+
+```mermaid
+flowchart LR
+  velho["código antigo<br/>(H2 · R5 · GAP D · D1…)"] -->|"esta página"| novo["nome descritivo atual"]
+  novo --> onde["onde vive:<br/>ROADMAP · QA_REVIEW · código"]
+```
 
 ## Hardening — endurecimentos de arquitetura
 Documentados em `docs/ROADMAP.md` (seção P4, Histórico detalhado). Código antigo → nome atual:
@@ -19,7 +23,7 @@ Documentados em `docs/ROADMAP.md` (seção P4, Histórico detalhado). Código an
 | H3 | **run_scene coeso** | `run_scene` não deve acretar responsabilidade sem limite (adiado) |
 | H4 | **Repro: gate ≠ geração** | os *gates* reproduzem; a *geração* (saída do LLM) não (`ARCHITECTURE.md`) |
 | H5 | **Profundidade da Fase 0** | até onde cabear a reconciliação de KB (adiado; `kb_review.py` é o digest leve) |
-| H6 | **Spoiler observável** | verificação observável de não-vazamento pós-tradução (`spoiler_check.py`) |
+| H6 | **Spoiler observável** | verificação observável de não vazamento pós-tradução (`spoiler_check.py`) |
 
 ## Riscos de cognição (levar o pipeline a produção)
 Documentados em `docs/ROADMAP.md` (seção P1.5, Histórico detalhado).
@@ -31,7 +35,7 @@ Documentados em `docs/ROADMAP.md` (seção P1.5, Histórico detalhado).
 | R3 | **Fase 0 / cobertura de KB** | KB reconciliada + gate de cobertura (`kb_gate.py`) |
 | R4 | **Controle de spoiler** | `spoiler_ledger.json` + filtro temporal + regra de gênero |
 | R5 | **Bundle de custo** | Batch API −50% + model tiering + back-batch + guardrails de orçamento |
-| R-CUSTO | **Re-tradução cara** | re-tradução era 58% do gasto (rótulo de engine traduzido → estouro de budget → retighten); resolvido por `model._label_passthrough` |
+| R-CUSTO | **Re-tradução cara** | re-tradução era 58% do gasto (rótulo de engine traduzido → estouro de budget → retighten); resolvido por `_label_passthrough` (hoje em `translation_rules.py`) |
 
 ## Riscos de engenharia (mitigações offline)
 Documentados em `docs/ROADMAP.md` (seção P4, Histórico detalhado).
@@ -46,7 +50,7 @@ Documentados em `docs/ROADMAP.md` (seção P4, Histórico detalhado).
 | R#4g | **Gênero pt-BR inativo** | mecanismo pronto, marcação aguarda caso confirmado por fonte |
 
 ## GAPs do processo (Fase 0 → pessoa jogando)
-Documentados no `QA_REVIEW.md`.
+Documentados no [`QA_REVIEW.md`](QA_REVIEW.md).
 
 | Antigo | Nome atual | Quem cobre |
 |---|---|---|
@@ -71,15 +75,29 @@ Documentados em `docs/ROADMAP.md` (seção Fase D / Evolução do Motor).
 | B3 | **Fachada de orquestração** | `kernel.py` |
 | B4 | **Skill DSL** | `framework/skills/skill_base.py` + `registry.py` |
 | P1.7 | **Onboarding de baixo custo** | `scaffold_project.py`, `kb_fetch.py`/`kb_build_ollama.py`/`kb_reconcile.py` |
-| P2.5 | **Driver ponta-a-ponta** | `run_game.py` + `progress_report.py` |
+| P2.5 | **Driver ponta a ponta** | `run_game.py` + `progress_report.py` |
 
-Os dois sistemas de **tier numerado** também foram retirados do código nesta data: o tier de
-descoberta de engine (`T1`/`T2`/`T3`) virou `known_engine`/`unknown_engine`/`blocked`; a cascata de
-encaixe de bytes na reinserção (`T1`–`T4`) virou nomes descritivos por conector — `direct`/
-`repoint`/`trimmed`/`residue` no template (`framework/connectors/_skeleton/reinsert.py`), `in_place`/
-`residuo` no Utawarerumono, `unchanged`/`shrunk`/`expanded`/`individual_overflow` no Breath of Fire IV.
+Os dois sistemas de **tier numerado** também foram retirados do código nesta data:
+
+| Sistema | Antes | Agora |
+|---|---|---|
+| Descoberta de engine | `T1`/`T2`/`T3` | `known_engine` / `unknown_engine` / `blocked` |
+| Encaixe de bytes na reinserção (template, `framework/connectors/_skeleton/reinsert.py`) | `T1`–`T4` | `direct` / `repoint` / `trimmed` / `residue` |
+| Encaixe no Utawarerumono | `T1`–`T4` | `in_place` / `residuo` |
+| Encaixe no Breath of Fire IV | `T1`–`T4` | `unchanged` / `shrunk` / `expanded` / `individual_overflow` |
+
+## Termos do ciclo de ondas (2026-10)
+Nomes que aparecem em `docs/` e nos ADRs 0019 a 0025; não são códigos antigos.
+
+| Termo | Significado |
+|---|---|
+| **Onda** | lote de cenas traduzido, conferido e fechado junto (skill `rodar-onda`); no lote roda via `lancar_lote.ps1` |
+| **Fila diferida** | `"hitl_fila": "diferida"`: a onda não para por escalonamento ou lore novo; o humano responde no fim do lote (ADR 0020) |
+| **Forma curta** | coluna `forma_curta` do glossário: forma menor aceita quando a canônica estoura o orçamento de bytes (ADR 0024) |
+| **Retrotradução cega** | variante em duas passagens (A só com o target, B com o source); medida e não adotada (ADR 0025) |
+| **Fachada de `model`** | `model.py` reexporta `model_api.py` (API) e `model_session.py` (sessão) (ADR 0019) |
+| **Drift** | cena `verified` cujo texto mudou depois do fechamento (`touched.py`) |
 
 ## Abreviações de domínio aceitas
-Estas **podem** aparecer em código — são jargão de domínio estabelecido, documentado em
-[`NAMING.md`](NAMING.md) §3 (`KB`, `TM`, `QA`, `BIN`/`SDAT`, `scene_id`). `T4` foi retirado desta
-lista (ver seção acima) — deixou de ser aceito como nome de domínio.
+Estas **podem** aparecer em código: são jargão de domínio estabelecido, documentado em [`NAMING.md`](NAMING.md) §3 (`KB`, `TM`,
+`QA`, `BIN`/`SDAT`, `scene_id`). `T4` foi retirado desta lista (ver acima): deixou de ser aceito como nome de domínio.

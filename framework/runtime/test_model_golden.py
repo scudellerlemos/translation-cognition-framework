@@ -96,5 +96,6 @@ def test_sessao_prompt_e_retorno_travados(tmp_path, monkeypatch):
     assert model.translate(root, SCENE, backend="in-session")["status"] == model.READY
 
 
-GOLDEN = {"api_enviado": "ef27ef5ffd7524b6", "api_dados": "c64a33d7db5c3594",
-          "sessao_prompt": "26aaf9870ca0bee0", "sessao_retorno": "297e57b1cd3e7b10"}
+# 2026-10-25: a tabela de linhas ganhou a coluna `nl` (quebras do source) -> mudaram `api_enviado` e `sessao_prompt`
+GOLDEN = {"api_enviado": "68eb11a14a303b10", "api_dados": "c64a33d7db5c3594",
+          "sessao_prompt": "0da3b475f2e599e4", "sessao_retorno": "297e57b1cd3e7b10"}

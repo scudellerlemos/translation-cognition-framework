@@ -1,23 +1,45 @@
-# Model Interface — agnosticismo de modelo
+# Model Interface — como a IA é chamada
 
-`framework/runtime/model.py` é a **única** fronteira não-determinística do harness. Isola "como a IA é
-chamada" do "o que o pipeline faz", para que o mesmo `run_scene` rode com qualquer modelo/caminho.
+O pipeline não sabe qual modelo rodou. Toda chamada à IA passa por **uma única fronteira**, `framework/runtime/model.py`
+(mais `back_translate.py` para a revisão), e o mesmo `run_scene` roda com qualquer modelo ou caminho.
+
+## Estrutura (C3)
+
+Desde a Onda 4 ([ADR 0019](adr/0019-divisao-de-model-e-context-pack-com-guardrail-de-paridade.md)) o `model.py` é uma **fachada**: reexporta a API pública e delega a um
+módulo por caminho. Quem importa `model` não percebe a divisão.
+
+```mermaid
+flowchart TB
+  rs["run_scene.py"] --> m["model.py<br/>fachada: translate()"]
+  rs --> bt["back_translate.py<br/>back_translate()"]
+  m -->|"--backend api (padrão)"| api["model_api.py<br/>SDK, schema estrito, batch,<br/>cache da doutrina, retentativas"]
+  m -->|"--backend in-session"| ses["model_session.py<br/>prompt auto-contido +<br/>checagem do arquivo produzido"]
+  api --> llm["llm_client.py<br/>cliente · backoff · batch"]
+  llm --> anth(["API Anthropic"])
+  ses --> chat(["sessão do Claude Code"])
+  gates["gates determinísticos"] -.-> api
+  gates -.-> ses
+```
+
+O `test_layering.py` trava as camadas e o `test_model_golden.py` trava o prompt.
 
 ## Contrato
 
 ```
 translate(root, scene, *, backend, model, budget_tolerance)        -> {status, path|prompt, scene_id, n_lines}
-back_translate(root, scene, high_lines, *, backend, model) -> {status, path|prompt, reviewed}
+back_translate(root, scene, high_lines, *, backend, model)         -> {status, path|prompt, reviewed}
 ```
 
-Dois papéis de IA, e **apenas** estes:
-- **translate** — traduz a cena a partir do pacote limitado (`context_pack`).
-- **back_translate** — verifica linhas `risk >= high`, mais uma amostra de 5% das demais nas cenas vindas do batch (pt-BR → EN → confere sentido/voz/ambiguidade).
+Só dois papéis de IA existem:
+
+- **translate:** traduz a cena a partir do pacote limitado (`context_pack`).
+- **back_translate:** pt-BR → EN para checar sentido, voz e ambiguidade, nas falas dos níveis de `back_translation_risk` do
+  projeto (padrão `high` e `critical`), mais uma amostra de 5% das demais nas cenas vindas do batch.
 
 ## O formato da resposta
 
-A chamada de tradução usa saída estruturada estrita. O modelo devolve um array com uma entrada por
-fala, e a API rejeita qualquer resposta fora do schema (`_TRANSLATION_SCHEMA` em `model.py`):
+A tradução usa saída estruturada estrita: um array com uma entrada por fala; a API rejeita o que sair do schema
+(`_TRANSLATION_SCHEMA` em `model_api.py`).
 
 ```json
 {"lines": [{
@@ -31,105 +53,108 @@ fala, e a API rejeita qualquer resposta fora do schema (`_TRANSLATION_SCHEMA` em
 }]}
 ```
 
-Os valores acima são ilustrativos.
+Os valores são ilustrativos.
 
 | Campo | Para que serve |
 |---|---|
-| `offset` | identifica a fala no binário; é a chave que liga a resposta à linha de origem |
+| `offset` | liga a resposta à linha de origem no binário |
 | `t` | a tradução |
-| `speaker`, `tone_register`, `intent` | o que o modelo entendeu da fala; ficam registrados para revisão e alimentam os exemplos de voz |
-| `risk_level` | `low`, `medium`, `high` ou `critical`; decide se a fala passa pela back-translation |
+| `speaker`, `tone_register`, `intent` | o que o modelo entendeu da fala; ficam para revisão e alimentam exemplos de voz |
+| `risk_level` | `low`, `medium`, `high` ou `critical`; decide se passa pela back-translation |
 | `risk_notes` | o motivo do risco, quando houver |
 
-Esses campos explicam a média de 66 tokens de saída por fala: a tradução é só uma parte do objeto.
-Cortar `tone_register` e `intent` para economizar tokens foi avaliado e rejeitado: o gate de
-qualidade depende desses campos.
+Esses campos explicam a média de **66 tokens de saída por fala**. Cortar `tone_register` e `intent` para economizar foi
+avaliado e rejeitado: o gate de qualidade depende deles.
 
-Depois da resposta, o código confere três coisas por fala, sem modelo: se todo `offset` pedido
-voltou (cobertura), se a contagem do marcador de quebra de linha é igual à da fonte, e se os
-tokens de formatação do jogo foram preservados. A fala que falha volta sozinha na nova tentativa.
+Depois da resposta, o código confere por fala, sem modelo: todo `offset` pedido voltou (cobertura), a contagem do
+marcador de quebra bate com a da fonte, e os tokens de formatação foram preservados. A fala que falha volta sozinha na nova tentativa.
 
-## Dois backends, mesmo contrato
+## Os dois caminhos
 
-### (a) `in-session` — caminho ASSINATURA (opt-in: `--backend in-session`; o default é `api`)
-Não chama rede. Garante o `scene_prompt.md` (auto-contido e **limitado**) e checa se o modelo do chat
-já produziu `translations_<scene_id>.json`:
-- ausente → `status: awaiting` (o operador responde o prompt numa **sessão limpa**; como o prompt é
-  pequeno, o contexto nunca acumula → sem estouro, sem conta de API).
-- presente → `status: ready` (segue para as gates determinísticas).
+> Visão por dentro de cada um (C4, sequência, medição): [`CAMINHOS_DE_USO.md`](CAMINHOS_DE_USO.md). Escolha um caminho por projeto.
 
-Também no `in-session`, a fala cuja fonte já foi traduzida em outra cena sai do prompt e é preenchida
-pela TM (`_select_reuse`, a mesma do caminho `api`); e na reconferência de uma cena já traduzida, sem
-mudança de falas, projeto ou doutrina, o `pack.json` gravado é reaproveitado (`saved_pack`).
+```mermaid
+flowchart LR
+  subgraph S["in-session (assinatura, opt-in)"]
+    p["scene_prompt.md<br/>auto-contido e limitado"] --> aw{"translations_&lt;cena&gt;.json existe?"}
+    aw -->|"não"| w["status: awaiting<br/>operador responde numa sessão limpa"]
+    aw -->|"sim"| r["status: ready"]
+  end
+  subgraph A["api (escala headless, padrão)"]
+    sys["doutrina no system<br/>com cache_control"] --> call["streaming + json_schema"]
+    call --> guard["guard: quebra real e cobertura<br/>até 3 tentativas"]
+  end
+  r --> g(["gates"])
+  guard --> g
+```
 
-Resumível: rode `run_scene` de novo após o arquivo aparecer; o checkpoint diz onde retomar.
+### `in-session` (`--backend in-session`)
 
-**Medição de tokens.** No Claude Code, cada cena é traduzida por **um subagente dedicado** (ele roda o
-`run_scene`, escreve a tradução e a back-translation, e roda de novo até `verified`). A transcrição do
-subagente só contém aquela cena, então `session_usage.py` registra no `api_ledger.jsonl` o gasto exato dela
-(`source: "session"`, `attribution: "agent"`). Tradução feita direto na sessão principal também é medida,
-mas a divisão por cena é aproximada (`attribution: "window"`); o resto da sessão vai para a cena `_session`.
+Não chama rede. Garante o `scene_prompt.md` e checa se o chat já produziu `translations_<scene_id>.json`:
+ausente → `awaiting`; presente → `ready`. Como o prompt é pequeno, o contexto nunca acumula: sem estouro e sem conta de API.
+Falas cuja fonte já foi traduzida em outra cena saem do prompt e são preenchidas pela TM (`_select_reuse`); numa
+reconferência sem mudança, o `pack.json` gravado é reaproveitado (`saved_pack`). É resumível: rode `run_scene` de novo.
 
-### (b) `api` — caminho ESCALA HEADLESS
-Anthropic SDK (import preguiçoso; erro claro se faltar `anthropic`/`ANTHROPIC_API_KEY`):
-- **Doutrina (Carta) no `system` com `cache_control`** → cobrada ~1× via prompt-caching, não a cada cena.
-- **Model-mix** (cenário `mix` do `cost_model.py`): tradução em **Sonnet**, back-translation em **Opus**.
-- **Streaming** (`messages.stream` + `get_final_message`) p/ saídas longas; `output_config` com
-  `json_schema` + `effort: low`, sem thinking (tradução); `effort: high` + thinking adaptativo só na
-  back-translation.
-- **`max_tokens = 64000`** (cobre a maior cena do corpus; o valor antigo de 16k truncava cenas grandes).
-- **Guard do token de quebra + cobertura** com retry corretivo (até 3 tentativas): se o modelo emitir
-  quebra de linha REAL no campo `t` (em vez do literal `\n`) ou faltar offsets, regenera — mata o bug
-  recorrente *na borda da API*, antes de gravar.
-- **Backoff** exponencial em 429/500/timeout; falha de tradução vira checkpoint `api_translate_failed`
-  em `run_scene` (retomável).
+**Medição de tokens.** No Claude Code, cada cena é traduzida por um subagente dedicado; a transcrição dele só tem aquela
+cena, então `session_usage.py` registra o gasto exato no `api_ledger.jsonl` (`source: "session"`, `attribution: "agent"`).
+Tradução feita na sessão principal também é medida, mas a divisão por cena é aproximada (`attribution: "window"`); o resto vai
+para a cena `_session`.
 
-**Como ligar:** `pip install anthropic` + `ANTHROPIC_API_KEY` no ambiente **ou** num `.env` na raiz do
-repositório (carregado por `llm_client._load_dotenv`; `.env` está no `.gitignore`, ver `.env.example`).
-Driver de capítulo: `run_chapter.py <projeto> <cap> --backend api` (loop de cenas fora do chat,
-resumível, para na 1ª falha). Métricas por cena em `artifacts/metrics.jsonl` (ver `OBSERVABILITY.md`).
-Benchmark de modelo: `bench_translate.py` grava saída paralela `translations_<scene_id>.<tag>.json` sem
+### `api` (padrão)
+
+Anthropic SDK (import preguiçoso; erro claro se faltar `anthropic` ou `ANTHROPIC_API_KEY`):
+
+- **Doutrina (Carta) no `system` com `cache_control`:** cobrada ~1× via prompt caching, não a cada cena.
+- **Model-mix** (cenário `mix` do `cost_model.py`): tradução em Sonnet, back-translation em Opus.
+- **Streaming** para saídas longas; `json_schema` com `effort: low` e sem thinking na tradução; `effort: high` e thinking
+  adaptativo só na back-translation.
+- **`max_tokens = 64000`** (o antigo 16k truncava cenas grandes).
+- **Guard do token de quebra e da cobertura**, com retry corretivo (até 3): se o modelo emitir quebra REAL no campo `t`
+  (em vez do literal `\n`) ou faltar offset, regenera, antes de gravar.
+- **Backoff** exponencial em 429/500/timeout; falha de tradução vira checkpoint `api_translate_failed` (retomável).
+
+**Como ligar:** `pip install anthropic` e `ANTHROPIC_API_KEY` no ambiente ou num `.env` na raiz (carregado por
+`llm_client._load_dotenv`; `.env` está no `.gitignore`, veja `.env.example`). Driver de capítulo:
+`run_chapter.py <projeto> <cap> --backend api` (resumível, para na 1ª falha). Métricas por cena em `artifacts/metrics.jsonl`
+([`OBSERVABILITY.md`](OBSERVABILITY.md)). Benchmark: `bench_translate.py` grava `translations_<scene_id>.<tag>.json` sem
 tocar nas aprovadas.
 
-## Matriz de modelos (defaults; ver skill `claude-api`)
+## Matriz de modelos (defaults)
 
-| Papel | Modelo default | Constante | Razão |
+| Papel | Modelo | Constante | Razão |
 |---|---|---|---|
-| Tradução | `claude-sonnet-4-6` | `MODEL_TRANSLATE` | barato, suficiente com contexto curado |
-| Tradução (tier barato) | `claude-haiku-4-5` | `MODEL_TRANSLATE_CHEAP` | linhas single-line no caminho batch (−67%/linha); ativo e medido, ver `TOKEN_ECONOMY.md` |
-| Back-translation | `claude-opus-4-8` | `MODEL_BACK` | raciocínio p/ ambiguidade/duplo-sentido |
+| Tradução | `claude-sonnet-4-6` | `MODEL_TRANSLATE` | barato e suficiente com contexto curado |
+| Tradução (tier barato) | `claude-haiku-4-5` | `MODEL_TRANSLATE_CHEAP` | linhas single-line no batch (−67%/linha); medido em [`TOKEN_ECONOMY.md`](TOKEN_ECONOMY.md) |
+| Back-translation | `claude-opus-4-8` | `MODEL_BACK` | raciocínio para ambiguidade e duplo sentido |
 
-Trocar de modelo = trocar a string. Nenhuma outra parte do harness sabe qual modelo rodou.
+Trocar de modelo é trocar a string; nenhuma outra parte do harness sabe qual rodou.
 
-## Status do caminho API (COMPROVADO em produção — 2026-06)
+## O que a produção ensinou (2026-06)
 
-Endurecido contra o SDK vivo `anthropic` 0.109.x e **rodado de verdade**. A 1ª rodada expôs 4 problemas
-que só aparecem em produção (o motivo de "comprovar" ser uma etapa própria) — todos corrigidos:
+O caminho API foi endurecido contra o SDK vivo (`anthropic` 0.109.x) e rodado de verdade. A 1ª rodada expôs 4 problemas
+que só aparecem em produção, todos corrigidos:
 
-| # | Achado empírico | Correção |
+| # | Achado | Correção |
 |---|---|---|
-| 1 | structured output ESTRITO exige `additionalProperties:false` em todo objeto → mapa `{offset:{}}` (chaves dinâmicas) é rejeitado | schema virou **array de entradas** com `offset` por item; conversão array→mapa pós-parse (`_to_map`) |
-| 2 | `effort:high` + adaptive thinking **estourou o custo ~5×** (thinking conta como saída a $15/M): 37 linhas → 20k tokens out | defaults **`EFFORT_TRANSLATE="low"` + `THINK_TRANSLATE=False`**; back-translation mantém thinking |
-| 3 | em cena nova, o modelo colapsa o token `\n` numa **quebra de linha REAL** (3 retries não corrigem) | normalização **determinística** (`_norm_t`): newline real → token literal `\n` (este jogo só quebra via token) |
-| 4 | o aviso de charset fazia o modelo **remover acentos** do `t` canônico | prompt clarificado: escreva `t` COM acentos; a transliteração ASCII é do `reinsert` |
+| 1 | Saída estrita exige `additionalProperties:false`; mapa `{offset:{}}` (chaves dinâmicas) é rejeitado | schema virou **array de entradas** com `offset` por item; conversão array→mapa depois (`_to_map`) |
+| 2 | `effort:high` + thinking estourou o custo ~5× (thinking conta como saída): 37 linhas → 20k tokens | `EFFORT_TRANSLATE="low"` e `THINK_TRANSLATE=False`; só a back-translation mantém thinking |
+| 3 | Em cena nova, o modelo colapsa o `\n` numa quebra REAL (3 retries não corrigem) | normalização determinística `_norm_t`: quebra real → token literal `\n` |
+| 4 | O aviso de charset fazia o modelo remover acentos do `t` canônico | prompt: escreva `t` COM acentos; a transliteração ASCII é do `reinsert` |
 
-### Veredito do benchmark — **Sonnet APROVADO** como `MODEL_TRANSLATE`
-Teste limpo em cena de comédia fora da TM (ch_12_03, 408 linhas): registro/humor no nível da versão
-feita à mão a Opus — ex.: *"Cérebro, meu camarada, você tá arrasando hoje."*, escalada cômica
-*"Rejeito, renuncio, RECUSO esse 'trabalho'..."*. Em cena coberta por TM (ch_12_01): 37/37 `t`
-**idêntico** ao gold (reuso de TM perfeito). Cobertura 100%, 0 quebras reais residuais. **Mantém
-Sonnet**; Opus reservado à back-translation.
+**Veredito: Sonnet aprovado como `MODEL_TRANSLATE`.** Em cena de comédia fora da TM (ch_12_03, 408 linhas), registro e humor
+no nível da versão feita à mão em Opus; em cena coberta por TM (ch_12_01), 37/37 `t` idênticos ao gold. Cobertura 100%,
+0 quebras reais residuais. Opus fica só na back-translation.
 
-### Custo real medido (Sonnet, effort:low, sem thinking)
-| cena | linhas | out tok | tempo | ~custo |
+| Cena | Linhas | Tokens out | Tempo | ~Custo |
 |---|---|---|---|---|
-| ch_12_01 (TM) | 37 | 2.529 | 43s | ~$0.06 |
-| ch_12_03 (nova) | 408 | 27.000 | 432s | ~$0.45 |
-~**66 tok/linha** (bate o `cost_model`) → **~$1.1/1k linhas → jogo ~$36** (antes do bundle de custo).
-Compare: com effort:high+thinking seria ~5× (jogo ~$285). Ver `OBSERVABILITY.md`.
+| ch_12_01 (TM) | 37 | 2.529 | 43 s | ~$0,06 |
+| ch_12_03 (nova) | 408 | 27.000 | 432 s | ~$0,45 |
 
-## Por que isto viabiliza Sonnet
+~66 tokens/linha (bate o `cost_model`) → ~$1,1 por 1k linhas → jogo ~$36 antes do bundle de custo. Com `effort:high` e
+thinking seria ~5× (~$285). Ver [`OBSERVABILITY.md`](OBSERVABILITY.md).
 
-Sonnet não precisava de mais "inteligência" — precisava de **contexto pequeno e certo**. Com o
-`context_pack` entregando só o relevante e a doutrina cacheada, a tradução por linha cabe em Sonnet;
-Opus fica reservado à verificação de alto risco. Ver `adr/0004-model-agnostic-interface.md`.
+## Por que isso viabiliza o Sonnet
+
+Sonnet não precisava de mais "inteligência": precisava de **contexto pequeno e certo**. Com o `context_pack` entregando só o
+relevante e a doutrina cacheada, a tradução por linha cabe em Sonnet; Opus fica para a verificação de alto risco.
+Decisão: [`adr/0004-model-agnostic-interface.md`](adr/0004-model-agnostic-interface.md).

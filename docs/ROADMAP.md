@@ -13,7 +13,7 @@
 | Harness de escala (`framework/runtime/`) | 🟢 em produção — validado em 16 capítulos, ~45.100 linhas, R$ 0 desperdiçado |
 | Conector hex_binary (Utawarerumono) | 🟢 completo — round-trip byte-idêntico, validado in-game |
 | Generic Connector System (Fase D) | 🟢 D1–D6 entregues — validado em 3 engines distintos (Aquaplus, Capcom DAT, Unity Addressables); 4º engine (Falcom, `trails_sky_sc`) em onboarding |
-| Versionamento SemVer manual (`VERSION` + tag) | 🟢 entregue (ADR 0013) — versão `2.1.0` (tag `v2.1.0` depois do merge; anteriores `v1.0.0`–`v1.1.0`) |
+| Versionamento SemVer manual (`VERSION` + tag) | 🟢 entregue (ADR 0013) — versão `2.2.0` (tag `v2.2.0` depois do merge; tags existentes até `v2.0.0`; a `v2.1.0` do CHANGELOG nunca foi tagueada) |
 | Perfis filme/série + subtitle_file | 🔴 stub / não iniciado |
 
 ---
@@ -302,7 +302,7 @@ As três primeiras já foram entregues; o `.exe` tem o código entregue (`build_
 > **Pré-requisito:** framework estável com ≥2 projetos ativos (atingido — BoF4/Uta/Souldiers).
 > **Valor:** garante que nenhum commit regride o harness silenciosamente — crítico quando virar produto.
 
-- [x] **F1. CI offline** — 3 workflows paralelos (quality, test, api-smoke); 316 testes, cobertura 90.17%; matrix 3.11/3.12 (números da época; hoje são 7 workflows, ver `.github/workflows/README.md`). ✅
+- [x] **F1. CI offline** — 3 workflows paralelos (quality, test, api-smoke); 316 testes, cobertura 90.17%; matrix 3.11/3.12 (números da época; hoje são 8 workflows, ver `.github/workflows/README.md`). ✅
 
 → ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues:
 CI de packaging e LLM judge.

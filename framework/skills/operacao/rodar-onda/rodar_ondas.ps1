@@ -1,5 +1,5 @@
 ﻿# Roda ondas em sequencia, uma sessao nova do `claude -p` por onda. Para na primeira PARADA/FIM/erro.
-# Uso: .\.claude\skills\rodar-onda\rodar_ondas.ps1 -Lote 8   (ou -Ondas N; retoma da proxima onda gravada em logs/estado.json)
+# Uso: .\framework\skills\operacao\rodar-onda\rodar_ondas.ps1 -Lote 8   (ou -Ondas N; retoma da proxima onda gravada em logs/estado.json)
 #   O limite de cota (sessao ou semana) e esperado e a onda refeita sozinha: framework/runtime/espera_reset.py.
 #   -TesteAgente : igual, mas lanca um scene-translator que so escreve em scratch/ e roda python com UTAP_DATA_DIR (checa as permissoes do subagente).
 #   -Modelo sonnet|haiku|opus : modelo da janela da onda (padrao haiku, decisao do usuario de 2026-10-21 apos o benchmark A x B). No fim, conformidade_onda.py confere o lote.
@@ -23,13 +23,13 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 if ($Lote -gt 0) { $Ondas = $Lote }
-$root = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).Path
+$root = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..\..')).Path
 Set-Location $root
 $logs = Join-Path $PSScriptRoot 'logs'
 New-Item -ItemType Directory -Force $logs | Out-Null
 if ($Lore) {
     # Levantamento de lore antes do lote: kb_phase onda das proximas $Ondas ondas do panorama.py, numa tabela so.
-    $pan = & python (Join-Path $root '.claude\skills\panorama-ondas\panorama.py') $Projeto
+    $pan = & python (Join-Path $root 'framework\skills\operacao\panorama-ondas\panorama.py') $Projeto
     $plano = @($pan | Select-String '^\s*onda \+(\d+): ([\d_ ]+) =' | Select-Object -First $Ondas)
     $saida = Join-Path $logs ("lore_{0}.md" -f (Get-Date -Format 'yyyyMMdd_HHmmss'))
     foreach ($l in $plano) {
@@ -60,7 +60,7 @@ if ($estado -and -not $Teste -and -not $TesteAgente -and (Test-Path $rs) -and -n
 }
 $t0 = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
 if (-not $Teste -and -not $TesteAgente) {
-    try { (& python (Join-Path $root '.claude\skills\panorama-ondas\panorama.py') $Projeto) | & python (Join-Path $root 'framework\runtime\estimar_lote.py') $logs $Ondas | Write-Host }
+    try { (& python (Join-Path $root 'framework\skills\operacao\panorama-ondas\panorama.py') $Projeto) | & python (Join-Path $root 'framework\runtime\estimar_lote.py') $logs $Ondas | Write-Host }
     catch { Write-Host 'estimativa indisponivel (panorama ou estimar_lote falhou).' }
 }
 $logsLote = @()
@@ -86,7 +86,7 @@ for ($i = 0; $i -lt $Ondas; $i++) {
     if ($TesteAgente) {
         $prompt = "Teste de permissoes de subagente, sem traduzir nada. Lance UM subagente scene-translator com esta tarefa unica: (1) escrever o arquivo scratch/TESTE/ok.txt com o texto ok usando Write; (2) editar esse arquivo trocando ok por feito usando Edit; (3) rodar no Bash o comando UTAP_DATA_DIR=x python -c 'print(1)' (variavel de ambiente antes do python); (4) relatar em uma linha o que passou e o que foi negado. Nao rode run_scene nem wave. Depois responda com uma unica linha final: PARADA: teste-agente <resultado>"
     } elseif ($Teste) {
-        $prompt = "Teste de permissoes. Rode apenas: python .claude/skills/panorama-ondas/panorama.py $Projeto (um unico argumento, sem ponto final no comando). Depois responda com uma unica linha final: PARADA: teste"
+        $prompt = "Teste de permissoes. Rode apenas: python framework/skills/operacao/panorama-ondas/panorama.py $Projeto (um unico argumento, sem ponto final no comando). Depois responda com uma unica linha final: PARADA: teste"
     } else {
         $prompt = @"
 Voce e a sessao claude -p do lote (aberta pelo rodar_ondas.ps1), nao a sessao interativa: a regra "Onde roda" da skill NAO se aplica a voce; execute os passos 3 a 5e da onda.

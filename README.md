@@ -1,291 +1,101 @@
 # Translation Cognition Framework
-> *AI engineering framework for narrative localization — stateless cognition, deterministic gates, zero wasted cost across 45k lines in production.*
 
 [![Tests](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml/badge.svg)](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml) ![Python](https://img.shields.io/badge/python-3.11%2B-blue)
 
-> **Um framework de engenharia de IA para localizar obras narrativas longas** (jogos, visual novels,
-> filmes, séries) **sem perder consistência, identidade de personagem, terminologia nem controle de
-> spoiler.** A tradução é o *domínio de validação*; o que se reusa é o **padrão de arquitetura**:
-> jobs cognitivos *stateless*, estado externalizado, orquestração determinística e gates de validação.
->
-> Validado na prática traduzindo **um jogo real, EN→pt-BR, capítulos inteiros** (ver [Status](#status)).
+> **Um framework para localizar obras narrativas longas** (jogos, visual novels; filmes e séries em extensão)
+> **sem perder consistência de termos, voz dos personagens nem controle de spoiler.**
+> A IA só **propõe** a tradução. **Gates determinísticos julgam**. **O humano tem a palavra final.**
 
-### Em 30 segundos
+## Em 30 segundos
 
 | | |
 |---|---|
-| **O que é** | Engenharia que faz um LLM localizar obras narrativas longas sem perder consistência, voz nem controle de spoiler — tirando memória, governança e fluxo de **dentro** do modelo. |
-| **A prova** | Um jogo real **100% traduzido** EN→pt-BR: 16 capítulos, ~45.100 linhas, **round-trip byte-idêntico**, **~R$ 338,46** com **R$ 0 desperdiçado**. |
-| **O diferencial** | A IA só **propõe** (tradução); **gates determinísticos julgam**; o **humano tem a palavra final**. Nada entra no dado canônico sem prova reproduzível. |
-
-> Quer ver o filme inteiro numa imagem? Vá direto ao [processo ponta a ponta](#o-processo-ponta-a-ponta)
-> e a [quem faz o quê](#papéis-quem-faz-o-quê-ia--gates--humano).
-
-Se você está chegando agora e nunca viu os conceitos, leia nesta ordem: **o problema** → **as 4
-camadas** → **os princípios** → **o glossário**. Há também um guia conceitual passo a passo em
-[`docs/CONCEPTS.md`](docs/CONCEPTS.md) ("explique como se eu estivesse aprendendo IA").
+| **O problema** | Pedir a um LLM "traduza este jogo" falha de quatro jeitos: esquece o que decidiu, vaza spoiler, muda a voz do personagem e estoura contexto e fatura. |
+| **A ideia** | Tirar memória, governança e fluxo de **dentro** do modelo. O modelo faz só o que exige IA; o resto é código testável. |
+| **A prova** | 4 jogos reais traduzidos EN→pt-BR em 3 engines. O de referência: 146 cenas, ~45.100 linhas, round-trip byte-idêntico, ~R$ 338 e R$ 0 desperdiçado. |
 
 ---
 
-## Por que isto é diferente
+## Arquitetura (modelo C4)
 
-Não é um "tradutor por linha". É um **framework de execução cognitiva governada**, e o mérito está em escolhas de engenharia que se sustentam:
-
-- **LLM só para cognição** → custo previsível, resultado verificável e escala que não depende da memória do chat.
-- **Estado externalizado** → consistência vem do store versionado, não da janela. Só a API Anthropic; nada de 2º serviço pago (banco e embeddings, quando ligados, são locais).
-- **Governança explícita** → IA propõe, gates aprovam, script aplica; binário read-only; nenhuma tradução à mão no dado.
-- **Anti-overengineering deliberado** → orquestrador determinístico + 2 papéis de IA. Sem multiagentes, sem indireção que não se paga (ver ADRs).
-- **Honestidade operacional** → o ledger conta cada centavo (mesmo em falha); os gates barram base incompleta; spoiler é decisão **por linha**.
-
----
-
-## O problema (por que isto é difícil)
-
-Pedir a um LLM "traduza este jogo" quebra de quatro jeitos previsíveis, e todos pioram com a escala:
-
-1. **Memória.** O modelo esquece o que decidiu 200 linhas atrás → o mesmo termo sai traduzido de 3 jeitos.
-2. **Spoiler.** Ele usa o nome verdadeiro de um personagem **antes** da revelação na história.
-3. **Identidade/voz.** Um personagem cômico começa a falar formal; uma identidade dupla vaza cedo.
-4. **Custo e contexto.** Mandar "o jogo todo" pra cada decisão estoura a janela e a fatura.
-
-A resposta ingênua (um chat de vida-longa que "lembra de tudo") **não escala** — o histórico cresce sem
-limite, o custo é imprevisível e nada é auditável. Este framework ataca a causa: **tira a memória, a
-governança e o controle de fluxo de dentro do LLM** e deixa o modelo fazer só o que exige IA.
-
----
-
-## A arquitetura em 4 camadas
-
-O sistema inteiro é uma pilha de quatro responsabilidades. A IA vive **só** na primeira; as outras três
-são **código determinístico** (mesma entrada → mesma saída, sem rede, testável).
+### C1 — Contexto: quem usa e com o que fala
 
 ```mermaid
-%%{init: {'flowchart': {'wrappingWidth': 520}}}%%
 flowchart TB
-  C["<b>① COGNITION</b> — o que EXIGE IA (a única parte estocástica)<br/>translate · back_translate (verificação de alto risco)"]:::cog
-  S["<b>② STATE</b> — memória FORA da janela do modelo<br/>translation_memory · glossary · voice_cards · decision_index"]:::sta
-  E["<b>③ EXECUTION</b> — orquestração determinística<br/>cena = job stateless O(cena) · context_pack · checkpoint/resume"]:::exe
-  V["<b>④ VALIDATION</b> — gates que BLOQUEIAM<br/>round-trip · back-translation · fonte de KB · spoiler · naturalidade"]:::val
-  C --> S --> E --> V
-  V -.->|"reprova → não avança"| E
-  classDef cog fill:#f6d6e8,stroke:#c0397b,color:#000;
-  classDef sta fill:#fde6c4,stroke:#c97b1f,color:#000;
-  classDef exe fill:#d6e8f6,stroke:#1f6f9b,color:#000;
-  classDef val fill:#d9f2d9,stroke:#2e7d32,color:#000;
+  dev(["👤 Mantenedor<br/>roda o pipeline e decide"]):::pessoa
+  rev(["👤 Revisor e Tester<br/>lê o texto e joga o jogo"]):::pessoa
+  tcf["<b>Translation Cognition Framework</b><br/>traduz, valida e reinsere o texto de uma obra"]:::sistema
+  llm["IA (modelo Claude)<br/>API Anthropic ou sessão do Claude Code"]:::ext
+  jogo[("Jogo / obra<br/>binário original, read-only")]:::ext
+  fontes["Fontes de pesquisa<br/>wikis e referências públicas"]:::ext
+  ollama["Ollama local<br/>rascunho de pesquisa (opcional)"]:::ext
+  dev -->|"configura e dispara"| tcf
+  rev -->|"revisa XLSX, reporta por print"| tcf
+  tcf -->|"propõe tradução, retrotraduz"| llm
+  tcf -->|"extrai e reinsere texto"| jogo
+  tcf -->|"reconcilia a Knowledge Base"| fontes
+  tcf -.->|"rascunho local"| ollama
+  tcf -->|"patch / patcher .exe"| dev
+  classDef pessoa fill:#08427b,stroke:#052e56,color:#fff;
+  classDef sistema fill:#1168bd,stroke:#0b4884,color:#fff;
+  classDef ext fill:#999,stroke:#6b6b6b,color:#fff;
 ```
 
-> **Paleta (vale para os dois diagramas):** 🩷 Cognition (a única parte de IA) · 🟧 State · 🟦 Execution · 🟩 Validation.
-
-| Camada | Responsabilidade | Como pensar nela | Onde mora |
-|---|---|---|---|
-| **① Cognition** | Traduzir e verificar alto risco | "A única coisa que um humano não conseguiria automatizar." É fina e isolada de propósito. | `runtime/model.py`, `back_translate.py` |
-| **② State** | Lembrar decisões entre cenas | "A memória que o chat *não* tem — vive em arquivos, não na janela." | `runtime/state_index.py` → `artifacts/state/` |
-| **③ Execution** | Rodar cada cena como job isolado | "Cada cena é uma função pura: recebe um pacote, devolve uma tradução, esquece o resto." | `runtime/run_scene.py`, `context_pack.py` |
-| **④ Validation** | Provar que cada passo está correto | "Portões: se o round-trip ou a fonte de KB falham, o pipeline **para**." | `runtime/kb_*`, `spoiler_check.py`, conector `verify_*`, `validation/` |
-
-> **A regra de ouro do projeto:** a LLM faz **só** o que exige IA (traduzir / verificar). Estado,
-> memória, governança, checkpoints, montagem de contexto e validação são **determinísticos e externos**.
-> Foi isso que matou o estouro de sessão e tornou o custo previsível. Detalhe medido em
-> [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
-
-### As duas únicas chamadas de IA, no fluxo de uma cena
-
-As mesmas cores das 4 camadas marcam a que camada cada passo pertence:
+### C2 — Containers: as peças dentro do framework
 
 ```mermaid
-flowchart LR
-  pack["context_pack<br/>monta contexto"]:::exe --> tr{{"translate<br/>IA · Sonnet"}}:::cog
-  tr --> plan["build_plan<br/>monta plano/approved"]:::exe
-  plan --> vf["verify<br/>round-trip + gates"]:::val
-  vf --> bt{{"back_translate<br/>IA · Opus (só alto risco)"}}:::cog
-  bt --> cp[("checkpoint + TM<br/>grava estado")]:::sta
-  classDef cog fill:#f6d6e8,stroke:#c0397b,color:#000;
-  classDef sta fill:#fde6c4,stroke:#c97b1f,color:#000;
-  classDef exe fill:#d6e8f6,stroke:#1f6f9b,color:#000;
-  classDef val fill:#d9f2d9,stroke:#2e7d32,color:#000;
+flowchart TB
+  subgraph tcf["Translation Cognition Framework"]
+    skills["<b>skills/</b><br/>o processo 00→09 em prosa (gate por etapa)<br/>+ operacao/: 4 skills do dia a dia"]:::proc
+    runtime["<b>runtime/</b><br/>o motor: cada cena é um job<br/>stateless (contexto O(cena))"]:::motor
+    connectors["<b>connectors/</b><br/>binário ↔ texto,<br/>com round-trip byte-idêntico"]:::motor
+    validation["<b>validation/</b><br/>validadores e linter de naturalidade"]:::motor
+    db[("<b>db/</b><br/>SQLite + busca semântica<br/>(opcional)")]:::dado
+    dist["<b>distribution/</b><br/>patcher de um clique"]:::motor
+    projects["<b>projects/&lt;obra&gt;/</b><br/>manifesto, artefatos e conector da obra"]:::dado
+  end
+  llm["Modelo Claude"]:::ext
+  jogo[("Binário do jogo")]:::ext
+  skills -->|"guia"| runtime
+  runtime <-->|"lê e grava estado"| projects
+  runtime -->|"só aqui a IA é chamada"| llm
+  runtime --> validation
+  runtime <--> connectors
+  connectors <-->|"extrai / reinsere"| jogo
+  runtime <-.->|"modo banco"| db
+  projects --> dist
+  classDef proc fill:#f6d6e8,stroke:#c0397b,color:#000;
+  classDef motor fill:#d6e8f6,stroke:#1f6f9b,color:#000;
+  classDef dado fill:#fde6c4,stroke:#c97b1f,color:#000;
+  classDef ext fill:#999,stroke:#6b6b6b,color:#fff;
 ```
 
-> 🩷 **Cognition** (`translate`, `back_translate`) · 🟦 **Execution** (`context_pack`, `build_plan`) ·
-> 🟩 **Validation** (`verify`) · 🟧 **State** (`checkpoint + TM`). As caixas rosas são as **únicas**
-> não-determinísticas; todo o resto é reproduzível.
+O próximo nível (C3, os componentes do motor) está em [`framework/runtime/README.md`](framework/runtime/README.md).
 
----
-
-## Princípios arquiteturais
-
-Sete decisões sustentam tudo. Cada uma resolve um dos problemas acima.
-
-- **Scene as Stateless Job** — cada cena roda isolada, com contexto **O(cena)** (não O(histórico)).
-  Mata o estouro de janela e torna o pipeline resumível: cair na cena 40 não perde as 39 anteriores.
-- **Estado externalizado** — consistência vem de arquivos versionados (TM, glossário, voice cards,
-  decision log), não da memória do chat. Flat files por padrão; SQLite + embeddings locais
-  (sqlite-vec) são opcionais, ligados por `project.json:db` — sem 2º serviço pago.
-- **Runtime agnóstico ao modelo** — a lógica não sabe qual LLM roda. Trocar Haiku/Sonnet/Opus por
-  complexidade da linha é configuração, não reescrita (`runtime/model.py` + `back_translate.py` são a única fronteira com o LLM pago).
-- **SDD — Specification-Driven Development** — as regras de tradução (glossário, vozes, spoilers) são
-  **especificações versionadas e checáveis**, produzidas por etapas explícitas (`00..09`), não decisões
-  ad-hoc perdidas num chat. Cada etapa tem um *gate* que impede avançar sobre base incompleta.
-- **Gates explícitos** — a IA **propõe**, gates determinísticos **aprovam**, um script **aplica**.
-  Nada entra no dado canônico sem passar por uma verificação reproduzível. Ver
-  [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md).
-- **Versionamento de artefatos e prompts** — todo artefato carrega as instruções exatas que o
-  produziram (`doctrine_hash`, `model_id`, `skills_revision`). Sem proveniência, melhorar um prompt
-  é cego: não há como saber quais cenas foram traduzidas com doutrina obsoleta nem re-traduzir só o
-  que mudou. Ver [ROADMAP — Prioridade #1](docs/ROADMAP.md).
-- **Generic Connector System** — quando o framework encontra um novo jogo, descobre automaticamente
-  os arquivos de diálogo (evidence collector + tier classifier), gera um conector candidato (LLM
-  **apenas no bootstrap**, quando a engine é desconhecida), valida cobertura + consistência (coverage gate + adversarial
-  validator) e confirma via round-trip byte-idêntico. Após aprovação, o conector roda sem IA —
-  versionado por manifesto + fingerprint (detecta patch do jogo e drift de script). Validado em
-  três engines distintos: Aquaplus (Utawarerumono), Capcom DAT (Breath of Fire IV) e Unity
-  Addressables (Souldiers).
-
-```mermaid
-flowchart LR
-  ia["IA<br/>propõe"] --> gate["gates<br/>aprovam"] --> script["script<br/>aplica"] --> canon[("dado<br/>canônico")]
-  human["humano<br/>(palavra final)"] -.->|"revisa & ratifica"| gate
-  classDef ia fill:#f6d6e8,stroke:#c0397b,color:#000;
-  class ia ia;
-```
-
----
-
-## Papéis: quem faz o quê (IA · gates · humano)
-
-Três tipos de ator, com fronteiras explícitas. **A IA nunca julga** — ela **propõe** (tradução) e
-**revisa** (back-translation). Quem dá veredito é o **gate determinístico** (juiz objetivo das regras)
-e, acima de tudo, o **humano (juiz final do sentido, da voz e da tela)**.
-
-| Ator | Papel | Faz | NÃO faz |
-|---|---|---|---|
-| 🩷 **IA-tradutora** | propõe a tradução | traduz cada linha (Haiku/Sonnet por complexidade) → `translation_plan` | gravar no canônico; decidir lore |
-| 🩷 **IA-revisora** (back-translation) | revisão automática **barata** de sentido | re-traduz pt-BR→EN só em alto risco e **aponta** (marca `revise`) | **dar veredito** — só sinaliza, não decide |
-| 🟦🟩 **Gates determinísticos** | **juiz objetivo** (regras) | round-trip, fonte de KB, spoiler, largura de balão, glossário — **bloqueiam** | opinar sobre gosto literário |
-| 👤 **Humano-Ratificador** | **juiz** da verdade da KB | confirma entidade/gênero **com fonte** (`kb_ratified.csv`) | traduzir linha a linha |
-| 👤 **Humano-Revisor** | **juiz final** do **texto** | lê o XLSX, marca `CORRIGIR` → verbatim (R$ 0) ou nota | mexer no binário |
-| 👤 **Humano-Tester** | **juiz final** na **tela** | joga, reporta por print + trecho (localizador determinístico) | usar OCR/IA |
-
-> **A linha-mestra:** *determinístico por padrão, IA só onde exige IA, **o humano é o juiz**.* A IA
-> **revisa** (a back-translation aponta o que cheira mal); quem **julga** é o gate (objetivo, sobre
-> regras) ou o **humano (juiz final, sobre sentido e gosto)**. Detalhe com desenhos em
-> [`GOVERNANCE.md`](docs/GOVERNANCE.md) e os papéis humanos em
-> [`QA_REVIEW.md`](docs/QA_REVIEW.md).
-
----
-
-## Engenharia de custo e previsibilidade
-
-A arquitetura diz *onde* a IA vive; a **engenharia** é o que torna rodar uma obra inteira **barato,
-previsível e auditável** — o requisito real de quem tem orçamento apertado. Três propriedades sustentam isso.
-
-**1. Custo de pior-caso conhecido ANTES de gastar.** Todo capítulo imprime uma **estimativa pré-voo**
-(linhas × faixa medida) e respeita um **teto duro**: o `--max-usd` não é só um corte no meio — o driver
-**só compromete ao batch as cenas cujo custo pessimista cabe no teto** e adia o resto (resumível). Você
-sabe o número antes de pagar, e ele não estoura.
-
-**2. O conserto é por LINHA, não por cena.** A causa nº1 de gasto imprevisível era: um defeito de **1
-linha** (cobertura, paridade de quebra, byte budget) re-traduzia a **cena inteira**. Como o gatilho é
-variância do LLM (aleatória), o custo virava aleatório. A recuperação agora re-traduz **só as linhas
-quebradas** — custo de retry ∝ linhas com defeito, não ∝ tamanho da cena.
-
-```mermaid
-flowchart LR
-  v["verify falhou<br/>(1 linha quebrada)"]:::val --> q{recuperação}
-  q -->|"❌ antes: por CENA"| a["re-traduz 800 linhas<br/>custo aleatório"]:::cog
-  q -->|"✅ agora: por LINHA"| b["re-traduz 1 linha<br/>custo limitado"]:::cog
-  classDef cog fill:#f6d6e8,stroke:#c0397b,color:#000;
-  classDef val fill:#d9f2d9,stroke:#2e7d32,color:#000;
-```
-
-**3. Cada centavo é auditável.** O `api_ledger.jsonl` registra **toda** chamada (modelo, tokens, custo)
-**antes** de qualquer parse — inclusive as que falham. Isso permite responder, com dados, *onde* o
-dinheiro vai (1º passe vs re-tradução vs back-translation) e provar `R$ 0 desperdiçado`.
-
-| Alavanca de custo | Mecanismo | Efeito |
-|---|---|---|
-| Reuso | TM *append-only* + dedup por cena | fala repetida não re-paga; o jogo não é re-traduzido após o QA |
-| Tier por complexidade | Haiku (linha simples) / Sonnet (com quebra) / Opus (verificação + último degrau do re-aperto de budget) | paga o modelo certo por linha |
-| Batch | Batch API −50%, Carta cacheada compartilhada | metade do preço no 1º passe |
-| Recuperação por-linha | re-traduz só o que quebrou | retry barato e previsível |
-| Teto + estimativa | estimativa pré-voo + gate de submissão | gasto de pior-caso ≤ teto, conhecido antes |
-
-> A **governança** (acima) e a **engenharia** (aqui) se reforçam: gates determinísticos garantem que
-> nada entra no dado canônico sem prova; a economia garante que provar isso em escala **cabe no bolso**.
-> O round-trip byte-idêntico é o oráculo que torna a correção **objetiva** (não opinião).
-
----
-
-## Glossário (leia antes de mergulhar)
-
-Os termos do projeto na primeira vez que você os encontra. Detalhe conceitual em
-[`docs/CONCEPTS.md`](docs/CONCEPTS.md).
-
-| Termo | O que é |
+| Pasta | O que é |
 |---|---|
-| **SDD** (Specification-Driven Development) | As regras de tradução viram especificações versionadas e checáveis, produzidas por etapas explícitas — não decisões soltas de chat. |
-| **Scene as Stateless Job** | Cada cena é traduzida como uma função isolada: recebe um pacote de contexto, devolve a tradução, não guarda histórico. |
-| **Context Pack** | O pacote **mínimo** de contexto montado por cena (doutrina cacheável + glossário relevante + vozes dos falantes + as linhas) — é exatamente o que o LLM vê, e nada além. |
-| **Estado externalizado** | A "memória" do sistema vive em arquivos (não na janela do LLM): TM, glossário, voice cards, decision index. |
-| **TM** (Translation Memory) | Banco *append-only* de traduções já decididas; reusadas de graça e mantêm consistência. É o "coração" — o jogo não é re-traduzido após o QA. |
-| **KB** (Knowledge Base) | Glossário + lore + vozes **reconciliados de fonte confiável** e congelados **antes** de traduzir. |
-| **Voice Card** | Ficha de voz de um personagem (registro, tiques, léxico) que mantém a fala consistente em todo o corpus. |
-| **Round-Trip** | Extrair → reinserir **sem mudar nada** deve regenerar o binário byte a byte. É a prova de que não corrompemos o jogo (prova **bytes**, não qualidade da tradução). |
-| **Back-Translation** | Traduzir o pt-BR de volta ao inglês com **outro** modelo, só em linhas de alto risco, para checar se o sentido sobreviveu. |
-| **Gate** | Verificação determinística que **bloqueia** o avanço se algo falha (round-trip, fonte de KB, spoiler, naturalidade). |
-| **Spoiler Ledger / frontier** | Registro de quando cada revelação acontece + uma "fronteira" que avança por capítulo, para nunca vazar nomes/fatos futuros. |
-| **Conector** | Código determinístico que extrai o texto do binário do jogo e o reinsere (round-trip). Específico por engine. |
-| **QA** | Quality Assurance — micro-QA por lote + revisão humana final. |
-| **ADR** | Architecture Decision Record — registro de uma decisão de arquitetura e seu porquê (em `docs/adr/`). |
+| `framework/` | O processo e o motor. Genérico, **sem dado de obra**. Guia em [`framework/README.md`](framework/README.md). |
+| `projects/` | Uma pasta por obra traduzida (as instâncias). |
+| `docs/` | Arquitetura, conceitos, governança, ADRs (decisões), roadmap. |
+| `.github/workflows/` | A esteira de CI. Ver [`.github/workflows/README.md`](.github/workflows/README.md). |
 
 ---
 
-## Stack técnica
+## Como o trabalho flui
 
-Linguagem: Python 3.11+. Detalhe completo (modelo/LLM, embedding, RAG, execução, persistência,
-opcionais) em [`docs/STACK.md`](docs/STACK.md).
-
----
-
-## Estrutura do repositório
-
-```
-framework/     → O PROCESSO + O MOTOR (genérico, reutilizável). Zero dado de obra.
-projects/      → AS INSTÂNCIAS. Cada obra traduzida vive em projects/<título>/.
-```
-
-| Pasta | Papel | Camada(s) |
-|---|---|---|
-| `framework/skills/` | As etapas do SDD (`00..09`, 15 arquivos `.md`) — o processo, em prosa | Cognition (guia) + Validation (gates) |
-| `framework/runtime/` | O harness executável (cena = job stateless, interface de modelo) | State + Execution + Cognition |
-| `framework/connectors/` | I/O determinística: binário ↔ corpus (round-trip) | Execution + Validation |
-| `framework/validation/` | Validadores determinísticos (schemas, naturalidade, custo) | Validation |
-| `framework/db/` | Banco SQLite + embeddings locais (opcional, `project.json:db`): store, migração flat→DB, embedder | State |
-| `framework/distribution/` | Patcher de um clique: `build_package.py` (deltas + manifesto), `patcher.py`, `build_exe.py` | Execution (pós-build) |
-| `framework/media-profiles/` | Preocupações por tipo de mídia (jogos ✅, filmes/séries 🚧) | — |
-| `docs/` | ARCHITECTURE, CONCEPTS, GOVERNANCE, NAMING, ADRs, ROADMAP | — |
-| `projects/<obra>/` | `project.json` (manifesto) + `profile/` + `artifacts/` + `connector/` | A instância (os dados) |
-
-As skills/runtime resolvem tudo que é específico de uma obra lendo o `project.json` e os artefatos.
-Nenhum nome de personagem, termo de lore ou idioma vive dentro de `framework/`.
-
----
-
-## O processo ponta a ponta
-
-O filme inteiro, do binário do jogo até a pessoa jogando em pt-BR. As cores são as das 4 camadas; o
-loop de QA mostra que correções humanas **voltam pela TM** (cirúrgicas), sem re-traduzir o jogo.
+As cores são as 4 camadas: **IA** (rosa), **estado** (laranja), **execução** (azul), **gates** (verde). A IA fica
+presa na primeira; as outras três são código determinístico.
 
 ```mermaid
-%%{init: {'flowchart': {'wrappingWidth': 520}}}%%
 flowchart TB
   bin[("binário do jogo<br/>read-only")]:::sta
-  bin --> f0["FASE 0 — Conhecimento<br/>KB reconciliada de fonte · humano RATIFICA"]:::val
-  f0 --> pipe["PIPELINE 00–09<br/>extrai → traduz IA → micro-QA por lote → reinsere"]:::cog
-  pipe --> build["BUILD GLOBAL<br/>jogo inteiro reinserido + patch · round-trip byte-idêntico"]:::exe
-  build --> qa["QA HUMANO<br/>REVISOR no texto + TESTER in-game"]:::val
-  qa -->|"correção cirúrgica via TM · não re-traduz o jogo"| pipe
+  bin --> f0["FASE 0 — Conhecimento<br/>KB reconciliada de fonte · humano ratifica"]:::val
+  f0 --> pipe["PIPELINE 00–09<br/>extrai → traduz (IA) → micro-QA → reinsere"]:::cog
+  pipe --> build["BUILD<br/>jogo inteiro reinserido · round-trip byte-idêntico"]:::exe
+  build --> qa["QA HUMANO<br/>revisor no texto + tester no jogo"]:::val
+  qa -->|"correção cirúrgica pela TM,<br/>sem re-traduzir o jogo"| pipe
   qa --> rel["RELEASE<br/>patch + instalação"]:::exe
-  rel --> play(["🎮 pessoa joga em pt-BR"]):::good
+  rel --> play(["🎮 a pessoa joga em pt-BR"]):::good
   classDef cog fill:#f6d6e8,stroke:#c0397b,color:#000;
   classDef sta fill:#fde6c4,stroke:#c97b1f,color:#000;
   classDef exe fill:#d6e8f6,stroke:#1f6f9b,color:#000;
@@ -293,168 +103,138 @@ flowchart TB
   classDef good fill:#cdebc5,stroke:#2e7d32,color:#000;
 ```
 
-> 🟧 binário (read-only) · 🟩 gates/QA (Fase 0 + QA humano) · 🩷 IA (tradução) · 🟦 build/release
-> (determinístico). A Fase 0 e o QA humano **cercam** a parte de IA — nada é traduzido sem KB de fonte,
-> nada é entregue sem revisão humana.
+### Quem faz o quê
 
-## O pipeline (00 → 09)
+| Ator | Faz | Não faz |
+|---|---|---|
+| 🩷 **IA-tradutora** | propõe a tradução de cada fala | gravar no dado canônico; decidir lore |
+| 🩷 **IA-revisora** | retraduz pt-BR→EN nas falas de risco que o projeto exige (`back_translation_risk`) e aponta | dar veredito |
+| 🟩 **Gates determinísticos** | round-trip, fonte da KB, spoiler, largura de balão, glossário: **bloqueiam** | opinar sobre gosto |
+| 👤 **Humano** | ratifica a KB, revisa o texto, testa na tela: **juiz final** | mexer no binário |
 
-As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entrada.
+### O pipeline em 3 blocos
 
+| Bloco | Etapas | Para quê |
+|---|---|---|
+| **A. Preparação** (1× por obra) | `00` extração · `01` discovery · `02` entidades · `03` conhecimento · `04` glossário · `04b` decision log · `05` plano · `05b` corpus sintético | entender a obra e congelar a verdade |
+| **B. Laço por cena ou onda** | `06` tradução · `06b` micro-QA | traduzir com contexto limitado e conferir |
+| **C. Fechamento** | `07` QA final · `08` reinserção · `08b` textos de sistema · `08c` teste no jogo · `09` distribuição | entregar o jogo traduzido |
+
+São **15 etapas** (as skills do processo, em `framework/skills/`) e **4 skills de operação** (em `framework/skills/operacao/`; o Claude Code as descobre por stubs finos em `.claude/skills/`), que conduzem o dia a dia de um projeto em andamento sem alterar o motor:
+
+| Skill de operação | Para quê |
+|---|---|
+| `rodar-onda` | uma onda de tradução ponta a ponta |
+| `panorama-ondas` | progresso real e plano das próximas ondas |
+| `levantar-melhorias` | o que a onda ensinou ao framework |
+| `gaps-custo` | onde há gap de custo e performance |
+
+Detalhe das etapas: [`framework/skills/_index.md`](framework/skills/_index.md). Desenhos: [`docs/DIAGRAMAS.md`](docs/DIAGRAMAS.md).
+
+---
+
+## Dois métodos de uso: sessão ou API
+
+O pipeline é o mesmo; muda **quem chama o modelo**. Escolha **um caminho por projeto**, no início.
+
+| | **Sessão** (`--backend in-session`) | **API** (`--backend api`) |
+|---|---|---|
+| Quem traduz | subagente dentro do Claude Code | API da Anthropic |
+| Custo | cota da assinatura (o equivalente em USD fica registrado) | pago por chamada, com teto `--max-usd`; Batch −50% |
+| Chave de API | não precisa | `ANTHROPIC_API_KEY` |
+| Como roda | ondas em lote (`lancar_lote.ps1`, skill `rodar-onda`) | `run_chapter.py <projeto> <cap> --backend api` |
+| Boa para | obra grande com assinatura disponível | automação sem ninguém na frente |
+
+```mermaid
+flowchart LR
+  pack["Pacote de contexto<br/>da cena"] --> esc{"caminho do projeto"}
+  esc -->|sessão| ses["subagente escreve<br/>translations_&lt;cena&gt;.json"]
+  esc -->|API| api["SDK chama a API<br/>(batch ou interativo)"]
+  ses --> g(["mesmos gates:<br/>round-trip · retrotradução · QA"])
+  api --> g
 ```
-00 extração      → conector: binário → corpus canônico (+ orçamento de bytes); gate de round-trip
-01 discovery     → entidades, tom, aliases, spoilers
-02 entidades     → registro canônico
-03 conhecimento  → pesquisa reconciliada (IA + humano, por fonte) → Knowledge Base
-04 glossário     → regras normativas de tradução
-04b decision log → decisões de tradução registradas, com o porquê
-05 planejamento  → plano linha a linha
-05b corpus sintético → corpus de teste para o conector
-06 tradução      → execução em lotes, auto-revisão de voz, orçamento de bytes (shift-left)
-06b micro-QA     → micro-QA por lote + ciclo de correção cirúrgica
-07 QA final      → consistência global, spoilers cross-segmento
-08 reinserção    → conector: tradução → binário + patch (determinístico; LLM só no resíduo)
-08b texto de sistema/rótulos → escopo completo além do diálogo
-08c teste no jogo → print do usuário → causa raiz → reinstalação
-09 distribuição  → delta + patcher .exe de um clique (só diferenças, nunca conteúdo do jogo)
-```
 
-Em três blocos: **A** preparação (`00`–`05b`, uma vez por obra), **B** laço por cena ou onda (`06` + `06b`) e
-**C** fechamento (`07`, `08`, `08b`, `08c`, `09`), com dois retornos (o QA final e o teste no jogo voltam à `06b`
-so para as falas tocadas). Tabela em [`framework/skills/_index.md`](framework/skills/_index.md), desenho em
-[`docs/DIAGRAMAS.md`](docs/DIAGRAMAS.md).
+Como cada um funciona por dentro (C4, sequência, medição de custo): [`docs/CAMINHOS_DE_USO.md`](docs/CAMINHOS_DE_USO.md).
+
+---
+
+## Custo previsível
+
+- **Teto antes de gastar:** estimativa pré-voo e `--max-usd`; só entra no lote o que cabe no teto.
+- **Conserto por linha:** um defeito de 1 linha re-traduz 1 linha, não a cena.
+- **Cada centavo auditável:** o `api_ledger.jsonl` registra toda chamada, até as que falham.
+- **Caminho de sessão:** a tradução roda na sessão do Claude Code, em ondas por lote, sem chamar a API
+  (o equivalente de API fica no ledger).
+- **Reuso:** a Translation Memory (só acrescenta) evita pagar duas vezes pela mesma fala.
+
+---
+
+## Glossário rápido
+
+| Termo | Significado |
+|---|---|
+| **TM** | Translation Memory: traduções já decididas, reusadas de graça. |
+| **KB** | Knowledge Base: glossário, lore e vozes reconciliados de fonte e congelados antes de traduzir. |
+| **Round-trip** | Extrair e reinserir **sem mudar nada** tem que gerar o binário idêntico. Prova que não corrompemos o jogo. |
+| **Back-translation** | Traduzir o pt-BR de volta ao inglês com outro modelo, para checar se o sentido sobreviveu. |
+| **Gate** | Verificação determinística que **bloqueia** o avanço se algo falha. |
+| **Conector** | Código que extrai e reinsere o texto de um engine específico. |
+| **ADR** | Registro de uma decisão de arquitetura (em `docs/adr/`). |
+
+Conceitos explicados passo a passo: [`docs/CONCEPTS.md`](docs/CONCEPTS.md).
 
 ---
 
 ## Começar
 
-**Instalar e traduzir um exemplo real** (dado fictício, sem jogo real por
-trás — existe só para este README ter algo de verdade pra rodar; você só precisa da sua própria
-chave da Anthropic):
-
 ```bash
 git clone https://github.com/scudellerlemos/translation-cognition-framework
 cd translation-cognition-framework
-pip install .                           # inclui a busca semântica (torch, ~1 GB): a 1ª instalação demora
-cp .env.example .env && $EDITOR .env   # cole sua chave: https://console.anthropic.com/
-tcf translate projects/demo demo01
+pip install .                           # inclui a busca semântica (torch, ~1 GB)
+cp .env.example .env && $EDITOR .env    # sua chave: https://console.anthropic.com/
+tcf translate projects/demo demo01      # sem instalar: python framework/cli.py translate projects/demo demo01
 ```
 
-Isso roda o pipeline completo numa cena de 5 falas (`projects/demo/`): monta o context pack, chama
-o modelo, valida o plano, roda o round-trip do conector e grava o resultado verificado em
-`projects/demo/artifacts/scenes/demo01/`. Sem instalar via `pip`, o mesmo comando funciona como
-`python framework/cli.py translate projects/demo demo01`.
+Roda o pipeline completo numa cena fictícia de 5 falas (`projects/demo/`) e grava o resultado verificado em
+`projects/demo/artifacts/scenes/demo01/`.
 
-**Para ir além do exemplo sintético e traduzir uma obra real:**
-
-1. Leia [`docs/CONCEPTS.md`](docs/CONCEPTS.md) se os conceitos do topo deste
-   README são novos, e [`framework/README.md`](framework/README.md) para o modelo de camadas.
-2. Veja a instância de referência em [`projects/utawarerumono/`](projects/utawarerumono/README.md) —
-   um jogo (visual novel) real, EN→pt-BR, com identidades duplas e gestão crítica de spoilers.
-3. Veja a segunda instância em [`projects/bof4/`](projects/bof4/README.md) — engine Capcom, em modo
-   banco com busca semântica obrigatória.
-4. Veja a terceira instância em [`projects/souldiers/`](projects/souldiers/README.md) — terceiro engine (Unity Addressables),
-   pipeline de KB híbrida (Ollama local + ratificação humana) e onboarding de baixo custo.
-5. A quarta instância, `projects/trails_sky_sc/` (engine Falcom, em andamento), ainda não tem
-   `README.md` próprio — ver [Status](#status) e `docs/CHANGELOG.md` pelo estado atual.
-6. Para um projeto novo: copie `framework/templates/project.template.json`, preencha o manifesto e
-   rode o pipeline `00..09` — ou use `python framework/connectors/discover.py <dir-do-jogo>` para
-   descoberta automática de engine (Generic Connector System).
-
-Aprofundar: [`DIAGRAMAS.md`](docs/DIAGRAMAS.md) (o fluxo de ponta a ponta desenhado) · [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) (o porquê medido) ·
-[`GOVERNANCE.md`](docs/GOVERNANCE.md) (quem propõe/aprova/aplica) ·
-[`SDD_RUNTIME.md`](framework/SDD_RUNTIME.md) (mapa skill↔runtime, quem produz/consome cada artefato) ·
-[`QA_REVIEW.md`](docs/QA_REVIEW.md) (revisão humana: papéis REVISOR + TESTER) ·
-[`CHANGELOG.md`](docs/CHANGELOG.md) (histórico de versões) ·
-[`adr/`](docs/adr/) (as decisões de IA, registradas) · [`ROADMAP.md`](docs/ROADMAP.md).
+**Para uma obra real:** copie `framework/templates/project.template.json` e siga o
+[guia do framework](framework/README.md), ou use `python framework/connectors/discover.py <dir-do-jogo>` para descobrir o engine.
 
 ---
 
 ## Status — outubro 2026
 
-Ver [CHANGELOG](docs/CHANGELOG.md) (histórico de mudanças) e [ROADMAP](docs/ROADMAP.md) (detalhamento técnico).
+| Projeto | Engine | Estado | Detalhe |
+|---|---|---|---|
+| Utawarerumono: Mask of Deception | Aquaplus `.sdat` | ✅ concluído: 146 cenas, ~45.100 linhas, ~R$ 338 | [`projects/utawarerumono/`](projects/utawarerumono/README.md) |
+| Utawarerumono: Prelude to the Fallen | Aquaplus (formato novo) | ✅ concluído e instalado: 350 cenas, 23.982 falas; erro medido 2,0% (IC 0,8–5,0%) | [`ROADMAP.md`](projects/utawarerumono_prelude/ROADMAP.md) |
+| Breath of Fire IV | Capcom DAT | ✅ traduzido e instalado: 305 cenas, 27.021 falas; 🚧 release do patcher pendente | [`projects/bof4/`](projects/bof4/README.md) |
+| Souldiers | Unity Addressables | ✅ concluído: 470 cenas do índice, ~US$ 3,06 | [`projects/souldiers/`](projects/souldiers/README.md) |
+| Trails in the Sky SC | Falcom `.pac` | 🚧 em andamento: 71 cenas extraídas, 1 cena-piloto com round-trip real | `projects/trails_sky_sc/artifacts/decision_log.md` |
 
-### Framework — objetivos alcançados
+Versão atual: `2.2.0` (histórico em [`docs/CHANGELOG.md`](docs/CHANGELOG.md)).
 
-- Harness stateless em produção: cena = job isolado, contexto O(cena), sem estouro de sessão ✅
-- Batch API (−50%) + tiering Haiku/Sonnet/Opus validado em escala de capítulo ✅
-- Batch segmentado (translate + back-translation): blast radius de cancelamento reduzido ✅
-- Gates de cognição: KB-gate (entidade sem fonte BLOQUEIA + profundidade de ratificação por
-  entidade), gate de completude de conector, controle de spoiler e gênero (auditoria obrigatória) ✅
-- Revisão humana via XLSX → verbatim (R$ 0) ou nota cirúrgica; TM como coração ✅
-- Ledger auditável (`api_ledger.jsonl`): toda chamada cobrada registrada, inclusive falhas ✅
-- Generic Connector System **completo** (Fase D): descoberta automática + coverage/adversarial gates
-  + manifesto/fingerprint versionado + gates de autonomia AI-agnostic. Três engines distintos
-  (Aquaplus, Capcom, Unity Addressables) com round-trip byte-idêntico ✅
-- KB híbrida via Ollama local (zero custo de API) com ratificação humana obrigatória antes de
-  reconciliar — governança preservada mesmo com raciocínio fora da sessão Claude ✅
-- `run_game`: driver ponta-a-ponta (todos os capítulos, teto de gasto global, retomada automática)
-  + observabilidade de progresso (linhas/min, % do jogo, ETA, taxa de falha) ✅
-- TM por série: jogos da mesma franquia compartilham termos recorrentes, isolamento estrutural ✅
-- Protocolo estruturado do conector (exit codes + `VERIFY_STATUS`), `paths.py`, `batch_smoke.py` ✅
-- Suíte verde no CI, com gate de cobertura ≥90% (runtime+db+skills+validation e `framework/connectors`)
-- Caminho de sessão em lote (`session_lot`, `wave`, `scene_dedup`, `touched`): a tradução roda na sessão do Claude Code, sem
-  API, com os mesmos gates; reconferência só das falas tocadas e retrotradução julgada por fala ✅
-- Patcher de um clique (`framework/distribution/`): deltas bsdiff + manifesto, instalar/desinstalar reversível ✅
-
-### Utawarerumono: Mask of Deception — CONCLUÍDO ✅
-
-**16 capítulos (11–23 + 30, 31, 39), 146 cenas, ~45.100 linhas.** Traduzidas, verificadas, reinseridas. Projeto arquivado.
-
-- Round-trip byte-idêntico (resíduo=0) · back-translation de alto risco · controle de spoiler (reveal Ukon=Oshtor) ✅
-- Custo: **~R$ 338,46** (Sonnet R$ 260,17 · Opus R$ 40,01 · Haiku R$ 38,28) · **R$ 0 desperdiçado** ✅
-- Validado in-game: pt-BR renderiza na tela, jogo avança sem travar ✅
-
-### Breath of Fire IV — TRADUZIDO E INSTALADO ✅ · patcher em beta, release pendente 🚧
-
-**305 cenas (27.021 falas), todas `verified`**: diálogo, texto de sistema e rótulos em imagem. Instância em modo
-banco (SQLite + busca semântica), caminho de sessão, em `projects/bof4/`. Custo pago: $0; equivalente a ~$239 de API.
-
-- Conector Capcom DAT: extração + reinserção + round-trip byte-idêntico; 0 overflow de bytes ✅
-- Gates verdes (`quality_gate`, `connector_gate`, `pilot_gate`) e retrotradução das falas de risco alto ✅
-- Qualidade medida: amostra de 200 falas, **erro de 14,5%** (IC 95%: 10,3%–20,1%), antes das correções feitas
-  depois da amostra; os erros se concentravam em poucos padrões de texto, já corrigidos ✅
-- Patcher de um clique para a Steam (`framework/distribution/`: `build_package.py` gera deltas bsdiff + manifesto,
-  `patcher.py` instala/desinstala/verifica, `build_exe.py` empacota). Testado numa cópia dos originais: instalar
-  é idempotente, desinstalar volta byte a byte, arquivo modificado é recusado sem alterar nada, jogo aberto trava ✅
-- **Falta:** teste do `.exe` no jogo real e em máquina sem Python, conferência da largura de caixa na tela do
-  jogo e a release (pública; só com aval do autor) 🚧
-
-**Débito técnico:** nenhum aberto no pipeline; TM semântica (B2) integrada ao harness core
-(sqlite-vec + embedder, ver `framework/db/`), disponível a qualquer projeto com banco `.db` configurado.
-
-### Souldiers (Unity, terceiro jogo) — CONCLUÍDO ✅
-
-**470/470 cenas verificadas (round-trip byte-idêntico), 100% cobertura de back-translation.**
-Custo: **~$3,06 USD**. Conector Unity Addressables (CSV tilde-delimited em bundle) — terceiro
-engine distinto validado pelo Generic Connector System.
-
-- KB reconstruída a partir de material já pesquisado (decision_log, tone_analysis, terminology
-  seeds) + evidência real do corpus; 22 entidades UNSOURCED resolvidas com fonte ou verbatim ✅
-- Batch −50% (translate + back-translation) segmentado em pacotes menores — descoberto e corrigido
-  nesta rodada que 1 batch gigante "trava" aparentemente (contador da API não reflete progresso
-  real durante `in_progress`) ✅
-- Revisão humana (XLSX) disponibilizada; aplicação fica para quando o humano priorizar
-
-### Trails in the Sky SC (Falcom, quarto jogo, engine novo) — EM ANDAMENTO 🚧
-
-Engine do remake *Sora no Kiseki 2nd Chapter* (2026), sem entrada prévia no `connector_registry.json`
-— conector escrito do zero, `target_charset_supported: true` (grava UTF-8 real). Extração + split das
-71 cenas completos (corpus após o patch do Steam); cena-piloto `mp0010_01` (447 linhas) fechou round-trip real contra o `.pac`
-instalado após o off-by-one do terminador ser corrigido por conector (ADR 0006). Demais cenas ainda
-não traduzidas. Detalhe em `docs/CHANGELOG.md` e `projects/trails_sky_sc/artifacts/decision_log.md`.
-
----
-
-### Dívidas do framework (independentes de projeto)
+### Dívidas do framework
 
 | Dívida | Quando |
 |---|---|
-| Filmes / séries: pontos de extensão documentados, sem validação em produção (sem projeto real pra justificar) | quando houver piloto |
-| Packaging `.exe` (E4) | entregue em `framework/distribution/` (beta); falta publicar a release |
-| Benchmark do caminho de sessão contra o da API (PRD/HLD/FDD em `docs/benchmark_sessao/`): precisa de projeto novo e de teto de gasto | quando houver projeto novo |
-| Bundle de custo: tiering + back-batch codados mas sem medição viva pós-Souldiers | quando rodar próximo capítulo pago |
+| Filmes e séries: pontos de extensão documentados, sem validação em produção | quando houver um piloto |
+| Release do patcher `.exe` (o pacote e o `.exe` já saem de `framework/distribution/`) | só com aval do autor |
+| Comparar o caminho de sessão com o da API num jogo menor (`docs/benchmark_sessao/`; o benchmark de cota da assinatura já foi encerrado) | quando houver aval e teto de gasto |
+| Medir ao vivo o bundle de custo (tiering + back-batch) | no próximo capítulo pago |
+| `forma_curta` do glossário (ADR 0024) ainda não é carregada pelo `framework/db/store.py` | quando um projeto em banco precisar |
 
+---
+
+## Para aprofundar
+
+[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) (o porquê medido) ·
+[`docs/CAMINHOS_DE_USO.md`](docs/CAMINHOS_DE_USO.md) (sessão × API, por dentro) ·
+[`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) (quem propõe, aprova e aplica) ·
+[`docs/QA_REVIEW.md`](docs/QA_REVIEW.md) (revisão humana) ·
+[`framework/SDD_RUNTIME.md`](framework/SDD_RUNTIME.md) (mapa etapa↔módulo) ·
+[`docs/adr/`](docs/adr/) (decisões) · [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ---
 

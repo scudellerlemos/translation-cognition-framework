@@ -35,15 +35,19 @@ def _jsonl(p: Path) -> list[dict]:
 
 
 def drop_resolved(failures: list[dict], evs: list[dict]) -> list[dict]:
-    """Falha `scene/*_failed` de uma rodada anterior some quando a mesma cena fechou `verified` depois dela."""
+    """Falha de uma rodada anterior some quando a mesma cena fechou `verified` depois dela: `scene/*_failed` e a falha de
+    etapa da cena (`build_plan/fail`, `verify/fail`...). Falha de gate global (`gate.*`) nao e da cena e fica."""
     done: dict[str, float] = {}
     for e in evs:
         if e.get("stage") == "scene" and e.get("result") == "verified":
             sc = str(e.get("scene"))
             done[sc] = max(done.get(sc, 0.0), e.get("t", 0.0))
-    return [f for f in failures
-            if not (f.get("stage") == "scene" and str(f.get("result")).endswith("_failed")
-                    and done.get(str(f.get("scene")), -1.0) > f.get("t", 0.0))]
+
+    def da_cena(f: dict) -> bool:
+        stg, res = f.get("stage"), str(f.get("result"))
+        return (stg == "scene" and res.endswith("_failed")) or (stg in STAGES and res in _BAD)
+
+    return [f for f in failures if not (da_cena(f) and done.get(str(f.get("scene")), -1.0) > f.get("t", 0.0))]
 
 
 def report(root) -> dict:
@@ -68,7 +72,7 @@ def report(root) -> dict:
     gates: dict[str, dict] = {}
     failures = []
     for e in evs:
-        stg, res, sc = e.get("stage", ""), e.get("result", ""), scenes.get(e.get("scene"))
+        stg, res, sc = e.get("stage", ""), e.get("result", ""), scenes.get(str(e.get("scene")))
         if stg.startswith(("gate.", "audit.")):
             g = gates.setdefault(stg, {"pass": 0, "block": 0, "last": None, "last_t": None})
             g["pass" if res in ("pass", "ok") else "block"] += 1

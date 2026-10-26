@@ -7,8 +7,9 @@ import re
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "framework" / "runtime"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[4] / "framework" / "runtime"))
 import alerts  # noqa: E402
+from paths import atomic_write  # noqa: E402
 
 MAX_REQ_FALA = float(os.environ.get("MAX_REQ_FALA", "0.5"))   # acima disso o lote custou mais idas e voltas por fala que o esperado
 proj, t0, lote, logs = Path(sys.argv[1]), float(sys.argv[2]), sys.argv[3], [Path(p) for p in sys.argv[4:]]
@@ -76,4 +77,4 @@ out = [f"# Resumo do lote {lote}", "",
        if no_card else "", "", *linhas_onda, "", *rows]
 txt = "\n".join(out)
 print(txt)
-(logs[0].parent / f"resumo_lote_{lote}.md").write_text(txt, encoding="utf-8") if logs else None
+atomic_write(logs[0].parent / f"resumo_lote_{lote}.md", txt) if logs else None

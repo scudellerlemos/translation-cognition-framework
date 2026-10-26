@@ -4,6 +4,9 @@ import struct
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[4] / "framework" / "runtime"))
+from paths import atomic_write  # noqa: E402
+
 proj, data = Path(sys.argv[1]), Path(sys.argv[2])
 d = (data / "ENG" / "DataBase.sdat").read_bytes()
 pk = d.index(b"Pack        "); n = struct.unpack_from("<I", d, pk + 16)[0]
@@ -16,5 +19,5 @@ for i in range(struct.unpack_from("<I", b, 0)[0]):
     k = struct.unpack_from("<12I", b, 4 + 48 * i)[3]
     sid = f"{k // 100000:02d}_{k // 1000 % 100:02d}_{k % 1000 // 10:02d}"
     if sid in cenas and sid not in ordem: ordem.append(sid)
-(proj / "artifacts" / "ordem_cenas.txt").write_text("\n".join(ordem) + "\n")
+atomic_write(proj / "artifacts" / "ordem_cenas.txt", "\n".join(ordem) + "\n", newline="\n")
 print(len(ordem), "de", len(cenas), "cenas; fora da lista:", sorted(cenas - set(ordem))[:20])
