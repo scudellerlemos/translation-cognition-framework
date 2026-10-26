@@ -119,7 +119,7 @@ Os dois executam este mesmo fluxo e compartilham o núcleo (`pack_render.py`, `t
 - **Sessão** (`model_session.py`): sem rede; a IA da sessão do Claude Code escreve o `translations_*.json`. O `session_lot.py` junta várias cenas num prompt só.
 
 Uma **onda** é um lote de cenas do caminho de sessão: o `wave.py` roda os passos mecânicos, e o `rodar_ondas.ps1` /
-`lancar_lote.ps1` (em `.claude/skills/rodar-onda/`) dispara o lote fora do Claude Code, com estimativa de tempo, espera de
+`lancar_lote.ps1` (em `framework/skills/operacao/rodar-onda/`) dispara o lote fora do Claude Code, com estimativa de tempo, espera de
 cota e conferência de conformidade no fim.
 
 **Reconferência barata.** Ao fechar `verified`, o `run_scene` grava em `run_state.json` o `t_hashes` (impressão digital por
@@ -231,6 +231,7 @@ fechado em 2026-10-25. Em relação ao marco de junho (detalhe em [`CHANGELOG.md
 | [`SECURITY.md`](SECURITY.md) | modelo de ameaças (API key, path traversal, conector, binário, supply chain) + resposta a incidentes |
 | [`STATE_MANAGEMENT.md`](STATE_MANAGEMENT.md) | conhecimento permanente vs temporário; substrato de estado |
 | [`MODEL_INTERFACE.md`](MODEL_INTERFACE.md) | contrato `translate`/`back_translate`; caminhos assinatura vs API |
+| [`CAMINHOS_DE_USO.md`](CAMINHOS_DE_USO.md) | os dois métodos de uso (sessão × API) por dentro, com C4 e sequência |
 | [`TRANSLATION_PIPELINE.md`](TRANSLATION_PIPELINE.md) | o fluxo de 1 cena ponta a ponta; checkpoint/resume |
 | [`OBSERVABILITY.md`](OBSERVABILITY.md) | métricas a coletar |
 | [`DIAGRAMAS.md`](DIAGRAMAS.md) | fluxo ponta a ponta, C4 (contexto, contêineres, componentes) do pipeline e do patcher, com sequências |

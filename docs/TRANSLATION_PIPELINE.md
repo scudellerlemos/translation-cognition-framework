@@ -99,7 +99,7 @@ flowchart LR
 
 ### Onda no lote (skill `rodar-onda`)
 
-A skill `.claude/skills/rodar-onda/` orquestra uma onda de ponta a ponta. **A onda de tradução roda via `lancar_lote.ps1`
+A skill `framework/skills/operacao/rodar-onda/` orquestra uma onda de ponta a ponta. **A onda de tradução roda via `lancar_lote.ps1`
 fora do Claude Code**, nunca dentro dele: a janela da conversa só propõe, confere e relata.
 
 | Passo | O que acontece |
@@ -184,7 +184,7 @@ Regra, não sugestão:
 
 ## Acompanhamento do projeto (skills)
 
-Skills do projeto, versionadas em `.claude/skills/`, valem para qualquer jogo; nenhuma altera o runtime.
+Skills do projeto, versionadas em `framework/skills/operacao/`, valem para qualquer jogo; nenhuma altera o runtime.
 
 - **`panorama-ondas`** (`panorama.py projects/<p> [n_ondas]`): progresso real (falas e cenas `verified` sobre o total do `dialogs.csv`), ordem dos capítulos (`artifacts/ordem_cenas.txt`, gravado pelo `extract.py` do conector; sem ele usa ordem numérica e avisa "NÃO CONFIRMADA") e plano das próximas ondas. Grava o completo em `artifacts/panorama_ondas.md` (local: `artifacts/` é default-deny). Todo relato de progresso traz o total do jogo. `extrai_ordem.py` é só o extrator de ordem do conector Utawarerumono.
 - **`levantar-melhorias`**: ao fim de cada onda (no lote, a cada 3), compara os erros vividos na sessão principal com a seção "Melhorias para o framework" do `ROADMAP.md` do projeto e acrescenta só o que é novo ou parcial, com evidência e data. Não implementa conserto: isso é decisão separada (PATCH/MINOR/MAJOR, ADR se couber). No fechamento do projeto, essa seção é a fonte do levantamento de lições.

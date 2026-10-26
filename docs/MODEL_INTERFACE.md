@@ -71,6 +71,8 @@ marcador de quebra bate com a da fonte, e os tokens de formatação foram preser
 
 ## Os dois caminhos
 
+> Visão por dentro de cada um (C4, sequência, medição): [`CAMINHOS_DE_USO.md`](CAMINHOS_DE_USO.md). Escolha um caminho por projeto.
+
 ```mermaid
 flowchart LR
   subgraph S["in-session (assinatura, opt-in)"]

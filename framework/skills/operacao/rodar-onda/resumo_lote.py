@@ -7,7 +7,7 @@ import re
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "framework" / "runtime"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[4] / "framework" / "runtime"))
 import alerts  # noqa: E402
 
 MAX_REQ_FALA = float(os.environ.get("MAX_REQ_FALA", "0.5"))   # acima disso o lote custou mais idas e voltas por fala que o esperado

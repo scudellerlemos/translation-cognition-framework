@@ -7,7 +7,7 @@ Tudo aqui é **genérico**: não há dado de nenhuma obra. O que é específico 
 ```mermaid
 flowchart LR
   subgraph fw["framework/"]
-    skills["skills/<br/>processo 00→09 em prosa<br/>+ _pre_task, governança"]
+    skills["skills/<br/>processo 00→09 em prosa<br/>+ operacao/ (4 skills do dia a dia)<br/>+ _pre_task, governança"]
     runtime["runtime/<br/>os módulos do motor"]
     connectors["connectors/<br/>base, discover, template"]
     validation["validation/<br/>validate, naturalidade, custo"]
@@ -29,7 +29,7 @@ flowchart LR
 
 | Pasta | Para que serve | Leia |
 |---|---|---|
-| `skills/` | As etapas `00`…`09` do processo (15 arquivos numerados), o `_index.md`, o `_pre_task.md` e a Carta de Governança de tradução. | [`skills/_index.md`](skills/_index.md) |
+| `skills/` | As etapas `00`…`09` do processo (15 arquivos numerados), a pasta `operacao/` (4 skills do dia a dia), o `_index.md`, o `_pre_task.md` e a Carta de Governança de tradução. | [`skills/_index.md`](skills/_index.md) |
 | `runtime/` | O motor: cada cena vira um job isolado e limitado. | [`runtime/README.md`](runtime/README.md) |
 | `connectors/` | Contrato dos conectores e o `discover.py` (identifica o engine de um jogo novo). | `connectors/` |
 | `validation/` | Gates executáveis dos artefatos. | [`validation/README.md`](validation/README.md) |

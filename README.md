@@ -46,7 +46,7 @@ flowchart TB
 ```mermaid
 flowchart TB
   subgraph tcf["Translation Cognition Framework"]
-    skills["<b>skills/</b><br/>o processo 00→09 em prosa,<br/>cada etapa com um gate de entrada"]:::proc
+    skills["<b>skills/</b><br/>o processo 00→09 em prosa (gate por etapa)<br/>+ operacao/: 4 skills do dia a dia"]:::proc
     runtime["<b>runtime/</b><br/>o motor: cada cena é um job<br/>stateless (contexto O(cena))"]:::motor
     connectors["<b>connectors/</b><br/>binário ↔ texto,<br/>com round-trip byte-idêntico"]:::motor
     validation["<b>validation/</b><br/>validadores e linter de naturalidade"]:::motor
@@ -120,7 +120,41 @@ flowchart TB
 | **B. Laço por cena ou onda** | `06` tradução · `06b` micro-QA | traduzir com contexto limitado e conferir |
 | **C. Fechamento** | `07` QA final · `08` reinserção · `08b` textos de sistema · `08c` teste no jogo · `09` distribuição | entregar o jogo traduzido |
 
+São **15 etapas** (as skills do processo, em `framework/skills/`) e **4 skills de operação** (em `framework/skills/operacao/`; o Claude Code as descobre por stubs finos em `.claude/skills/`), que conduzem o dia a dia de um projeto em andamento sem alterar o motor:
+
+| Skill de operação | Para quê |
+|---|---|
+| `rodar-onda` | uma onda de tradução ponta a ponta |
+| `panorama-ondas` | progresso real e plano das próximas ondas |
+| `levantar-melhorias` | o que a onda ensinou ao framework |
+| `gaps-custo` | onde há gap de custo e performance |
+
 Detalhe das etapas: [`framework/skills/_index.md`](framework/skills/_index.md). Desenhos: [`docs/DIAGRAMAS.md`](docs/DIAGRAMAS.md).
+
+---
+
+## Dois métodos de uso: sessão ou API
+
+O pipeline é o mesmo; muda **quem chama o modelo**. Escolha **um caminho por projeto**, no início.
+
+| | **Sessão** (`--backend in-session`) | **API** (`--backend api`) |
+|---|---|---|
+| Quem traduz | subagente dentro do Claude Code | API da Anthropic |
+| Custo | cota da assinatura (o equivalente em USD fica registrado) | pago por chamada, com teto `--max-usd`; Batch −50% |
+| Chave de API | não precisa | `ANTHROPIC_API_KEY` |
+| Como roda | ondas em lote (`lancar_lote.ps1`, skill `rodar-onda`) | `run_chapter.py <projeto> <cap> --backend api` |
+| Boa para | obra grande com assinatura disponível | automação sem ninguém na frente |
+
+```mermaid
+flowchart LR
+  pack["Pacote de contexto<br/>da cena"] --> esc{"caminho do projeto"}
+  esc -->|sessão| ses["subagente escreve<br/>translations_&lt;cena&gt;.json"]
+  esc -->|API| api["SDK chama a API<br/>(batch ou interativo)"]
+  ses --> g(["mesmos gates:<br/>round-trip · retrotradução · QA"])
+  api --> g
+```
+
+Como cada um funciona por dentro (C4, sequência, medição de custo): [`docs/CAMINHOS_DE_USO.md`](docs/CAMINHOS_DE_USO.md).
 
 ---
 
@@ -196,6 +230,7 @@ Versão atual: `2.2.0` (histórico em [`docs/CHANGELOG.md`](docs/CHANGELOG.md)).
 ## Para aprofundar
 
 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) (o porquê medido) ·
+[`docs/CAMINHOS_DE_USO.md`](docs/CAMINHOS_DE_USO.md) (sessão × API, por dentro) ·
 [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) (quem propõe, aprova e aplica) ·
 [`docs/QA_REVIEW.md`](docs/QA_REVIEW.md) (revisão humana) ·
 [`framework/SDD_RUNTIME.md`](framework/SDD_RUNTIME.md) (mapa etapa↔módulo) ·

@@ -137,7 +137,7 @@ engenharia: torne o implícito explícito.
 
 > As etapas vivem em `framework/skills/00..09` (prosa) + `framework/runtime/` (executável). Em execução formam três blocos (preparação, laço por cena, fechamento) com retornos de correção: ver `framework/skills/_index.md` e [`DIAGRAMAS.md`](DIAGRAMAS.md).
 
-Além das etapas, o projeto tem **skills de operação** em `.claude/skills/`, que conduzem o trabalho do dia a dia sem alterar o
+Além das etapas, o projeto tem **skills de operação** em `framework/skills/operacao/`, que conduzem o trabalho do dia a dia sem alterar o
 runtime. As etapas dizem *o que* o pipeline faz; essas skills dizem *como* tocar um projeto em andamento:
 
 | Skill | Para quê |

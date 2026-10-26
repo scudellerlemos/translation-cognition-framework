@@ -197,3 +197,11 @@ O projeto está completo quando:
 - [ ] Nenhum `length_warning` sem revisão documentada
 - [ ] `decision_log.md` atualizado com todas as decisões não-óbvias do projeto
 - [ ] Passo 08 concluído: binário traduzido + patch gerados; `reinsertion_report.md` sem overflows não resolvidos
+
+---
+
+## SKILLS DE OPERAÇÃO
+
+Além das etapas acima, `framework/skills/operacao/` guarda 4 skills que conduzem um projeto em andamento
+(`rodar-onda`, `panorama-ondas`, `levantar-melhorias`, `gaps-custo`), com os scripts de apoio. O Claude Code só
+descobre skills em `.claude/skills/`; por isso essa pasta tem um stub fino de cada uma, apontando para cá.
