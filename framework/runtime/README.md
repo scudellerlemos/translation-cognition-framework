@@ -120,7 +120,7 @@ flowchart LR
 | Arquivo | Função |
 |---|---|
 | `onda_fim.py` | Acha a linha final de uma onda (`ONDA_OK: <n> cenas, <x> falas`, `PARADA: <motivo>` ou `FIM`): vale a última linha com a forma do contrato, em qualquer posição do log. |
-| `estimar_lote.py` | Tempo de um lote de ondas: mediana de minutos por fala das ondas já feitas × falas do plano do `panorama.py`. |
+| `estimar_lote.py` | Tempo de um lote de ondas: mediana de minutos por fala das ondas já feitas × falas do plano do `panorama.py` (da skill `panorama-ondas`, em `.claude/skills/panorama-ondas/`). |
 | `lote_status.py` | Uma tela com a situação do lote: execução viva (lock), `estado.json` contra o `run_state.json`, último log de onda e batimento do projeto. |
 | `cota_uso.py` | % de cota da assinatura usada, lido do `rate_limit_event` do `claude -p` (custa uma chamada mínima em Haiku; usar no início e no fim do lote). |
 | `espera_reset.py` | Segundos até a cota voltar, lidos do aviso de limite na saída do `claude -p` (+ margem de 2 min). |
