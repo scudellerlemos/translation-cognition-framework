@@ -1,4 +1,4 @@
 # Reinsertion Report
 
-Strings reinseridas: 1880
-Tamanho: 4407304 -> 4399672 bytes (membros reconstruídos; sem resíduo de espaço)
+Strings reinseridas: 23982
+Tamanho: 4407304 -> 4312003 bytes (membros reconstruídos; sem resíduo de espaço)

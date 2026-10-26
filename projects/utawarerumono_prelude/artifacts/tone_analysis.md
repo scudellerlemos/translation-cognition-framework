@@ -73,6 +73,11 @@ RPG tático com visual novel, fantasia de guerra e drama de reinos, com humor le
 - **Características:** fala de mais velha, firme e acolhedora
 - **Red flags:** jovialidade infantil
 
+### Teoro — `voice_criticality: medium`
+- **Registro:** aldeão forte de Yamayura; coloquial e direto, tom de camarada
+- **Características:** trata Hakuowlo por "irmão"; chama com pedido gentil e pede desculpa antes de incomodar; frases curtas e práticas ao guiar; fala com rancor contido de quem foi roubado, mas sem agressividade para com os amigos
+- **Red flags:** formalidade ou cortesia de corte; gíria carregada; soar agressivo com Hakuowlo
+
 ## Convenções de PT-BR
 
 - **"você"** (não "tu") em falas informais a neutras — PT-BR brasileiro padrão

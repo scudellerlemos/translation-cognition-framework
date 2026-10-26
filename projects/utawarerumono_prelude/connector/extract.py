@@ -23,9 +23,10 @@ import connector_io  # noqa: E402
 
 SDAT_NAME = "DataBase2.sdat"
 TEXT_PREFIX = "ScriptTextData_"
-# escopo "completo": alem das cenas, nomes, mensagens de sistema e unidades (mesmo layout). StageTextData fica de
-# fora: no proprio jogo o ponteiro EN aponta para o meio da string (ver extraction_log).
-EXTRA_MEMBERS = ("NameTextData.bin", "SysMessageTextData.bin", "UnitTextData.bin")
+# escopo "completo": alem das cenas, nomes, mensagens de sistema, unidades e nomes de fase. StageTextData tem
+# layout proprio (ver read_stage_member): no proprio jogo os ponteiros das colunas 2 e 3 estao errados.
+STAGE_MEMBER = "StageTextData.bin"
+EXTRA_MEMBERS = ("NameTextData.bin", "SysMessageTextData.bin", "UnitTextData.bin", STAGE_MEMBER)
 LANGS = ("ja", "ko", "zh", "en")
 EN_COL = LANGS.index("en")
 _PACK_TAG = b"Pack        "
@@ -121,6 +122,54 @@ def build_text_member(n: int, cols: int, strings: list[bytes]) -> bytes:
     return struct.pack("<I", n) + struct.pack(f"<{len(ptrs)}I", *ptrs) + b"".join(s + b"\0" for s in strings)
 
 
+def read_stage_member(b: bytes) -> tuple[int, int, list[bytes]]:
+    """StageTextData: (n, 4, strings[n*4] na ordem JA, KO, ZH, EN) lidas do pool, nao dos ponteiros.
+
+    O pool traz, linha a linha, JA, KO, ZH, EN em sequencia (strings contiguas). Os ponteiros do proprio jogo
+    nao servem de guia: JA e KO acertam, a coluna 3 aponta para o ZH e a coluna 2 cai de -10 a +21 bytes
+    em torno do EN. Levanta Unsupported se o pool nao tem exatamente n*4 strings ou se JA/KO nao batem. Le tambem o membro
+    ja corrigido por build_stage_member (colunas 2 e 3 no EN), entao e idempotente.
+    """
+    n = _u32(b, 0)
+    if n == 0 or len(b) < 8 or (_u32(b, 4) - 4) != 16 * n:
+        raise Unsupported("StageTextData: tabela de ponteiros com tamanho inesperado")
+    pool = 4 + 16 * n
+    strings = b[pool:].split(b"\0")
+    if strings.pop() != b"" or len(strings) != 4 * n:
+        raise Unsupported("StageTextData: pool nao tem n*4 strings")
+    pos = pool
+    for r in range(n):
+        p_ko = pos + len(strings[4 * r]) + 1
+        if _u32(b, 4 + 16 * r) != pos or _u32(b, 8 + 16 * r) != p_ko:
+            raise Unsupported("StageTextData: ponteiro JA/KO fora do pool contiguo")
+        pos = p_ko + sum(len(x) + 1 for x in strings[4 * r + 1:4 * r + 4])
+    return n, 4, strings
+
+
+def build_stage_member(n: int, strings: list[bytes]) -> bytes:
+    """Inverso de read_stage_member, com os ponteiros corrigidos: JA, KO, e as colunas 2 e 3 apontam para o EN
+    (o jogo le o EN de uma delas conforme a ordem de colunas; as duas mostram o mesmo texto). O ZH fica no pool."""
+    pos = 4 + 16 * n
+    ptrs = []
+    for r in range(n):
+        ja, ko, zh, en = strings[4 * r:4 * r + 4]
+        p_ja, p_ko = pos, pos + len(ja) + 1
+        p_en = p_ko + len(ko) + 1 + len(zh) + 1
+        ptrs += [p_ja, p_ko, p_en, p_en]
+        pos = p_en + len(en) + 1
+    return struct.pack("<I", n) + struct.pack(f"<{len(ptrs)}I", *ptrs) + b"".join(s + b"\0" for s in strings)
+
+
+def build_member(name: str, n: int, cols: int, strings: list[bytes]) -> bytes:
+    return build_stage_member(n, strings) if name == STAGE_MEMBER else build_text_member(n, cols, strings)
+
+
+def residual_members(src: Path) -> dict[str, bytes]:
+    """{nome do membro: bytes} do .sdat, para o connector_gate conferir texto que o extract deixou para tras."""
+    sd = read_sdat(Path(src).read_bytes())
+    return dict(zip(sd.names, sd.members, strict=True))
+
+
 def scene_of(name: str) -> str:
     return (name[len(TEXT_PREFIX):] if name.startswith(TEXT_PREFIX) else name).removesuffix(".bin")
 
@@ -131,7 +180,7 @@ def text_members(sd: Sdat):
         if not (name.startswith(TEXT_PREFIX) or name in EXTRA_MEMBERS):
             continue
         try:
-            n, cols, strings = read_text_member(m)
+            n, cols, strings = (read_stage_member if name == STAGE_MEMBER else read_text_member)(m)
             if cols != len(LANGS):
                 raise Unsupported(f"{cols} colunas (esperado {len(LANGS)})")
             yield scene_of(name), i, n, cols, strings, ""
@@ -142,6 +191,35 @@ def text_members(sd: Sdat):
 # ---------------------------------------------------------------------------
 # 3. MAIN
 # ---------------------------------------------------------------------------
+def story_order(db: bytes, scenes: set[str]) -> list[str]:
+    """Ordem das cenas no jogo: EventManagerData.bin do ENG/DataBase.sdat (registros de 48 bytes; a chave do evento
+    e o campo 3, NN_NN_NN = chave/100000, chave/1000%100, chave%1000/10). So entram cenas que existem no projeto."""
+    pk = db.index(b"Pack        ")
+    names = db[16 + _u32(db, 16):pk].rstrip(b"\0").split(b"\0")
+    o, size = struct.unpack_from("<II", db, pk + 20 + 8 * names.index(b"EventManagerData.bin"))
+    b = db[o:o + size]
+    order: list[str] = []
+    for i in range(_u32(b, 0)):
+        k = struct.unpack_from("<12I", b, 4 + 48 * i)[3]
+        sid = f"{k // 100000:02d}_{k // 1000 % 100:02d}_{k % 1000 // 10:02d}"
+        if sid in scenes and sid not in order:
+            order.append(sid)
+    return order
+
+
+def write_story_order(root: Path, src: Path, scenes: set[str]) -> str:
+    """Grava artifacts/ordem_cenas.txt a partir do DataBase.sdat ao lado do .sdat de texto (Data/ENG/DataBase.sdat);
+    devolve a linha para o extraction_log. Sem o arquivo do jogo (fonte copiada sozinha), mantem o que ja existe."""
+    out = root / "artifacts" / "ordem_cenas.txt"
+    for cand in (src.parent / "ENG" / "DataBase.sdat", src.parent / "DataBase.sdat"):
+        if cand.is_file():
+            order = story_order(cand.read_bytes(), scenes)
+            out.write_text("\n".join(order) + "\n", encoding="utf-8")
+            return f"- Ordem das cenas: {len(order)} de {len(scenes)} em {out.name} (de {cand.name}, EventManagerData)\n"
+    return ("- Ordem das cenas: DataBase.sdat nao encontrado ao lado da fonte; " +
+            ("ordem_cenas.txt anterior mantido\n" if out.is_file() else "ordem NAO confirmada (sem ordem_cenas.txt)\n"))
+
+
 def resolve_sdat(conn: dict, cli_override: str | None) -> Path:
     p = connector_io.resolve_source_path(
         cli_arg=cli_override, env_var=conn.get("data_dir_env"),
@@ -174,14 +252,16 @@ def main(project_json: Path, source_override: str | None = None):
 
     connector_io.write_dialogs_csv(root / cfg["source"]["file"],
                                    [id_col, "scene", "file", "idx", text_col, "byte_budget"], rows)
-    scenes = len({r["scene"] for r in rows})
+    scene_ids = {r["scene"] for r in rows}
+    scenes = len(scene_ids)
+    order_line = write_story_order(root, src, scene_ids)
     connector_io.write_extraction_log(
         root / "artifacts" / "extraction_log.md",
         "# Extraction Log\n\n"
         f"- Fonte: {src.name} ({len(data)} bytes, sha256 {hashlib.sha256(data).hexdigest()[:16]})\n"
-        f"- Membros no contêiner: {len(sd.names)}; membros de texto extraídos: {scenes} (cenas + Name/SysMessage/Unit)\n"
+        f"- Membros no contêiner: {len(sd.names)}; membros de texto extraídos: {scenes} (cenas + Name/SysMessage/Unit/Stage)\n"
         f"- Strings EN extraídas: {len(rows)}; EN vazias (ficam como estão): {n_empty}\n"
-        f"- Fora do layout estrito (não extraídos): {len(skipped)}\n"
+        f"- Fora do layout estrito (não extraídos): {len(skipped)}\n" + order_line +
         "- StageTextData.bin: fora do escopo (ponteiro EN do próprio jogo aponta para o meio da string)\n"
         + "".join(f"  - {s}\n" for s in skipped))
     print(f"Extraídas {len(rows)} strings de {scenes} cenas -> {root / cfg['source']['file']}")
