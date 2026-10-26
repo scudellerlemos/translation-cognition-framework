@@ -29,6 +29,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import artifact_io  # noqa: E402
 import back_translate  # noqa: E402
+import paths  # noqa: E402
 
 TIPOS = ("sentido_invertido", "omissao", "tom", "nome_errado", "adicao")
 MARGEM = 0.10
@@ -91,8 +92,7 @@ def montar(pasta, casos: list[dict], defeitos: dict) -> None:
     for braco, cega in (("padrao", False), ("cega", True)):
         proj = pasta / braco
         proj.mkdir(parents=True, exist_ok=True)
-        (proj / "project.json").write_text(
-            json.dumps({"title": "bench", "back_translation_cega": cega}), encoding="utf-8")
+        paths.atomic_write(proj / "project.json", json.dumps({"title": "bench", "back_translation_cega": cega}))
         for scene, highs in por_cena.items():
             (proj / "artifacts" / "scenes" / scene).mkdir(parents=True, exist_ok=True)
             back_translate.back_translate(proj, scene, highs, backend="in-session")
@@ -149,8 +149,8 @@ def main(argv=None) -> int:
         pasta = Path(a.pasta)
         pasta.mkdir(parents=True, exist_ok=True)
         casos = sorteio(a.projeto, a.n, a.seed, a.por_cena)
-        (pasta / "casos.json").write_text(json.dumps(casos, ensure_ascii=False, indent=1), encoding="utf-8")
-        (pasta / "defeitos_prompt.md").write_text(defeitos_prompt(casos), encoding="utf-8")
+        paths.atomic_write(pasta / "casos.json", json.dumps(casos, ensure_ascii=False, indent=1))
+        paths.atomic_write(pasta / "defeitos_prompt.md", defeitos_prompt(casos))
         print(f"{len(casos)} casos ({sum(c['defeito'] for c in casos)} com defeito) em {pasta}")
     elif a.cmd == "montar":
         pasta = Path(a.pasta)
