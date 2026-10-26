@@ -113,7 +113,7 @@ Toda a config deste título vive em [`project.json`](project.json):
 
 Onde os outputs do pipeline vivem: `dialogs.csv` (output do Passo 00, depois imutável), `entities.csv`,
 `tone_analysis.md`, `glossary.csv`, `research_log.md`, `universe_knowledge_base.md`, `qa_report.md`,
-`reinsertion_report.md`, a tradução por cena em `scenes/<cena>/` (proposta e aprovada) e a saída em `output/`
+`reinsertion_report.md`, a tradução por cena em `scenes/<cena>/` (proposta e aprovada; o texto do jogo não é versionado) e a saída em `output/`
 (Passo 08). Os artefatos do formato antigo (`translation_plan.json`, `approved_translations.csv`,
 `aliases_map.json`, `translation_status.json`, `micro_qa_log.json`…) ficam em `artifacts/archive/`.
 Ver `framework/schemas/artifacts_schema.md`.

@@ -8,7 +8,7 @@
 > spoiler.** A tradução é o *domínio de validação*; o que se reusa é o **padrão de arquitetura**:
 > jobs cognitivos *stateless*, estado externalizado, orquestração determinística e gates de validação.
 >
-> Validado na prática traduzindo **um jogo real, EN→pt-BR, capítulos inteiros** (ver [Status](#status)).
+> Validado na prática traduzindo **um jogo real, EN→pt-BR, capítulos inteiros** (ver [Status](#status--outubro-2026)).
 
 ### Em 30 segundos
 
@@ -359,7 +359,7 @@ o modelo, valida o plano, roda o round-trip do conector e grava o resultado veri
 5. Veja `projects/utawarerumono_prelude/` — o jogo *Prelude to the Fallen* (Aquaplus, formato novo), traduzido pelo caminho de
    sessão em lote; o estado e as lições estão no [`ROADMAP.md`](projects/utawarerumono_prelude/ROADMAP.md) do projeto.
 6. A instância `projects/trails_sky_sc/` (engine Falcom, em andamento) ainda não tem
-   `README.md` próprio — ver [Status](#status) e `docs/CHANGELOG.md` pelo estado atual.
+   `README.md` próprio — ver [Status](#status--outubro-2026) e `docs/CHANGELOG.md` pelo estado atual.
 7. Para um projeto novo: copie `framework/templates/project.template.json`, preencha o manifesto e
    rode o pipeline `00..09` — ou use `python framework/connectors/discover.py <dir-do-jogo>` para
    descoberta automática de engine (Generic Connector System).
