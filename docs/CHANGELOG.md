@@ -7,6 +7,16 @@ organizadas por período, não por versão.
 
 ---
 
+## 2026-10-25 — patcher mais robusto, guard aceita `.sh`, lock sem CVEs
+
+- `distribution/patcher.py`: acha o jogo em qualquer biblioteca da Steam (registro + `libraryfolders.vdf`); `preflight` confere espaço livre e permissão de escrita antes de alterar arquivo; a deduplicação das bibliotecas normaliza `\` e `/`.
+- `distribution/build_exe.py`: propriedades de versão no exe e SHA-256 impresso; `distribution/verificar_exe.py` testa o exe como usuário sem Python.
+- `content_guard`: aceita `.sh`; `spoiler_audit.json` deixa de ser versionável; `*.local.csv` bloqueado.
+- `rodar-onda/vigia_lote.sh` entra no repositório (vigia de lote para o Monitor).
+- CI: `UP031` em `scene_scope.py`; lock com `pillow` 13.0.0, `certifi` 2026.10.23 e `setuptools` 84.2.1; job do Windows instala com `python -m pip`.
+
+---
+
 ## 2026-10-23 — `spoiler_check`: termo em tabela de sistema não é vazamento
 
 - Causa raiz dos 2 alertas permanentes do Prelude (`NameTextData:7`, `UnitTextData:218`): o `check()` varria toda unidade traduzida, inclusive as tabelas de nomes/unidades do jogo, onde o dado de origem já traz o termo proibido (e o ledger marca `beyond_frontier`, "sempre futuro"). Nenhuma cena da história cita o termo.
