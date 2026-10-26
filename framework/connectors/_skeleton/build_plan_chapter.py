@@ -76,8 +76,10 @@ def main() -> None:
         src_tokens = connector_io.structural_token_counts(rx, src)
         tgt_tokens = connector_io.structural_token_counts(rx, tgt)
         if src_tokens != tgt_tokens:
+            falta = ", ".join(f"{tk} esperado {src_tokens[tk]} veio {tgt_tokens[tk]}"
+                              for tk in sorted(src_tokens.keys() | tgt_tokens.keys()) if src_tokens[tk] != tgt_tokens[tk])
             errors.append(f"{off}: tokens estruturais divergentes "
-                          f"(src={sorted(src_tokens.elements())} tgt={sorted(tgt_tokens.elements())})")
+                          f"(src={sorted(src_tokens.elements())} tgt={sorted(tgt_tokens.elements())}; {falta})")
         risk = t.get("risk_level")
         if risk not in _RISK:
             errors.append(f"{off}: risk_level ausente/invalido '{risk}'")

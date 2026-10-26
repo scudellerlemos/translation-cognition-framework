@@ -86,6 +86,13 @@ saída avisa "ordem NÃO confirmada". Complementa o
 `residual_text.py <dialogs.csv> <pasta do jogo> [--ceiling 0.05]` (texto legível dentro de arquivo já coberto; round-trip idêntico prova
 que nada foi corrompido, não que tudo foi extraído). Engine desconhecida: `connectors/discover.py <pasta do jogo>` + `coverage_gate.py` (ver `connectors/00_index.md`).
 
+### 2c. Quem fala (antes de traduzir)
+Responder por escrito no `extraction_log.md`, antes da Fase 1: **o formato traz o falante de cada fala? onde?**
+(campo próprio, linha anterior, código de controle, só por contexto). Falante presente vira a coluna `speaker` do
+`dialogs.csv`; ausente, o `speaker` que o tradutor escreve é inferência dele e não vale como dado do jogo: o resumo
+do conector deve dizer quantas falas ficaram sem falante extraído, para o usuário decidir se vale um passe de
+atribuição antes de escalar. No Prelude o falante só apareceu depois de a tradução estar andando.
+
 ### 3. Registrar o byte budget (SHIFT-LEFT)
 Para cada string, gravar `byte_budget` = nº de bytes que ela ocupa no binário (com `connector.budget_reserves_terminator: true`
 o CSV já traz o byte do `\0` reservado — ADR 0006; a conta única é `runtime/budget.py`, e exceção pontual de +bytes decidida

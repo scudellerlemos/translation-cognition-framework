@@ -96,3 +96,27 @@ def test_check_run_tsv_com_linha_malformada_reprova(tmp_path, capsys):
     with pytest.raises(SystemExit):
         sl.cmd_check("1", [sc], run=True)
     assert "tsv linha 2: 2 campos" in capsys.readouterr().out
+
+
+def _prompt_da_cena(tmp_path, tabela):
+    (tmp_path / "project.json").write_text(json.dumps({}), encoding="utf-8")
+    d = paths.scene_dir(tmp_path, "ch_1_01")
+    d.mkdir(parents=True)
+    (d / "scene_prompt.md").write_text("# T\n\n## 7. Linhas a traduzir\naviso\n" + tabela + "\n", encoding="utf-8")
+    sl._init(tmp_path)
+    sl.cmd_prompt("t", ["ch_1_01"], {})
+    return (sl.TMP / "lot_t.md").read_text(encoding="utf-8")
+
+
+def test_lote_carrega_a_coluna_nl_do_prompt_da_cena(tmp_path):
+    nl = chr(92) + "n"                                       # token literal (barra invertida + n), nao quebra real
+    linha = f"| a.DAT:1:1 | 20 | 2 | x{nl}y{nl}z |"
+    out = _prompt_da_cena(tmp_path, "| offset | byte_budget | nl | source |\n|---|---|---|---|\n" + linha)
+    assert "| offset | byte_budget | nl | source |" in out
+    assert linha in out
+
+
+def test_lote_aceita_prompt_antigo_sem_nl(tmp_path):
+    out = _prompt_da_cena(tmp_path, "| offset | byte_budget | source |\n|---|---|---|\n| a.DAT:1:1 | 20 | 5 |")
+    assert "| offset | byte_budget | source |" in out and "| nl |" not in out
+    assert "| a.DAT:1:1 | 20 | 5 |" in out          # fonte numerica nao pode virar `nl`

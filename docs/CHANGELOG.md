@@ -7,12 +7,16 @@ organizadas por período, não por versão.
 
 ---
 
-## 2026-10-25 — patcher mais robusto, guard aceita `.sh`, lock sem CVEs
+## 2026-10-25 — v2.2.0: lições do Prelude (nl, fila por termo, forma curta, retrotradução cega), patcher, guard e lock
 
 - `distribution/patcher.py`: acha o jogo em qualquer biblioteca da Steam (registro + `libraryfolders.vdf`); `preflight` confere espaço livre e permissão de escrita antes de alterar arquivo; a deduplicação das bibliotecas normaliza `\` e `/`.
 - `distribution/build_exe.py`: propriedades de versão no exe e SHA-256 impresso; `distribution/verificar_exe.py` testa o exe como usuário sem Python.
 - `content_guard`: aceita `.sh`; `spoiler_audit.json` deixa de ser versionável; `*.local.csv` bloqueado.
 - `rodar-onda/vigia_lote.sh` entra no repositório (vigia de lote para o Monitor).
+- Skills `panorama-ondas` e `levantar-melhorias` oficializadas: documentadas em `TRANSLATION_PIPELINE.md` ("Acompanhamento do projeto"), valem para qualquer jogo.
+- Lições do Prelude, fase A: coluna `nl` (quebras do source) na tabela do `scene_prompt.md` (o lote em sessão aceita os dois formatos); `build_plan` do esqueleto diz "esperado N veio M" por token; `obs_report` descarta falha de etapa (`build_plan`/`verify`) já seguida de `verified`; `quality_gate` resume as cenas sem cobertura com o passo 5c; `wave.py <cena> --precheck` confere chave de offset, `nl` e bytes sem rodar a onda; regra de shell sem supervisão no `scene-translator`.
+- Lições do Prelude, fase B: `touched.py` ganha `drift` (cena `verified` com texto alterado no disco; CLI `python touched.py <projeto>`) e `origem` (falas por `intent`, `reuso_tm` x tradução); `hitl.py` agrupa a fila por termo (`status` lista termo × itens × cenas) e `resolve --termo X --alias Y` responde todos os itens do termo de uma vez; coluna opcional `forma_curta` no glossário (lint aceita, prompt mostra; ADR 0024).
+- Lições do Prelude, fase C: passo 2c na `00_extraction.md` (o formato traz o falante? onde?); retrotradução cega em duas passagens, opt-in por `back_translation_cega` (prompt A sem o source, juiz B com `back_en`; ADR 0025). Medida com `bench_retro_cega.py` (60 falas, 30 com defeito injetado): recall 80% nos dois braços, critério de adoção não atingido, fica desligada.
 - CI: `UP031` em `scene_scope.py`; lock com `pillow` 13.0.0, `certifi` 2026.10.23 e `setuptools` 84.2.1; job do Windows instala com `python -m pip`.
 
 ---

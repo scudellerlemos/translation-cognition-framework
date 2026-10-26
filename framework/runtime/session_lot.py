@@ -32,7 +32,7 @@ TMP: pathlib.Path = None  # type: ignore[assignment]
 CFG: dict = {}               # project.json (excecoes de orcamento)
 BR = '[01]'                  # token de quebra de linha (o `newline` da tabela de opcodes)
 TOK = re.compile(r'\[[0-9A-Fa-f]{2}\]')
-ROW = re.compile(r'^\| (\S+:\d+:\d+) \| (\d*) \| (.*) \|$')
+ROW = re.compile(r'^\| (\S+:\d+:\d+) \| (\d*) \| (?:(\d+) \| )?(.*) \|$')   # `nl` (nº de quebras do source) e opcional: prompt antigo nao o traz
 CARTA = """## 1. CARTA DE GOVERNANCA (resumo para o tradutor)
 - Voz: se o personagem tem marcador de voz na secao 4 (arcaico, tu, 3a pessoa, giria), TODA fala segue o marcador.
 - Sem marcador: pt-BR contemporaneo natural, o que um jogador de hoje diria; sem arcaismo gratuito.
@@ -102,9 +102,13 @@ def cmd_prompt(lot, scenes, flags):
                 rows = [i for i, x in enumerate(body) if ROW.match(x)]
                 done = _load(s)['lines'] if '--skip-done' in flags else {}   # ja preenchida pelo reuso da memoria
                 keep: list = body[:rows[0] - 2] if first else []      # aviso de orcamento so na 1a cena
-                keep += ['| offset | byte_budget | source |', '|---|---|---|']
+                com_nl = ROW.match(body[rows[0]]).group(3) is not None  # type: ignore[union-attr]
+                if com_nl:                                            # a nota da coluna `nl` fica no aviso (1a cena)
+                    keep += ['| offset | byte_budget | nl | source |', '|---|---|---|---|']
+                else:
+                    keep += ['| offset | byte_budget | source |', '|---|---|---|']
                 for i in rows:
-                    off, bud, src = ROW.match(body[i]).groups()  # type: ignore[union-attr]
+                    off, bud, nl, src = ROW.match(body[i]).groups()  # type: ignore[union-attr]
                     if off in done:
                         continue
                     if '--dedup' in flags and src in seen_src:
@@ -113,7 +117,7 @@ def cmd_prompt(lot, scenes, flags):
                         if bud and (not canon['bud'] or int(bud) < int(canon['bud'])):
                             canon['bud'] = bud                  # a traducao unica tem de caber no menor orcamento
                         continue
-                    seen_src[src] = row = {'off': off, 'bud': bud, 'src': src}
+                    seen_src[src] = row = {'off': off, 'bud': bud, 'nl': nl, 'src': src}
                     offsets.append(off)
                     keep.append(row)
                 L += [f'## 7. Linhas a traduzir -- cena {s}'] + keep + ['']
@@ -135,7 +139,8 @@ def cmd_prompt(lot, scenes, flags):
                     seen.add(line)
                     keep.append(line)
             L.append(re.sub(r'\n{3,}', '\n\n', '\n'.join(keep)) + '\n')
-    text = '\n'.join(f'| {x["off"]} | {x["bud"]} | {x["src"]} |' if isinstance(x, dict) else x for x in L)
+    text = '\n'.join((f'| {x["off"]} | {x["bud"]} | {x["nl"]} | {x["src"]} |' if x['nl'] is not None
+                      else f'| {x["off"]} | {x["bud"]} | {x["src"]} |') if isinstance(x, dict) else x for x in L)
     if dup:
         text = text.replace('As linhas a traduzir vem por cena, na secao 7.',
                             'As linhas a traduzir vem por cena, na secao 7. Fala repetida no lote aparece UMA vez '

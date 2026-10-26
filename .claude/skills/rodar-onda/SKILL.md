@@ -61,7 +61,7 @@ esta regra como se fosse a sessão interativa).
 5c. **Retrotradução das falas que o projeto exige.** Os níveis vêm de `back_translation_risk` no `project.json`
    (padrão `["high","critical"]`; o Prelude usa `["critical"]`, decisão do usuário em 2026-10-20, ADR 0022: o Opus
    só retraduz `critical`; as `high` ficam com o Haiku, ADR 0023). Se o `wave.py` acusar `SEM COBERTURA` (fala
-   de nível exigido sem `back_translation`) ou o `run_scene` ecoar `AGUARDANDO back-translation`, lançar **um único** subagente **Opus** para todas as cenas pendentes da onda
+   de nível exigido sem `back_translation`; o gate já lista as cenas pendentes com a contagem por nível e o caminho do prompt) ou o `run_scene` ecoar `AGUARDANDO back-translation`, lançar **um único** subagente **Opus** para todas as cenas pendentes da onda
    (`Agent`, `model: opus`, tipo general-purpose; decisão do usuário, 2026-10-19: na onda 32 seis agentes Opus custaram US$ 1,37, 62% da onda, quase tudo custo fixo de leitura) com: para cada cena, ler `artifacts/scenes/<CENA>/back_prompt_<CENA>.md`, traduzir
    cada fala de volta para EN antes de olhar o source, julgar `pass|revise` e gravar com Write
    `artifacts/scenes/<CENA>/back_translation_<CENA>.json` no formato do prompt, com a chave `offset` de cada entrada
@@ -69,6 +69,11 @@ esta regra como se fosse a sessão interativa).
    não editar outro arquivo, sem git,
    sem `run_scene`/`wave`. Depois rodar o `wave.py` sem cenas de novo. `revise`: passo 5e (a tradução é revista,
    nunca o veredito editado). Medido: 3 falas levaram ~15 s.
+   **Com `back_translation_cega: true` no `project.json`** (ADR 0025, ainda sem medição A/B; só com pedido do
+   usuário) são duas passagens em sequência, nunca juntas: **A** (um subagente **Sonnet**) lê só
+   `back_prompt_<CENA>.md` (só o `target`) e grava `back_a_<CENA>.json`, sem abrir source, `dialogs.csv` nem
+   `translations_*.json`; só depois **B** (o subagente **Opus** acima) lê `back_prompt_juiz_<CENA>.md` e o
+   `back_a_<CENA>.json` e grava o `back_translation_<CENA>.json` de sempre.
 5d. **Falas `critical` em Sonnet** (as `high` ficam com o Haiku; decisão do usuário, 2026-10-21, ADR 0023). O
    `scene-translator` roda em Haiku (decisão do usuário, 2026-10-19, benchmark de cota Pro). Depois do `wave`, listar
    por cena as falas com `risk_level` `critical` em `translations_<CENA>.json`; se houver, lançar um subagente `scene-translator` com `model: sonnet` que retraduz

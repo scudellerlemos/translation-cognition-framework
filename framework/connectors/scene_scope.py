@@ -42,12 +42,15 @@ def classify(units: list[str], ordem_l: list[str]) -> dict[str, str]:
 def scan(project: Path) -> dict:
     art = Path(project) / "artifacts"
     rows: dict[str, list[int | None]] = {}
+    n_falas = n_falante = 0          # falas e quantas trazem `speaker` preenchido no dialogs.csv (extraido, nao inferido)
     for d in sorted((art / "scenes").iterdir()) if (art / "scenes").is_dir() else []:
         f = d / "dialogs.csv"
         if f.is_file():
             with f.open(encoding="utf-8-sig", newline="") as fh:
-                rows[d.name] = [int(r["byte_budget"]) if (r.get("byte_budget") or "").isdigit() else None
-                                for r in csv.DictReader(fh)]
+                lidas = list(csv.DictReader(fh))
+            rows[d.name] = [int(r["byte_budget"]) if (r.get("byte_budget") or "").isdigit() else None for r in lidas]
+            n_falas += len(lidas)
+            n_falante += sum(1 for r in lidas if (r.get("speaker") or "").strip())
     ordem_l = ordem(art)
     kind = classify(list(rows), ordem_l)
     cats: dict[str, dict] = {}
@@ -57,7 +60,7 @@ def scan(project: Path) -> dict:
         c["units"] += 1
         c["strings"] += len(budgets)
         c["budgets"] += [b for b in budgets if b is not None]
-    return {"ordem_confirmada": bool(ordem_l), "cats": cats}
+    return {"ordem_confirmada": bool(ordem_l), "cats": cats, "falas": n_falas, "com_falante": n_falante}
 
 
 def report(res: dict) -> str:
@@ -69,6 +72,10 @@ def report(res: dict) -> str:
         faixa = f"{min(b)}-{max(b)}" if b else "-"
         out.append(f"{name:24} {c['kind']:10} {c['units']:>5} {c['strings']:>8} {len(b):>12} {faixa:>14} "
                    f"{sum(1 for x in b if x <= _ROTULO_BYTES):>7}")
+    if res.get("falas"):
+        out.append(chr(10) + f"FALANTE: {res['com_falante']} de {res['falas']} falas trazem o falante extraido do jogo"
+                   + ("" if res["com_falante"] else " (nenhuma: o `speaker` da traducao sera inferencia do tradutor; "
+                      "responda o passo 2c da 00_extraction antes de escalar)") + ".")
     tab = [n for n, c in res["cats"].items() if c["kind"] == "tabela"]
     if tab:
         out.append("\nTABELAS DE SISTEMA: " + ", ".join(tab) + ". Orcamento de bytes curto = rotulo/nome com limite de"

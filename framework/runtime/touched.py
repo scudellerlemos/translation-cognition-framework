@@ -4,6 +4,8 @@ precisa passar de novo por gate nenhum; `run_scene` a pula, a menos que se peca 
 
   fingerprint(root, scene) -> {offset: sha1[:12] do texto traduzido}
   touched(root, scene)     -> offsets novos/alterados desde o ultimo verified (None = sem registro: tudo)
+  origem(root, scene)      -> {intent: n} das falas da cena (`reuso_tm` = veio da memoria; o resto, da traducao)
+  drift(root)              -> {cena: [offsets]} das cenas verified cujo texto mudou no disco depois (CLI: relatorio)
 """
 import hashlib
 import json
@@ -37,3 +39,38 @@ def unchanged(root, scene, connector_hash="") -> bool:
     t = touched(root, scene)
     return (t == [] and bool(fingerprint(root, scene)) and st.get("doctrine_hash") == context_pack._doctrine_hash(root)
             and st.get("connector_hash", "") == connector_hash)
+
+
+def origem(root, scene) -> dict:
+    """Quantas falas da cena vieram de cada origem (campo `intent`; `reuso_tm` = reaproveitada da memoria)."""
+    cont: dict = {}
+    for e in artifact_io.translations_map(root, scene).values():
+        k = str(e.get("intent") or "traducao")
+        cont[k] = cont.get(k, 0) + 1
+    return cont
+
+
+def drift(root) -> dict:
+    """Cenas `verified` com fala alterada no disco depois do verified (edicao manual ou re-traducao sem passar pelo gate)."""
+    out = {}
+    for sc, st in sorted(_state_all(root).items()):
+        if st.get("status") == "verified":
+            t = touched(root, sc)
+            if t:
+                out[sc] = t
+    return out
+
+
+def _state_all(root) -> dict:
+    p = paths.run_state(root)
+    return json.loads(p.read_text(encoding="utf-8")).get("scenes", {}) if p.is_file() else {}
+
+
+if __name__ == "__main__":
+    import sys
+    from pathlib import Path
+    d = drift(Path(sys.argv[1]))
+    for sc, offs in d.items():
+        print(f"{sc}: {len(offs)} fala(s) alterada(s) depois do verified")
+    print(f"DRIFT: {len(d)} cena(s)" if d else "DRIFT: nenhuma cena verified com texto alterado")
+    sys.exit(1 if d else 0)

@@ -128,3 +128,37 @@ def test_quality_gate_so_exige_cobertura_dos_niveis_configurados(tmp_path):
     assert {u["offset"] for u in qg.check(tmp_path)["uncovered"]} == {"S1:1", "S1:2"}
     (tmp_path / "project.json").write_text('{"back_translation_risk":["critical"]}', encoding="utf-8")
     assert {u["offset"] for u in qg.check(tmp_path)["uncovered"]} == {"S1:2"}
+
+
+def test_retrotraducao_cega_separa_o_source_da_passagem_a(tmp_path):
+    _proj(tmp_path)
+    (tmp_path / "project.json").write_text('{"title":"T","back_translation_cega":true}', encoding="utf-8")
+    r = bt.back_translate(tmp_path, "S1", HIGHS, backend="in-session")
+    assert r["status"] == bt.AWAITING
+    a = Path(r["prompt"]).read_text(encoding="utf-8")
+    assert "Oi" in a and "Hi there" not in a                          # A so ve o target
+    juiz = (Path(r["prompt"]).parent / "back_prompt_juiz_S1.md").read_text(encoding="utf-8")
+    assert "Hi there" in juiz and "back_a_S1.json" in juiz
+
+
+def test_sem_a_flag_o_prompt_segue_o_de_sempre(tmp_path):
+    _proj(tmp_path)
+    r = bt.back_translate(tmp_path, "S1", HIGHS, backend="in-session")
+    assert "Hi there" in Path(r["prompt"]).read_text(encoding="utf-8")
+    assert not (Path(r["prompt"]).parent / "back_prompt_juiz_S1.md").exists()
+
+
+def test_quality_gate_le_a_saida_do_juiz_b_da_retrotraducao_cega(tmp_path):
+    """Contrato B -> gate: entries com offset string, verdict e back_en; pass cobre, revise vira achado."""
+    import quality_gate as qg
+    _proj(tmp_path)
+    (tmp_path / "project.json").write_text('{"title":"T","back_translation_cega":true}', encoding="utf-8")
+    (tmp_path / "artifacts" / "scenes" / "S1" / "dialogs.csv").write_text("offset\n", encoding="utf-8")
+    _plan(tmp_path, {"S1:1": "high", "S1:2": "critical"})
+    saida = {"reviewed": 2, "entries": [
+        {"offset": "S1:1", "source": "a", "target": "b", "back_en": "a", "verdict": "pass", "note": "ok"},
+        {"offset": "S1:2", "source": "c", "target": "d", "back_en": "z", "verdict": "revise", "note": "tom"}]}
+    paths.back_translation(tmp_path, "S1", "S1").write_text(json.dumps(saida), encoding="utf-8")
+    r = qg.check(tmp_path)
+    assert r["uncovered"] == [] and [x["offset"] for x in r["revise"]] == ["S1:2"]
+    assert r["coverage"]["with_back"] == 2
