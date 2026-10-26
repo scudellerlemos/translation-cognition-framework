@@ -56,7 +56,7 @@
     "charset_note": "Acento pt-BR = acento sobreposto + letra-base (2 bytes, igual ao UTF-8): connector/font.py estende a fonte de dialogo do INIT.DAT. Cobre a/e/o/u/c/i com agudo, grave, circunflexo, til e cedilha; outros diacriticos (n-til, trema) sao transliterados. Fonte de menu (16 px) ainda sem acento."
   },
   "db": {"path": "bof4.db", "project_id": "bof4"},
-  "rag_min_score": null,
+  "rag_min_score": 0.55,
   "profile": {
     "voice_profiles": "profile/voice_profiles_reference.md",
     "identity_pairs": "profile/identity_pairs_reference.md",
