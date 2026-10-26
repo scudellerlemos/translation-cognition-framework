@@ -33,7 +33,7 @@
 | `series` | string | — | Série para a TM compartilhada (`tm_lookup`); sem o campo = slug do título |
 | `hitl` | bool | — | `true` liga os pontos de humano no laço (`hitl.py`) |
 | `budget.max_usd_per_wave` | número | — | teto de gasto (USD) por onda do `wave.py`; `--max-usd` na linha de comando vence; sem a chave, sem teto |
-| `rag_min_score` | float | — | Score mínimo p/ hits da TM semântica no pacote de contexto; `null`/ausente = sem corte (default) |
+| `rag_min_score` | float | — | Score mínimo p/ hits da TM semântica no pacote de contexto; `null`/ausente = sem corte; o template traz `0.55` (calibrado em en→pt-BR, ver `RAG_ARCHITECTURE.md`) |
 | `profile` | object | — | Caminhos para os arquivos de perfil curado (ver abaixo) |
 | `notes` | string | — | Observações livres sobre o título |
 

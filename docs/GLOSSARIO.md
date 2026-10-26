@@ -31,7 +31,7 @@ Documentados em `docs/ROADMAP.md` (seção P1.5, Histórico detalhado).
 | R3 | **Fase 0 / cobertura de KB** | KB reconciliada + gate de cobertura (`kb_gate.py`) |
 | R4 | **Controle de spoiler** | `spoiler_ledger.json` + filtro temporal + regra de gênero |
 | R5 | **Bundle de custo** | Batch API −50% + model tiering + back-batch + guardrails de orçamento |
-| R-CUSTO | **Re-tradução cara** | re-tradução era 58% do gasto (rótulo de engine traduzido → estouro de budget → retighten); resolvido por `model._label_passthrough` |
+| R-CUSTO | **Re-tradução cara** | re-tradução era 58% do gasto (rótulo de engine traduzido → estouro de budget → retighten); resolvido por `_label_passthrough` (hoje em `translation_rules.py`) |
 
 ## Riscos de engenharia (mitigações offline)
 Documentados em `docs/ROADMAP.md` (seção P4, Histórico detalhado).
@@ -78,6 +78,18 @@ descoberta de engine (`T1`/`T2`/`T3`) virou `known_engine`/`unknown_engine`/`blo
 encaixe de bytes na reinserção (`T1`–`T4`) virou nomes descritivos por conector — `direct`/
 `repoint`/`trimmed`/`residue` no template (`framework/connectors/_skeleton/reinsert.py`), `in_place`/
 `residuo` no Utawarerumono, `unchanged`/`shrunk`/`expanded`/`individual_overflow` no Breath of Fire IV.
+
+## Termos do ciclo de ondas (2026-10)
+Nomes que aparecem em `docs/` e nos ADRs 0019 a 0025; não são códigos antigos.
+
+| Termo | Significado |
+|---|---|
+| **Onda** | lote de cenas traduzido, conferido e fechado junto (skill `rodar-onda`); no lote roda via `lancar_lote.ps1` |
+| **Fila diferida** | `"hitl_fila": "diferida"`: a onda não para por escalonamento ou lore novo; o humano responde no fim do lote (ADR 0020) |
+| **Forma curta** | coluna `forma_curta` do glossário: forma menor aceita quando a canônica estoura o orçamento de bytes (ADR 0024) |
+| **Retrotradução cega** | variante em duas passagens (A só com o target, B com o source); medida e não adotada (ADR 0025) |
+| **Fachada de `model`** | `model.py` reexporta `model_api.py` (API) e `model_session.py` (sessão) (ADR 0019) |
+| **Drift** | cena `verified` cujo texto mudou depois do fechamento (`touched.py`) |
 
 ## Abreviações de domínio aceitas
 Estas **podem** aparecer em código — são jargão de domínio estabelecido, documentado em

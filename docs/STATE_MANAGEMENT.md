@@ -50,3 +50,16 @@ semanticamente parecidas" que a busca por tag não acha → aí entra RAG/vetor 
 `state_index.py` é **idempotente**: apagar `artifacts/state/` e rodar `python state_index.py <projeto>`
 reconstrói TM + voice cards + decision_index byte-idênticos a partir dos artefatos. Travado por
 `test_state_index_idempotent`. Isso garante que o estado nunca é uma caixa-preta presa à sessão.
+
+## Escrita segura com processos em paralelo (ADR 0018)
+
+O estado vive em arquivos que o `wave` e vários subagentes escrevem ao mesmo tempo. No Windows, `open('a')` com
+vários processos perde ou mistura linhas, e `write_text` direto deixa o JSON truncado se o processo cai. Por isso:
+
+- **Arquivo regravado inteiro** (JSON, MD, CSV, JSONL de estado): `paths.atomic_write` / `paths.atomic_write_csv`
+  gravam num temporário do mesmo diretório e trocam com `os.replace`; no Windows repetem por ~1 s se o destino
+  estiver aberto por outro processo.
+- **Linha acrescentada** (logs, ledger): `paths.append_line` anexa sob `paths.locked` (lock-file); sem a trava em
+  30 s dá `TimeoutError`, e o log de observabilidade só avisa, sem derrubar a onda.
+- **Gate por cena** (ADR 0017): o bloqueio global só vale na entrada da onda seguinte; dentro da onda cada cena é
+  conferida sozinha, para uma cena com problema não parar as outras.

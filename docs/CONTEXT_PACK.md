@@ -15,6 +15,22 @@ projeto, seleciona um subconjunto de cada fonte e grava dois arquivos no diretó
 `pack.json` (estruturado, consumido pelo backend `api`) e `scene_prompt.md` (o mesmo conteúdo como
 prompt pronto, usado pelo backend `in-session`).
 
+## Do pacote ao prompt (`pack_render.py`)
+
+O `scene_prompt.md` é gerado por `pack_render.render_prompt(pack, carta)` (ADR 0019), que o `context_pack.py`
+reexporta. A função só junta seções, uma função privada por seção: cabeçalho (quantas falas já vêm da TM), carta do
+projeto, regras, glossário, vozes, decisões, guardas de spoiler, KB, memória de tradução, disciplina de orçamento,
+tabela de falas e formato de saída. Os dois caminhos (sessão e API) usam o mesmo texto; um teste golden
+(`test_model_golden.py`) trava o prompt byte a byte.
+
+Dois detalhes da tabela de falas e do glossário que o tradutor precisa respeitar:
+
+- **Coluna `nl`:** quantas vezes o token de quebra de linha aparece no source daquela fala. O `t` repete exatamente
+  essa quantidade, no mesmo lugar; o gate de plano acusa `tokens estruturais divergentes (src=... tgt=...)` quando não.
+- **Coluna `forma curta`:** aparece no glossário só se algum termo da cena tem a coluna `forma_curta` preenchida
+  (ADR 0024). É a forma menor aceita quando a canônica estoura o orçamento de bytes da fala; o `glossary_lint` a
+  conta como alias válido.
+
 ## Como a seleção funciona
 
 O texto-fonte de todas as falas da cena é concatenado e passado para minúsculas (`blob_low`). Cada

@@ -43,7 +43,7 @@ resto deste grupo é plumbing **determinístico** em volta da IA:
 flowchart LR
   subgraph ia["IA — a fronteira não-determinística"]
     tr["model.py<br/>translate · batch_*"]:::a
-    bt["back_translate.py<br/>revisão de alto risco"]:::a
+    bt["back_translate.py<br/>revisão dos níveis de risco exigidos"]:::a
   end
   subgraph det["suporte ao modelo — determinístico"]
     client["llm_client.py<br/>cliente · backoff · batch"]:::d
@@ -58,8 +58,12 @@ flowchart LR
 
 | Arquivo | IA? | Função |
 |---|---|---|
-| `model.py` | 🩷 IA | `translate` / `batch_*`; backends `in-session` (assinatura) e `api` (model-mix); guard anti-blow-up. |
-| `back_translate.py` | 🩷 IA | Back-translation de alto risco (Opus) + amostragem ~5% das low/medium; invalidação de stale. |
+| `model.py` | 🩷 IA | Fachada de `translate` / `batch_*` (ADR 0019): reexporta `model_api` e `model_session`; backends `in-session` (assinatura) e `api` (model-mix); guard anti-blow-up. |
+| `model_api.py` | 🩷 IA | Caminho de API do `translate`: cliente, streaming, retry e lote (Batch API). Import preguiçoso do SDK; não importa o caminho de sessão. |
+| `model_session.py` | det. | Caminho de sessão do `translate`: garante o `scene_prompt.md` e confere se o agente da sessão já escreveu `translations_<cena>.json`. Sem rede. |
+| `pack_render.py` | det. | Renderiza o `scene_prompt.md` a partir do pacote (função pura, uma função por seção); `context_pack` reexporta `render_prompt`. |
+| `translation_rules.py` | det. | Regras de tradução compartilhadas pelos dois caminhos: paridade do token de quebra, tokens de formatação, orçamento de bytes, guarda de blow-up, rótulo de engine e dedup por TM. |
+| `back_translate.py` | 🩷 IA | Back-translation (Opus) das falas dos níveis de `back_translation_risk` (padrão `high` e `critical`) + amostragem ~5% das demais; invalidação de stale; variante cega opt-in (`back_translation_cega`, ADR 0025). |
 | `llm_client.py` | det. | Cliente + backoff/retry, await de batch, dotenv. |
 | `ollama_client.py` | det. | REST client pro Ollama local (zero custo de API) — usado só pelo pipeline de KB (`kb_fetch`/`kb_build_ollama`) e por `tcf ollama`, não é backend de tradução (ADR 0008); configuração via `OLLAMA_HOST`/`OLLAMA_MODEL`/`OLLAMA_NUM_CTX`. |
 | `config.py` | det. | Constantes de tier/modelo/custo/status (sem lógica). |
@@ -96,6 +100,10 @@ flowchart LR
 | `quality_gate.py` | Cruza veredito de back-translation + cobertura; `--export` da worklist `revise`. |
 | `quality_review.py` | Relatório humano **XLSX** amigável; aplica verbatim (R$ 0) ou nota cirúrgica; `--max-usd`. Persiste `qa_effectiveness.jsonl` (`total_marked` vs `applied`) a cada ciclo. |
 | `quality_fix.py` | Re-traduz dirigido só os offsets `revise` da worklist; `--max-usd`. |
+| `cost_integrity.py` | O ledger é íntegro? Campos obrigatórios, contador de uso não negativo, custo de linha paga igual ao recalculado pela tabela de preços, linha de sessão com `cost_usd` 0. |
+| `cost_reconcile.py` | Concilia o ledger com a fatura do provedor, mês a mês (só a API paga entra). |
+| `quality_sample.py` | Medida de qualidade por amostra aleatória julgada pelo humano (`export`, depois a conta): taxa de erro, taxa da triagem e acerto do juiz. $0, sem IA. |
+| `amostra_revisao.py` | Amostra estratificada das cenas ainda sem visto humano (ponto de controle do `hitl.py`): `high`/`critical` espalhadas pelas cenas, mais uma fala por cena. |
 | `glossary_lint.py` | Consistência de glossário cross-capítulo: termo do EN sem a forma canônica no pt-BR → candidatos p/ revisão. |
 | `cost_report.py` | Agrega `api_ledger.jsonl` (custo real por modelo/tipo/cena; gasto desperdiçado). `--summary`: linha única p/ embeber em docs (G5); `--json`: saída estruturada. |
 | `review_page.py` (+ `review_page_tpl.py`) | Página local de revisão humana das planilhas de `qa_revisao/para_revisar` (HTML, fora do git): só lê os CSVs e devolve o mesmo CSV; `--serve [--port 8765]` grava direto na pasta. |
@@ -106,6 +114,25 @@ flowchart LR
 | `translate_checkpoint.py` | Não perde as linhas já pagas quando os retries esgotam: `save`/`load`/`clear` de `partial_translations_<id>.json` (vale só com mesmo source e `doctrine_hash`) e `log_exhausted`. |
 | `batch_status.py` | Checagem honesta de batches em andamento (só reporta; nunca cancela). |
 | `batch_smoke.py` | Smoke vivo do contrato da Batch API antes de pagar um capítulo inteiro (E5). Validado ao vivo (~$0,0018 por run, 2 linhas Haiku+Sonnet). |
+
+**Lote, cota e alertas (det.)** — apoio do `rodar_ondas.ps1` e da skill `rodar-onda` (`.claude/skills/rodar-onda/`)
+
+| Arquivo | Função |
+|---|---|
+| `onda_fim.py` | Acha a linha final de uma onda (`ONDA_OK: <n> cenas, <x> falas`, `PARADA: <motivo>` ou `FIM`): vale a última linha com a forma do contrato, em qualquer posição do log. |
+| `estimar_lote.py` | Tempo de um lote de ondas: mediana de minutos por fala das ondas já feitas × falas do plano do `panorama.py`. |
+| `lote_status.py` | Uma tela com a situação do lote: execução viva (lock), `estado.json` contra o `run_state.json`, último log de onda e batimento do projeto. |
+| `cota_uso.py` | % de cota da assinatura usada, lido do `rate_limit_event` do `claude -p` (custa uma chamada mínima em Haiku; usar no início e no fim do lote). |
+| `espera_reset.py` | Segundos até a cota voltar, lidos do aviso de limite na saída do `claude -p` (+ margem de 2 min). |
+| `alerts.py` | Alerta de falha de onda: evento `alert`, `artifacts/alerts.jsonl` e, com `TCF_ALERT_WEBHOOK`, um POST JSON (só projeto, cena, passo, resultado e código de saída). |
+
+**Benchmarks (dev, fora do pipeline)**
+
+| Arquivo | Função |
+|---|---|
+| `perf_bench.py` | Benchmarks de performance com baseline e limite por operação, sobre dados 100% sintéticos. |
+| `perf_ab.py` | Guardrail A/B (ADR 0019): o mesmo benchmark em dois códigos (um commit × a árvore atual), na mesma máquina e sessão. |
+| `bench_retro_cega.py` | Mede a retrotradução cega contra a padrão com defeito rotulado (`sorteio`, `montar`, `placar`; ADR 0025). Trabalha numa pasta fora do repo. |
 
 **Testes**
 

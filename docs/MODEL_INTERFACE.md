@@ -3,6 +3,11 @@
 `framework/runtime/model.py` é a **única** fronteira não-determinística do harness. Isola "como a IA é
 chamada" do "o que o pipeline faz", para que o mesmo `run_scene` rode com qualquer modelo/caminho.
 
+Desde a Onda 4 (ADR 0019) o `model.py` é uma **fachada**: reexporta a API pública e delega a dois módulos, um por
+caminho. `model_api.py` tem o caminho da API (SDK, schema estrito, batch, cache da doutrina, retentativas) e
+`model_session.py` o caminho de sessão (prompt auto-contido e checagem do arquivo produzido). Quem importa
+`model` continua igual; o `test_layering.py` trava as camadas e o `test_model_golden.py` trava o prompt.
+
 ## Contrato
 
 ```
@@ -12,12 +17,12 @@ back_translate(root, scene, high_lines, *, backend, model) -> {status, path|prom
 
 Dois papéis de IA, e **apenas** estes:
 - **translate** — traduz a cena a partir do pacote limitado (`context_pack`).
-- **back_translate** — verifica linhas `risk >= high`, mais uma amostra de 5% das demais nas cenas vindas do batch (pt-BR → EN → confere sentido/voz/ambiguidade).
+- **back_translate** — verifica as linhas dos níveis de `back_translation_risk` do projeto (padrão `high` e `critical`), mais uma amostra de 5% das demais nas cenas vindas do batch (pt-BR → EN → confere sentido/voz/ambiguidade).
 
 ## O formato da resposta
 
 A chamada de tradução usa saída estruturada estrita. O modelo devolve um array com uma entrada por
-fala, e a API rejeita qualquer resposta fora do schema (`_TRANSLATION_SCHEMA` em `model.py`):
+fala, e a API rejeita qualquer resposta fora do schema (`_TRANSLATION_SCHEMA` em `model_api.py`):
 
 ```json
 {"lines": [{

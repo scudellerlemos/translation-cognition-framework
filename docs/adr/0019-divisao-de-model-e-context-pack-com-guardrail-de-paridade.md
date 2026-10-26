@@ -1,6 +1,6 @@
 # ADR 0019 — Divisão de `model.py` e `context_pack.py` com guardrail de paridade entre os caminhos
 
-**Status:** proposto · **Data:** 2026-10-18
+**Status:** aceito (implementado; passos B1-B7 concluídos em 2026-10-18) · **Data:** 2026-10-18
 
 ## Contexto
 

@@ -18,7 +18,7 @@ cena). A economia vem das técnicas abaixo; a tabela segue a ordem do pipeline e
 | **Retry por fala** | reenvio | se a saída vem incompleta ou inválida, a nova tentativa manda só as falas que falharam; as já pagas ficam em checkpoint | custo do retry proporcional ao que quebrou |
 | **Reconferência só do tocado** | reprocessar cena já verificada | `run_scene` grava `t_hashes` (impressão digital por fala) ao fechar `verified`; cena `verified` sem fala tocada, com a mesma doutrina e o mesmo conector, é pulada (`--full` reconfere), e o `pack.json` gravado é reaproveitado (`touched.py`, `model.saved_pack`) | uma correção pontual não reabre o capítulo |
 | **Texto repetido entre cenas** | tokens de saída | `scene_dedup.py`: cenas com a mesma sequência de texto-fonte formam um grupo; só o representante vai ao modelo e `copy` leva tradução e retrotradução às outras, remapeando os offsets por posição (as cópias passam pelos mesmos gates) | cada texto repetido é traduzido uma vez |
-| **Verificação amostrada** | chamadas ao modelo mais caro | back-translation só nas falas de risco alto, mais 5% das demais | Opus vê uma fração do corpus |
+| **Verificação amostrada** | chamadas ao modelo mais caro | back-translation só nos níveis de risco que o projeto exige (`back_translation_risk`), mais 5% das demais | Opus vê uma fração do corpus |
 | **Prompt caching** | tokens de entrada repetidos | a doutrina de tradução vai no `system` com `cache_control` | pequeno: a doutrina (a Carta, `translation_governance.md`) tem 7,5 mil caracteres, cerca de 2,2K tokens por estimativa de caracteres, e num capítulo medido custou US$ 0,14 contra US$ 3,41 de saída. No lote as requisições rodam em paralelo e regravam o cache, então o ganho ali é praticamente nulo |
 
 As três técnicas de maior efeito são detalhadas a seguir, com o mecanismo e a origem de cada
@@ -86,7 +86,7 @@ thinking, uma cena coberta pela TM saiu com 37 de 37 falas idênticas à referê
 comédia de 408 falas, fora da TM, manteve registro e humor no nível da versão de referência.
 
 A back-translation mantém thinking: ali o modelo precisa comparar sentido entre duas versões, e
-ela só roda nas falas de risco alto.
+ela só roda nas falas dos níveis de risco que o projeto exige (padrão `high` e `critical`).
 
 ## Haiku para falas de uma linha: −67% por fala
 

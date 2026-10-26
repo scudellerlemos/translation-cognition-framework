@@ -38,6 +38,19 @@ Rodam sem IA e sem custo. São **medida**, não heurística.
 | **Caixa / largura** | "saiu do balão" | a fonte é monoespaçada (RE) → **nº de chars = pixels**; cada linha pt-BR é comparada à **sua própria EN** (mesmo offset = mesma caixa, e a EN já rodou no jogo) |
 | **Consistência de glossário** | termo do glossário não seguido em algum capítulo | `glossary_lint.py`: onde o EN usa o termo mas o pt-BR não tem a forma canônica (nome `manter_original` ausente / tradução `traduzir` não usada). Nomes sempre; palavras-comuns genéricas são puladas (traduzem por contexto). Saída = candidatos p/ revisão. |
 
+Outros gates que fecham a onda, também sem custo de IA (detalhe em [`TRANSLATION_PIPELINE.md`](TRANSLATION_PIPELINE.md)):
+
+- **`quality_gate.py`** — confere cobertura da retrotradução nos níveis de risco que o projeto exige
+  (`back_translation_risk`), lista os vereditos `revise` e barra enquanto houver item aberto na fila de escalonamento.
+- **`pattern_lint.py`** — `largura` e `parametro` bloqueiam; `pt-PT?` e `identico-fonte` só são contados. Roda antes da
+  amostra de qualidade.
+- **Fila de escalonamento (`hitl.py`)** — fala em que a forma do glossário não entrou, ou que o tradutor marcou com
+  `escalate`, espera a decisão do humano (`alias` ou `correcao`), agrupada por termo.
+
+**Medida de qualidade (`quality_sample.py`).** `export` sorteia 200 pares únicos do jogo, mistura os que a triagem de
+risco (`risk_triage.py`) apontou sem dizer a origem, e o humano marca `ok`/`erro`; `score` dá a taxa de erro com
+intervalo de 95%. É a medida de quanto o piso humano ainda acha, não um gate.
+
 A coluna **"Caixa (cresceu vs EN?)"** no relatório de revisão classifica cada linha:
 - **vazio** = pt-BR ≤ a EN → **cabe, provado**;
 - **`rever +Nc`** = cresceu vs o original (provável OK, usa a folga da caixa);

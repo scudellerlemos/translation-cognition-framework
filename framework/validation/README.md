@@ -5,6 +5,7 @@ Genéricos: descobrem tudo lendo o `project.json` da instância; **não contêm 
 
 - **`validate.py`** — schemas + invariantes estruturais.
 - **`naturalness_lint.py`** — smells de naturalidade/tradução (apoio à Carta de Governança).
+- **`test_docs_integrity.py`** — testes de integridade do repositório: ADRs sequenciais com status válido, `VERSION` igual à entrada mais recente do `docs/CHANGELOG.md`, `CODEOWNERS` cobrindo o repo, lock de dependências com hash e cobertura de ML obrigatória via o agregador.
 - **`cost_model.py`** — custo de produção via API em 3 cenários (`python cost_model.py <projeto> [--report]` grava `artifacts/cost_report.md`); tokens estimados (~chars/3,8), ordem de grandeza.
 
 ---

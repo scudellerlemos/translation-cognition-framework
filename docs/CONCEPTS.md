@@ -99,7 +99,7 @@ re-inferência.
 amarrada a um modelo específico, cada troca é uma reescrita — e você não consegue usar o modelo *certo
 para cada tarefa*.
 
-**A solução.** Existe **uma única fronteira** com o LLM (`runtime/model.py`). O resto do sistema não
+**A solução.** Existe **uma única fronteira** com o LLM (`runtime/model.py`, fachada de `model_api.py` e `model_session.py`). O resto do sistema não
 sabe qual modelo roda. Isso permite **tiering**: linha simples → modelo barato (Haiku); cena multi-linha
 → intermediário (Sonnet); verificação de alto risco → o melhor (Opus). Trocar ou reescalonar é
 **configuração**, não refatoração.
@@ -130,6 +130,11 @@ versionar e re-executar". O "spec-driven" é a aplicação, à IA, da velha liç
 implícito explícito.
 
 > As etapas vivem em `framework/skills/00..09` (prosa) + `framework/runtime/` (executável). Em execução formam três blocos (preparação, laço por cena, fechamento) com retornos de correção: ver `framework/skills/_index.md` e `docs/DIAGRAMAS.md`.
+
+> Além das etapas, o projeto tem **skills de operação** em `.claude/skills/`, que conduzem o trabalho do dia a dia
+> sem alterar o runtime: `rodar-onda` (uma onda de tradução ponta a ponta), `panorama-ondas` (progresso real e plano
+> das próximas ondas), `levantar-melhorias` (o que a onda ensinou ao framework) e `gaps-custo` (onde há gap de custo
+> e performance). As etapas dizem *o que* o pipeline faz; essas skills dizem *como* tocar um projeto em andamento.
 
 ---
 

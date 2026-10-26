@@ -14,7 +14,7 @@ final. É útil quando a tarefa exige encadeamento lógico: ambiguidade semânti
 verificação de voz — situações onde o caminho percorrido pelo modelo importa tanto quanto a saída.
 
 **No framework:** CoT aparece exclusivamente na **back-translation** (`back_translate`), rodando com
-Opus e `thinking` habilitado. A ideia é simples: linhas de alto risco (risco ≥ `high`, mais uma amostra
+Opus e `thinking` habilitado. A ideia é simples: linhas dos níveis de risco do projeto (padrão `high` e `critical`; `back_translation_risk`, ADR 0022), mais uma amostra
 de 5% das demais nas cenas vindas do batch) são
 retraduzidas de pt-BR para EN e o raciocínio exposto permite detectar onde a tradução original
 perdeu sentido ou alterou a voz do personagem.

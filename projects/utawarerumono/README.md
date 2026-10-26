@@ -1,7 +1,7 @@
 # Projeto: Utawarerumono: Mask of Deception
 ## Primeira instância de referência do framework SDD
 
-Este é o projeto de localização que originou o framework. Serve como **referência viva**: prova de que o processo genérico em `/framework/` funciona em um título real, e exemplo de como preencher uma instância nova.
+Este é o projeto de localização que originou o framework. (A continuação *Utawarerumono: Prelude to the Fallen* é outro jogo e vive à parte, em [`../utawarerumono_prelude/`](../utawarerumono_prelude/ROADMAP.md).) Serve como **referência viva**: prova de que o processo genérico em `/framework/` funciona em um título real, e exemplo de como preencher uma instância nova.
 
 ### Em 30 segundos
 
@@ -112,10 +112,11 @@ Toda a config deste título vive em [`project.json`](project.json):
 ## Artefatos gerados (`artifacts/`)
 
 Onde os outputs do pipeline vivem: `dialogs.csv` (output do Passo 00, depois imutável), `entities.csv`,
-`entities_candidates.json`, `aliases_map.json`, `tone_analysis.md`, `glossary.csv`, `research_log.md`,
-`universe_knowledge_base.md`, `translation_plan.json` (proposta), `approved_translations.csv` (aprovado —
-fonte de verdade da tradução aplicada), `translation_status.json`, `micro_qa_log.json`, `qa_report.md`,
-`reinsertion_report.md`, e a saída em `output/` (Passo 08). Ver `framework/schemas/artifacts_schema.md`.
+`tone_analysis.md`, `glossary.csv`, `research_log.md`, `universe_knowledge_base.md`, `qa_report.md`,
+`reinsertion_report.md`, a tradução por cena em `scenes/<cena>/` (proposta e aprovada) e a saída em `output/`
+(Passo 08). Os artefatos do formato antigo (`translation_plan.json`, `approved_translations.csv`,
+`aliases_map.json`, `translation_status.json`, `micro_qa_log.json`…) ficam em `artifacts/archive/`.
+Ver `framework/schemas/artifacts_schema.md`.
 
 > A tradução **não** é escrita à mão pela IA dentro dos dados: ela propõe em `translation_plan.json`,
 > o usuário aprova em `approved_translations.csv`, e o script aplica. (`translated.csv` foi depreciado.)
