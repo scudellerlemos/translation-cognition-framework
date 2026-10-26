@@ -94,6 +94,8 @@ def test_wave_checkpoint_blocks_only_new_scenes_until_ack(tmp_path):
     assert hitl.note_verified(root, done[-1:])
     sample = (paths.qa_outbox(root) / "onda_amostra.csv").read_text(encoding="utf-8-sig").splitlines()
     assert 1 < len(sample) <= hitl.WAVE_SAMPLE + 1
+    assert sample[0].startswith("scene,offset,risk,speaker")       # amostra estratificada (amostra_revisao), nao mais so hash
+    assert len({ln.split(",")[0] for ln in sample[1:]}) > 1         # espalhada por cena
     assert "ponto de controle" in hitl.wave_problems(root, ["NOVA"])[0]
     paths.pack(root, "S00").write_text("{}", encoding="utf-8")          # cena ja em andamento nao trava
     assert hitl.wave_problems(root, ["S00"]) == []
@@ -169,6 +171,35 @@ def test_resolve_accepts_translator_escalation_without_term(tmp_path):
     assert "escalate" not in json.loads(tf.read_text(encoding="utf-8"))["lines"]["S00:0"]
 
 
+def _set_lore_novo(root, offset, termo):
+    tf = paths.translations(root, "S00", "S00")
+    data = json.loads(tf.read_text(encoding="utf-8"))
+    data["lines"][offset]["lore_novo"] = termo
+    tf.write_text(json.dumps(data), encoding="utf-8")
+
+
+def test_new_lore_enters_glossary_as_keep_original_once(tmp_path):
+    root = _project(tmp_path)
+    _set_lore_novo(root, "S00:0", ["Mapotti", "warmaster"])        # o segundo ja existe (sem diferenciar caixa)
+    assert hitl.adopt_new_lore(root, ["S00"]) == ["Mapotti"]
+    assert hitl.adopt_new_lore(root, ["S00"]) == []                  # idempotente
+    gl = paths.glossary(root).read_text(encoding="utf-8")
+    assert "Mapotti,Lore (auto),Mapotti,manter_original" in gl and gl.count("Warmaster") == 1
+    assert '"by": "regra-permanente"' in (paths.artifacts(root) / "hitl_log.jsonl").read_text(encoding="utf-8")
+
+
+def test_deferred_queue_does_not_block_entry_but_fechar_does(tmp_path):
+    import wave
+    root = _project(tmp_path)
+    item = {"scene": "S00", "offset": "S00:1", "kind": "tradutor", "term": "", "expected": "",
+            "source_en": "x", "target_pt": "y", "reason": "duvida"}
+    hitl.enqueue(root, [item])
+    assert "escalonamento aberto" in wave.entry_problems(str(root), ["NOVA"])[0]       # padrao: bloqueia
+    cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
+    (root / "project.json").write_text(json.dumps({**cfg, "hitl_fila": "diferida"}), encoding="utf-8")
+    assert hitl.diferida(root) and wave.entry_problems(str(root), ["NOVA"]) == []
+
+
 def test_triage_dedups_repeats_and_raises_every_copy(tmp_path):
     root = _project(tmp_path, n_scenes=3)
     r = risk_triage.export(root, batch=10)
@@ -232,7 +263,15 @@ def test_pattern_lint_blocks_sample_export(tmp_path, monkeypatch):
     r = pattern_lint.lint(root)
     assert r["counts"]["pt-PT?"] > 0 and r["blocking"] == {}   # heuristica: avisa, nao bloqueia
     import box_width
-    monkeypatch.setattr(box_width, "widths", lambda t, tbl: [999])
+    monkeypatch.setattr(box_width, "widths", lambda t, tbl: [999, 999])   # fonte quebrada pelo autor e alvo largo
     assert set(pattern_lint.lint(root)["blocking"]) == {"largura"}
     with pytest.raises(SystemExit, match="lint de padroes"):
         quality_sample.export(root, n=10)
+
+
+def test_csv_terms_returns_rows_the_db_loader_does_not_see_yet(tmp_path):
+    root = _project(tmp_path)
+    with paths.glossary(root).open("a", encoding="utf-8") as fh:
+        fh.write("Novo,grupo,Novo,manter_original,,2026-01-01" + chr(10))
+    assert hitl._csv_terms(root, {"warmaster": "Warmaster"}) == {"novo": "Novo"}
+    assert hitl._csv_terms(root, {"novo": "Novo", "warmaster": "Warmaster"}) == {}

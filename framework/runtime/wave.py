@@ -28,6 +28,7 @@ from pathlib import Path
 
 import alerts
 import cost_report
+import events
 import paths
 
 _HERE = Path(__file__).resolve().parent
@@ -116,6 +117,27 @@ def steps(project: str, scenes: list[str], backend: str, require_back: bool) -> 
                   ("cost_detail", ["cost_report.py", project, "--by-scene"]), ("obs_report", ["obs_report.py", project])]
 
 
+_ESPERA_RUN_SCENE = ("AGUARDANDO traducao", "AGUARDANDO back-translation")
+_ESPERA_GATE = ("SEM COBERTURA", "REVISAR", "ESCALONAMENTO")
+_ERRO = ("Traceback", "ERRO", "BLOQUEADO", "SCHEMA")
+
+
+CARENCIA_CORRECAO = 1800.0     # s: tempo que a sessao tem para corrigir uma traducao parada antes de virar alerta
+
+
+def espera_esperada(name: str, text: str) -> bool:
+    """O passo saiu com codigo != 0 so porque a sessao ainda tem de traduzir ou retrotraduzir (fluxo normal da
+    onda), sem erro de verdade: nao vira alerta. Qualquer marca de erro no texto mantem o alerta."""
+    if "Traceback" in text:
+        return False
+    if name.startswith("run_scene") and events.CORRECAO_MARCA in text:
+        return True                                  # defeito da traducao que a sessao corrige: segue sendo a onda
+    if any(m in text for m in _ERRO):
+        return False
+    marcas = _ESPERA_RUN_SCENE if name.startswith("run_scene") else _ESPERA_GATE if name == "quality_gate" else ()
+    return any(m in text for m in marcas)
+
+
 def phase_lines(name: str, text: str) -> list[str]:
     """Do run_scene: so as linhas que dizem em que fase a onda esta (AGUARDANDO traducao/back-translation) e
     quais cenas fecharam. Sao o contrato com o `session_usage` (fase e fechamento da cena na transcricao: sem
@@ -140,8 +162,8 @@ def entry_problems(project: str, scenes: list[str]) -> list[str]:
     """Bloqueio global na ENTRADA da onda: escalonamento aberto de cena fora do pedido (onda anterior) impede
     abrir onda nova. O gate da onda e por cena; isto garante que nenhuma pendencia fique esquecida."""
     import hitl
-    if not scenes or not hitl.enabled(project):
-        return []
+    if not scenes or not hitl.enabled(project) or hitl.diferida(project):
+        return []                                  # fila diferida: o humano responde no fim do lote (quality_gate --fechar)
     if all(paths.pack(Path(project), s).is_file() for s in scenes):
         return []                                  # cenas ja em andamento (subagente em paralelo): nao e onda nova
     want = set(scenes)
@@ -175,6 +197,8 @@ def run(project: str, scenes: list[str], backend: str = "in-session", require_ba
         print("BLOQUEADO na entrada da onda: " + " | ".join(probs))
         alerts.notify(project, "entrada", "blocked", scenes[0] if scenes else None, 1)
         return 1
+    # parada por defeito da traducao que ficou para tras (onda manual, sem resumo de lote): alerta passada a carencia
+    alerts.alertar_correcoes_pendentes(project, CARENCIA_CORRECAO, tuple(scenes))
     log = Path(project) / "artifacts" / log_name(scenes)
     rc = 0
     todo = steps(project, scenes, backend, require_back)
@@ -215,7 +239,10 @@ def run(project: str, scenes: list[str], backend: str = "in-session", require_ba
             if p.returncode:
                 rc = p.returncode
                 print(f"PAROU em {name}: resolva a causa e rode de novo (detalhe em {log})")
-                alerts.notify(project, name, "failed", scenes[0] if scenes else None, p.returncode)
+                if espera_esperada(name, text):
+                    print("               (espera da sessao: passo normal da onda, sem alerta)")
+                else:
+                    alerts.notify(project, name, "failed", scenes[0] if scenes else None, p.returncode)
                 break
             if name == "scene_dedup":                # as copias feitas passam pelos mesmos gates
                 made = [x for x in last.split() if x in set(scenes)]

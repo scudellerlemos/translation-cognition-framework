@@ -117,14 +117,22 @@ def load_dialogs(p: Path):
     return rows
 
 
-def load_glossary(p: Path):
-    out: list[dict] = []
+def _read_rows(p: Path) -> list[dict]:
     if not p.is_file():
-        return out
+        return []
     with p.open(encoding="utf-8-sig") as fh:
-        for r in csv.DictReader(fh):
-            out.append(r)
-    return out
+        return list(csv.DictReader(fh))
+
+
+def local_glossary_rows(root) -> list[dict]:
+    """Termos do glossario privado (`glossary.local.csv`, mesmas colunas do glossary.csv): nome de spoiler e
+    afins que o repo publico nao pode carregar. Entram em tudo que le o glossario (pack, lint, cobertura da KB)."""
+    return _read_rows(paths.glossary_local(root))
+
+
+def load_glossary(p: Path):
+    """Linhas do glossario em `p` mais as do `<nome>.local.csv` ao lado dele (privado, fora do git)."""
+    return _read_rows(p) + _read_rows(p.with_name(p.stem + ".local.csv"))
 
 
 def _present(needle: str, blob_low: str) -> bool:

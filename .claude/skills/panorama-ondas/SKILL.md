@@ -12,7 +12,7 @@ description: Mostra o progresso real da tradução (falas e cenas feitas sobre o
    O arquivo só tem ids e números, mas `artifacts/` é default-deny no guard: fica local, não é versionado.
 2. Mostrar a saída ao usuário. Todo relato de progresso traz o total do jogo ao lado ("1.880 de 23.633"),
    nunca "recorte completo" sozinho.
-3. **Ordem dos capítulos.** Vem do próprio jogo: `python .claude/skills/panorama-ondas/extrai_ordem.py projects/<nome> "<pasta Data>"`
+3. **Ordem dos capítulos.** Vem do próprio jogo: o `extract.py` do conector grava `artifacts/ordem_cenas.txt` na extração (conector do Prelude: `story_order` lê o `ENG/DataBase.sdat` ao lado da fonte; sem ele mantém o arquivo existente e avisa no `extraction_log.md`). Para o primeiro Utawarerumono, ainda: `python .claude/skills/panorama-ondas/extrai_ordem.py projects/<nome> "<pasta Data>"`
    lê `ENG/DataBase.sdat:EventManagerData.bin` (433 eventos em ordem de jogo) e grava `artifacts/ordem_cenas.txt`
    (um id de cena por linha). Cena que o jogo não lista (sub-cenas disparadas por script) entra logo depois da
    última listada do mesmo `NN_NN` (verificado: 56 das 71 são falas de combate, scripts `B`, da batalha desse evento;

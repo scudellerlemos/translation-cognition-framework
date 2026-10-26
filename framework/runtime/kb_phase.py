@@ -124,11 +124,9 @@ def _kb_blob(root: Path) -> str:
     (canonical+aliases). E contra ISTO que perguntamos se um candidato esta coberto (via _present)."""
     g_parts, e_parts = [], []
     g = paths.glossary(root)
-    if g.is_file():
-        with g.open(encoding="utf-8-sig") as fh:
-            for r in csv.DictReader(fh):
-                g_parts.append(r.get("term", "") or "")
-                g_parts.append(r.get("aliases", "") or "")
+    for r in context_pack.load_glossary(g):                  # inclui glossary.local.csv (privado)
+        g_parts.append(r.get("term", "") or "")
+        g_parts.append(r.get("aliases", "") or "")
     e = paths.entities(root)
     if e.is_file():
         with e.open(encoding="utf-8-sig") as fh:
@@ -326,6 +324,52 @@ def _interj(cand: str) -> bool:
     return " " not in cand and bool(re.search(r"(.)\1\1|(h[aeiou])\2|^[^aeiouy]+$", cand.lower()))
 
 
+# Palavra comum x nome proprio, sem lista escrita a mao: frequencia da palavra na lingua de origem do projeto
+# (`wordfreq`, escala Zipf; opcional em requirements-kb.txt). Medido em ingles: palavra de dicionario >= 3,0
+# (barricade 3,09, dummy 3,64, hairdresser 3,17); nome inventado ou raro <= 2,3 (saraana 0, uruuru 0, kuon 1,28,
+# haku 2,31). Sem a biblioteca ou sem a lingua suportada, vale so o vocabulario do proprio jogo.
+_ZIPF_COMUM = 3.0
+_ZIPF_MUITO = 4.0        # ability 4,96, system 5,56, menu 4,26: tao corrente que nao e nome nem com maiuscula em frase
+_ROTULO_PALAVRAS = 4    # linha de ate 4 palavras e rotulo/titulo; maior e fala corrida
+
+
+def _zipf_fn(root: Path):
+    """Funcao palavra -> frequencia Zipf na `source_language` do projeto, ou None se nao der para medir."""
+    try:
+        import json
+
+        from wordfreq import zipf_frequency
+        cfg = json.loads((Path(root) / "project.json").read_text(encoding="utf-8-sig"))
+        lang = str(cfg.get("source_language") or "en").split("-")[0].lower()
+        zipf_frequency("test", lang)                    # lingua sem dados: LookupError aqui, nao no meio da lista
+        return lambda w: zipf_frequency(w, lang)
+    except (ImportError, OSError, ValueError, LookupError):
+        return None
+
+
+def _comum(tok: str, vocab: set[str], zipf=None) -> bool:
+    t = tok.lower()
+    return t in vocab or (zipf is not None and zipf(t) >= _ZIPF_COMUM)
+
+
+def _so_rotulo(cand: str, linhas: list[str]) -> bool:
+    """True se TODA ocorrencia do candidato esta numa linha curta (rotulo de menu, tipo de unidade, titulo).
+    Palavra comum que aparece em fala corrida com maiuscula ('prison on Saharan Island') e nome/lugar."""
+    pat = re.compile(r"\b" + re.escape(cand) + r"\b")
+    achou = [ln for ln in linhas if pat.search(ln)]
+    return bool(achou) and all(len(ln.split()) <= _ROTULO_PALAVRAS for ln in achou)
+
+
+def _kind(rec: dict, vocab: set[str], zipf=None) -> str:
+    """'ui' = palavra comum que so aparece como rotulo (traduz-se); 'nome' = provavel nome proprio (decide-se a
+    forma). 'ui' se todas as palavras sao muito correntes (Zipf >= 4), ou comuns (vocabulario do jogo ou Zipf >= 3)
+    e `rec["rotulo"]` (so em linha curta)."""
+    toks = rec["cand"].split()
+    if zipf is not None and all(zipf(t.lower()) >= _ZIPF_MUITO for t in toks):
+        return "ui"
+    return "ui" if all(_comum(t, vocab, zipf) for t in toks) and rec.get("rotulo") else "nome"
+
+
 def onda(root, scenes: list[str], max_n: int = 15) -> list[dict]:
     """Candidatos de lore/nome NAO cobertos pela KB nas cenas da onda (so elas, com teto): inclui os que
     aparecem uma vez so, que o `coverage` deixa passar e viram escalonamento no meio da traducao.
@@ -333,6 +377,11 @@ def onda(root, scenes: list[str], max_n: int = 15) -> list[dict]:
     d = discover(root, "onda", only=scenes)
     cands = [r for r in d["gap"] if not _interj(r["cand"])] + [r for r in d["weak"] if (r["mid"] or r["nl"]) and not r["cand"].lower().endswith(("n't", "'t", "ly"))
                         and "-" not in r["cand"] and not _interj(r["cand"])]
+    vocab, zipf = _lower_vocab(root), _zipf_fn(root)
+    linhas = [ln for _, t in _scan(root, list(scenes)) for ln in t.split("\n")]
+    for r in cands:
+        r["rotulo"] = _so_rotulo(r["cand"], linhas)
+        r["kind"] = _kind(r, vocab, zipf)
     return sorted(cands, key=lambda r: (-r["count"], r["cand"].lower()))[:max_n]
 
 
@@ -461,8 +510,19 @@ def main():
     if a.scenes:
         got = onda(root, a.scenes, a.max)
         print(f"kb_phase onda: {len(got)} candidato(s) de lore/nome sem forma na KB (teto {a.max}) em {len(a.scenes)} cena(s)")
-        for r in got:
-            print(f"  {r['cand']}  ({r['count']}x, cenas: {', '.join(r['scenes'])})")
+        if _zipf_fn(root) is None:
+            print("AVISO: sem tabela de frequencia (wordfreq ausente ou source_language sem dados): a triagem nome x ui usa so "
+                  "o vocabulario do jogo e tende a chamar palavra comum de nome. `pip install -r requirements-kb.txt`.")
+        for kind, titulo, dica in (
+                ("nome", "PROVAVEL NOME (decidir a forma; sem opiniao, manter_original e o padrao do projeto)",
+                 "manter_original"),
+                ("ui", "PALAVRA COMUM / ROTULO DE INTERFACE (recomendo traduzir; Termo comum/UI no glossario)",
+                 "traduzir")):
+            grupo = [r for r in got if r["kind"] == kind]
+            if grupo:
+                print(f"{titulo}:")
+                for r in grupo:
+                    print(f"  {r['cand']}  ({r['count']}x, cenas: {', '.join(r['scenes'])})  -> {dica}")
         sys.exit(0)
 
     if a.check:

@@ -2688,3 +2688,40 @@ def test_tm_correct_line_scope_and_byte_measure(tmp_path):
     assert tm_correct.apply(tmp_path, corr)["replacements"] == 1
     t2 = json.loads(paths.translations(tmp_path, "ch_32_02", "32_02").read_text("utf-8"))["lines"]
     assert t2["0x1"]["t"] == "Ukon aqui"
+
+
+def test_state_index_nao_pede_voice_card_para_falante_generico(tmp_path):
+    """npc/system/unknown nao sao personagem: sem aviso de voice card (ROADMAP do projeto, item 13)."""
+    art = tmp_path / "artifacts"
+    (art / "state").mkdir(parents=True)
+    (art / "translation_plan_x.json").write_text(json.dumps({
+        "scene_group": "ch_50_01",
+        "lines": [{"offset": f"0x{i}", "text_source": "Hi", "base_translation": "Oi", "speaker": sp}
+                  for i, sp in enumerate(["npc", "system", "unknown", "Teoro"])],
+    }), encoding="utf-8")
+    (art / "tone_analysis.md").write_text("### Haku — `voice_criticality: high`\n- Direto.\n", encoding="utf-8")
+    (art / "decision_log.md").write_text("", encoding="utf-8")
+    w =" ".join(state_index.build(tmp_path).get("warnings", []))
+    assert "Teoro" in w and "npc" not in w and "system" not in w and "unknown" not in w
+
+
+def test_quality_gate_revise_diferido_passa_na_onda_e_bloqueia_no_fechar(tmp_path, monkeypatch, capsys):
+    """ADR 0021 ponta a ponta: `revise` aberto com `hitl_fila=diferida` nao trava a onda (exit 0, aviso) e trava o `--fechar`."""
+    import paths
+    (tmp_path / "project.json").write_text(json.dumps({"hitl": True, "hitl_fila": "diferida"}), encoding="utf-8")
+    d = paths.scene_dir(tmp_path, "ch_19_01")
+    d.mkdir(parents=True)
+    (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
+    (d / "translation_plan_19_01.json").write_text(json.dumps(_plan([("0x2", "critical")])), encoding="utf-8")
+    paths.back_translation(tmp_path, "ch_19_01", "19_01").write_text(_back([("0x2", "revise", "voz")]), encoding="utf-8")
+
+    def run(*extra):
+        monkeypatch.setattr(sys, "argv", ["quality_gate.py", str(tmp_path), *extra])
+        with pytest.raises(SystemExit) as e:
+            quality_gate.main()
+        return e.value.code, capsys.readouterr().out
+
+    code, out = run()
+    assert code in (0, None) and "'revise' na fila diferida" in out and "ch_19_01:0x2" in out
+    code, out = run("--fechar")
+    assert code == 1 and "REVISAR" in out

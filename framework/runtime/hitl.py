@@ -37,7 +37,6 @@ from __future__ import annotations
 import argparse
 import contextlib
 import csv
-import hashlib
 import io
 import json
 import re
@@ -49,6 +48,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import amostra_revisao  # noqa: E402
 import artifact_io  # noqa: E402
 import context_pack  # noqa: E402
 import events  # noqa: E402
@@ -174,15 +174,12 @@ def note_verified(root: Path, scenes: list[str]) -> bool:
         _save_state(root, state)
     if len(wave) < WAVE_SCENES:
         return False
-    rows = []
-    for s in wave:
-        for ln in artifact_io.plan_lines(root, s):
-            h = hashlib.sha1(f"{s}|{ln.get('offset', '')}".encode(), usedforsecurity=False).hexdigest()
-            rows.append((h, s, ln.get("offset", ""), ln.get("text_source", ""), ln.get("base_translation", "")))
     out = paths.qa_outbox(root)
     out.mkdir(parents=True, exist_ok=True)
-    paths.atomic_write_csv(out / "onda_amostra.csv", ["scene", "offset", "source_en", "target_pt"],
-                           (r[1:] for r in sorted(rows)[:WAVE_SAMPLE]), encoding="utf-8-sig")   # ordem do hash = amostra estavel
+    rows = amostra_revisao.amostra(root, wave, total=WAVE_SAMPLE, max_risco=WAVE_SAMPLE // 2)   # estratificada: risco + uma por cena, estavel
+    paths.atomic_write_csv(out / "onda_amostra.csv", ["scene", "offset", "risk", "speaker", "source_en", "target_pt"],
+                           ([r[c] for c in ("scene", "offset", "risk", "speaker", "source_en", "target_pt")] for r in rows),
+                           encoding="utf-8-sig")
     return True
 
 
@@ -293,9 +290,67 @@ def collect(root: Path, scenes: list[str], findings: list[dict] | None = None) -
     return items
 
 
+def diferida(root) -> bool:
+    """`"hitl_fila": "diferida"` no project.json (decisao do usuario): escalonamento aberto nao trava a onda
+    seguinte nem o gate por cena; so o fechamento (`--fechar`: fim de lote, antes de instalar) o exige zerado."""
+    return enabled(root) and _cfg(Path(root)).get("hitl_fila") == "diferida"
+
+
+LORE_NOTE = "lore sem forma mantido no original (regra permanente do usuario, 2026-10-18); revisar ao fechar o lote"
+
+
+def adopt_new_lore(root: Path, scenes: list[str]) -> list[str]:
+    """Regra permanente: termo de lore (nome, item, criatura, lugar) sem forma no glossario que o tradutor manteve no
+    original (`lore_novo` na fala, em vez de `escalate`) entra no glossario como `manter_original`. Duvida real
+    (trocadilho, duas leituras, nao cabe no orcamento) segue como `escalate`. Idempotente."""
+    p = paths.glossary(root)
+    if not p.is_file():
+        return []
+    novos = []
+    for s in scenes:
+        tf = paths.translations(root, s, context_pack.scene_id_of(s))
+        lines = json.loads(tf.read_text(encoding="utf-8")).get("lines", {}) if tf.is_file() else {}
+        for v in lines.values():
+            raw = v.get("lore_novo") if isinstance(v, dict) else None
+            novos += [t.strip() for t in ([raw] if isinstance(raw, str) else raw or []) if isinstance(t, str) and t.strip()]
+    if not novos:
+        return []
+    added = []
+    with paths.locked(p):
+        raw_b = p.read_bytes()
+        bom = raw_b.startswith(b"\xef\xbb\xbf")
+        txt = raw_b.decode("utf-8-sig")
+        nl = "\r\n" if "\r\n" in txt else "\n"
+        rows = list(csv.DictReader(io.StringIO(txt)))
+        if not rows:
+            return []
+        have = {(r.get("term") or "").casefold() for r in rows}
+        for t in dict.fromkeys(novos):
+            if t.casefold() in have:
+                continue
+            row = {c: "" for c in rows[0]}
+            row.update(term=t, category="Lore (auto)", target_translation=t, handling_rule="manter_original",
+                       spoiler_level="none", notes=LORE_NOTE, updated_date=date.today().isoformat())
+            rows.append({c: row.get(c, "") for c in rows[0]})
+            have.add(t.casefold())
+            added.append(t)
+        if added:
+            buf = io.StringIO(newline="")
+            w = csv.DictWriter(buf, fieldnames=list(rows[0]), lineterminator=nl)
+            w.writeheader()
+            w.writerows(rows)
+            paths.atomic_write(p, buf.getvalue(), encoding="utf-8-sig" if bom else "utf-8", newline="")
+    for t in added:
+        _log(root, kind="lore", by="regra-permanente", term=t, action="manter_original")
+    return added
+
+
 def after_batch(root, verified: list[str], newly: list[str]) -> None:
     """Depois do lote: alimenta a fila com as cenas verificadas e conta as recem-verificadas na onda."""
     root = Path(root)
+    novos = adopt_new_lore(root, verified)
+    if novos:
+        print(f"[hitl] {len(novos)} termo(s) de lore novo(s) no glossario como manter_original: {', '.join(novos)}")
     findings = glossary_lint.lint(root)
     gone = prune(root, findings)
     if gone:
@@ -396,10 +451,21 @@ def _ratify(root: Path, reviewer: str, terms: list[str]) -> int:
     return n
 
 
+def _csv_terms(root: Path, known: dict) -> dict:
+    """{termo minusculo: termo} das linhas do glossary.csv que o carregador (DB-gated) ainda nao enxerga."""
+    g = paths.glossary(root)
+    if not g.is_file():
+        return {}
+    with g.open(encoding="utf-8-sig", newline="") as fh:
+        rows = [(r.get("term") or "").strip() for r in csv.DictReader(fh)]
+    return {t.lower(): t for t in rows if t and t.lower() not in known}
+
+
 def _ratify_csv(root: Path, reviewer: str, terms: list[str]) -> int:
     if terms:      # termo nomeado: vale qualquer entrada do glossario, nao so as mais frequentes
         import kb_reconcile
         known = {g[0].lower(): g[0] for g in glossary_lint._load_glossary(root)}
+        known.update(_csv_terms(root, known))   # projeto com `db`: o CSV pode estar a frente do banco ate a proxima sincronizacao
         done = kb_reconcile._ratified_set(root)
         for t in terms:
             if t.lower() not in known:

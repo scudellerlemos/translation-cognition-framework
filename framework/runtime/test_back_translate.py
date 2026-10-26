@@ -91,3 +91,40 @@ def test_merge_back_replaces_only_rejudged_lines(tmp_path):
     merged = bt._merge_back(out, {"entries": [{"offset": "a", "verdict": "revise"}]})
     assert sorted((e["offset"], e["verdict"], e.get("stale", False)) for e in merged["entries"]) == [
         ("a", "revise", False), ("b", "pass", False)]            # 'b' (valido) preservado, 'a' re-julgado
+
+
+def _plan(root: Path, levels: dict):
+    p = paths.translation_plan(root, "S1", "S1")
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps({"lines": [{"offset": o, "risk_level": r, "text_source": "s", "base_translation": "t"}
+                                       for o, r in levels.items()]}), encoding="utf-8")
+
+
+def test_back_risk_default_cobre_high_e_critical(tmp_path):
+    _proj(tmp_path)
+    _plan(tmp_path, {"S1:0": "low", "S1:1": "high", "S1:2": "critical"})
+    assert [c["offset"] for c in bt.high_risk_lines(tmp_path, "S1")] == ["S1:1", "S1:2"]
+
+
+def test_back_risk_do_project_json_restringe_a_critical(tmp_path):
+    _proj(tmp_path)
+    (tmp_path / "project.json").write_text('{"back_translation_risk":["critical"]}', encoding="utf-8")
+    _plan(tmp_path, {"S1:0": "low", "S1:1": "high", "S1:2": "critical"})
+    assert [c["offset"] for c in bt.high_risk_lines(tmp_path, "S1")] == ["S1:2"]
+
+
+def test_back_risk_valor_invalido_volta_ao_padrao(tmp_path):
+    _proj(tmp_path)
+    (tmp_path / "project.json").write_text('{"back_translation_risk":["urgente"]}', encoding="utf-8")
+    _plan(tmp_path, {"S1:1": "high"})
+    assert [c["offset"] for c in bt.high_risk_lines(tmp_path, "S1")] == ["S1:1"]
+
+
+def test_quality_gate_so_exige_cobertura_dos_niveis_configurados(tmp_path):
+    import quality_gate as qg
+    _proj(tmp_path)
+    (tmp_path / "artifacts" / "scenes" / "S1" / "dialogs.csv").write_text("offset\n", encoding="utf-8")
+    _plan(tmp_path, {"S1:1": "high", "S1:2": "critical"})
+    assert {u["offset"] for u in qg.check(tmp_path)["uncovered"]} == {"S1:1", "S1:2"}
+    (tmp_path / "project.json").write_text('{"back_translation_risk":["critical"]}', encoding="utf-8")
+    assert {u["offset"] for u in qg.check(tmp_path)["uncovered"]} == {"S1:2"}

@@ -7,6 +7,46 @@ organizadas por período, não por versão.
 
 ---
 
+## 2026-10-23 — `spoiler_check`: termo em tabela de sistema não é vazamento
+
+- Causa raiz dos 2 alertas permanentes do Prelude (`NameTextData:7`, `UnitTextData:218`): o `check()` varria toda unidade traduzida, inclusive as tabelas de nomes/unidades do jogo, onde o dado de origem já traz o termo proibido (e o ledger marca `beyond_frontier`, "sempre futuro"). Nenhuma cena da história cita o termo.
+- Agora unidade fora de `artifacts/ordem_cenas.txt` vai para `check_tabelas()` (informativo, sem a fala) e para `tabelas_com_termo` no `spoiler_audit.json`; só cena da história entra em `name_leaks`/`clean`. Sem `ordem_cenas.txt`, nada muda (toda unidade conta como cena).
+- Testes: tabela fora do vazamento, só-tabela deixa o audit limpo, sem `ordem_cenas.txt` mantém o comportamento antigo.
+
+## 2026-10-21 — janela do lote em Haiku e benchmark A × B
+
+- `rodar_ondas.ps1`: `-Modelo` passa a `haiku` por padrão (decisão do usuário). Medido em 8 ondas intercaladas (lotes 12–19, mesmo teto de 380 falas): o overhead da janela é ~US$ 0,03 por onda; `-Esforco low` e `-PrefixoEstavel` só atuam nela (ganho possível < 3% do custo) e ficam opcionais. A diferença aparente de ~20% entre os braços era ruído de cena (o Sonnet 5d varia de US$ 0,25 a 0,62 por onda).
+- `resumo_lote.py`: tabela por onda (falas, US$/fala, janela, 1º turno de cache, tradutor, 5c/5d). Novos: `ab_benchmark.ps1` (driver A/B intercalado com teto de cota), `ab_resumo.py` (tabela A × B), `framework/runtime/cota_uso.py` (lê a cota 5h/7d), e o `vigia_lote.sh` avisa a cota e não acusa mais "PARADO?" falso no início do lote.
+- Passo 5d (skill `rodar-onda`) só retraduz `critical`; as `high` ficam com o Haiku (ADR 0023, decisão do usuário). Revisão cega de 56 falas `high`: Haiku aceitável em 91,1%, Sonnet vence 50% dos pares com vencedor. Salvaguarda: reprovação > 10% na amostra de revisão devolve o Sonnet às `high`.
+- `run_scene`: trava de rebaixamento de risco (`risk_piso_<cena>.json`, no `.gitignore`): o `risk_level` de uma fala só sobe entre rodadas da mesma cena; a rodada que rebaixar é barrada com `risco rebaixado`. Disparou em lote real (1 vez, 47 falas) e a cena fechou `verified` na rodada seguinte.
+
+---
+
+## 2026-10-21 — tabelas de sistema na descoberta e triagem de termo
+
+- `connectors/scene_scope.py`: strings e `byte_budget` por categoria, separando tabelas de sistema (id fora da forma das cenas da história) das cenas; avisa quando falta `ordem_cenas.txt`. `panorama.py` passa a mandar as tabelas para o fim por classificação, no grupo `tab`. Entra na Fase 0 (`00_extraction.md` 2b, onboarding).
+- Glossário privado (`artifacts/glossary.local.csv`, mesmas colunas do `glossary.csv`): nome de spoiler e afins que o repo público não pode carregar. Soma ao glossário em `context_pack.load_glossary` (prompt da cena), `glossary_lint` (inclusive com DB) e `kb_phase._kb_blob` (termo coberto não volta como candidato a nome). `*.local.csv` entra no `.gitignore` e no `content_guard` (bloqueado em qualquer pasta). O `kb_gate` também exige `updated_date` no arquivo privado (coluna e data em cada linha), com ou sem DB.
+- `spoiler_audit.json` saiu da allowlist do guard e entrou no `.gitignore`: o relatório traz o par personagem ↔ nome verdadeiro ainda não revelado. Continua sendo gerado e lido localmente (`spoiler_check`, `run_chapter`); só deixa de ser versionado.
+- `content_guard`: extensão `.sh` liberada, só para o vigia do lote (`vigia_lote.sh`, roda sob o Monitor do Claude Code; não cita conteúdo de jogo).
+- Alertas de correção pendente: `alerts.correcoes_pendentes` / `alertar_correcoes_pendentes` listam as cenas paradas por defeito da tradução que ninguém corrigiu (resultado `correcao_pendente`, uma vez por parada, via `_ts`). Chamado pelo `resumo_lote.py` ao fim do lote (sem carência) e pelo `wave.run` na entrada da onda seguinte, passada a `CARENCIA_CORRECAO` (30 min) e sem contar as cenas que a própria execução está refazendo.
+- `kb_gate`: exige `updated_date` no `glossary.local.csv` (coluna e data em cada linha), com ou sem DB (`_check_dated_header`).
+- `projects/utawarerumono_prelude/connector/extract.py`: grava `ordem_cenas.txt` sozinho a partir do `EventManagerData.bin` do `DataBase.sdat` ao lado da fonte (`story_order`, `write_story_order`; sem o arquivo mantém a ordem anterior ou avisa "ordem NAO confirmada"). Reproduz as 275 cenas da ordem anterior; `test_story_order.py`.
+- Runner de lote (`rodar_ondas.ps1`, `lancar_lote.ps1`, `vigia_lote.sh`, `resumo_lote.py`, skill `rodar-onda`): transcrição do console por lote, vigia que lê `-Lote`/`-Ondas`, `lancar_lote.ps1` abre a janela fora da sessão, aviso no resumo quando as requisições por fala passam de `MAX_REQ_FALA`, prompt da onda proíbe `Monitor`/`run_in_background` e `scene-translator.md` ajustado. `onda_fim.py`: o `rodar_ondas.ps1` usa a última linha com a forma do contrato (`ONDA_OK`/`PARADA`/`FIM`), mesmo com texto solto depois dela; antes só valia a última linha do log e onda boa virava "fora do contrato" (exit 3). Não feito: encerrar o `claude -p` à força quando ele escreve `ONDA_OK` e não sai (precisaria de `--output-format stream-json`).
+- `hitl.py`: `ratify` lê também o `glossary.csv` quando o banco está atrás; aviso de voice card ignora `npc`/`system`/`unknown`.
+- Limites do dia fechados: `alerts.py correcoes <projeto> [--carencia S]` (CLI) e `vigia_lote.sh` chama a cada passo, entao a correcao pendente alerta mesmo sem `resumo_lote.py` e sem onda seguinte; `kb_phase onda` avisa quando roda sem `wordfreq` (triagem so pelo vocabulario do jogo); `kb_gate` confere o `glossary.local.csv` alem da data (regra de tratamento valida, traducao onde a regra pede, termo repetido, termo que tambem esta no glossario publico).
+- `resumo_lote.py`: o custo do lote conta só as sessões que nasceram depois do disparo; a sessão principal (que lançou o lote e seguia trabalhando) saía somada e inflava custo e overhead (lote 9: $7,16 / 80% → $3,80 / 62%). Mostra a linha "Fora da conta". `vigia_lote.sh` reconhece `ONDA_OK` em log que começa com BOM.
+- `session_usage.py`: requisição de subagente sem cena (retradução do passo 5d, retrotradução; subagente de várias cenas) deixa de ser `overhead` e vira `agent` na cena `_session`, com `agent_type` lido do `.meta.json`. Overhead do lote 9: 62% → 33% (US$ 1,26 de US$ 3,84, a orquestração de fato); o custo total não mudou. `resumo_lote.py` mostra os subagentes por tipo. Ledger do Prelude refeito com `rebuild`. Teste em `test_session_usage.py`.
+- Alerta falso de `run_scene` rc=1: as paradas por defeito da tradução (`build_plan_failed`, `verify_failed`, `schema_failed`) agora imprimem `CORRECAO DA TRADUCAO` (`events.CORRECAO_MARCA`) e o `wave` não as alerta; só `Traceback` ou erro de infraestrutura alertam. O que ficar parado sem correção é alertado uma vez por parada (`alerts.alertar_correcoes_pendentes`, resultado `correcao_pendente`): ao fim do lote pelo `resumo_lote.py` e, em onda manual, na entrada do próximo `wave.run` depois de `CARENCIA_CORRECAO` (30 min), sem contar as cenas que essa execução está refazendo.
+- `kb_phase onda`: candidatos em dois grupos (provável nome × palavra comum/rótulo de interface) por frequência da palavra na `source_language` (`wordfreq`, opcional) e vocabulário do jogo, sem lista escrita à mão.
+
+---
+
+## 2026-10-20 — retrotradução por nível de risco configurável
+
+- `back_translation_risk` no `project.json` (padrão `["high","critical"]`, sem mudança para quem não declara): `artifact_io.back_risk_levels` alimenta `back_translate` e `quality_gate` (ADR 0022). Prelude: só `critical`.
+
+---
+
 ## 2026-10-17 — v2.1.0: conserto de atrito da onda
 
 MINOR (ADR 0013): parâmetros e campos novos (`--scenes` em `glossary_lint`/`quality_gate`, `code` nos eventos, `entry_problems` no `wave`) com default que preserva o uso anterior; nenhuma flag removida nem schema quebrado.
@@ -82,6 +122,18 @@ MINOR (ADR 0013): parâmetros e campos novos (`--scenes` em `glossary_lint`/`qua
   minúscula e recorre em 2 frases com companhia (`_company`; som solto como "Plop!" fica de fora) entra na lista da
   onda mesmo só em início de fala; risada (`Nyahaha`, `Hohoho`) é interjeição.
 - Testes em `test_model.py`, `test_hitl.py`, `test_wave.py`, `test_kb_phase.py`; suíte 626 passed.
+
+## Não lançado — fila diferida de `revise` e espera do reset (MINOR, sem bump ainda)
+
+- `wave.espera_esperada`: passo que sai com código ≠ 0 só porque a sessão ainda tem de traduzir ou retrotraduzir (`AGUARDANDO …`, `SEM COBERTURA`, `REVISAR`, `ESCALONAMENTO`, sem marca de erro) não gera mais o evento `alert`.
+- `estimar_lote.py` (ritmo = mediana de min/fala dos logs de onda × plano do `panorama.py`; `--estado` = cenas `verified` e idade do último evento).
+- `rodar_ondas.ps1`: estimativa no início, onda num job com batimento a cada 3 min, contagem regressiva na espera de cota, `-Teste` sem log de onda nem resumo de lote, aviso de `estado.json` mais velho que o `run_state.json`; `lancar_lote.ps1` (janela fora do Claude Code) e `vigia_lote.sh`.
+- O fim do lote não para mais por causa da fila de escalonamento: o `--fechar` e a tabela de pendências ficam para o `FIM`.
+
+ADR 0021. Com `"hitl_fila": "diferida"`, `quality_gate --scenes` só avisa de `revise` (bloqueia no `--fechar`; cobertura
+continua bloqueando); sem a chave nada muda. `framework/runtime/espera_reset.py` lê o aviso de limite de sessão ou de
+semana e o `rodar_ondas.ps1` espera o reset e refaz a onda (até 8 vezes). `obs_report` deixa de repetir falha de cena que
+depois fechou `verified`. Skill `rodar-onda`: passo 5e (Sonnet reescreve `revise`, até 2 tentativas) e formato do `offset` no 5c.
 
 ## Não lançado — Onda 3: medição (PATCH, sem bump ainda)
 

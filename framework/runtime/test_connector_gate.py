@@ -159,6 +159,32 @@ def test_full_extraction_has_no_residual_problem(tmp_path, monkeypatch):
     assert not any("extracao" in p for p in r["problems"]) and not any("residual" in w for w in r["warnings"])
 
 
+def _container_project(root: Path, texts, monkeypatch, with_hook=True):
+    """Origem em arquivo de container: so o extract.py com residual_members(src) sabe abri-lo."""
+    _hex_project(root, texts, monkeypatch)
+    blob = (root / "src" / "A.DAT").read_bytes()
+    (root / "pack.bin").write_bytes(b"HEAD" + blob)
+    monkeypatch.setenv("T_DATA_DIR", str(root / "pack.bin"))
+    hook = "def residual_members(src):\n    return {'A.DAT': open(src, 'rb').read()[4:]}\n"
+    (root / "connector" / "extract.py").write_text(hook if with_hook else "# sem hook", encoding="utf-8")
+
+
+def test_container_source_is_checked_through_extract_residual_members(tmp_path, monkeypatch):
+    _container_project(tmp_path, ["[14]", "You hear all kinds of things here."], monkeypatch)
+    assert any("extracao incompleta" in p for p in cg.check(tmp_path)["problems"])        # texto sobrou: acusa
+
+
+def test_container_source_with_full_extraction_passes(tmp_path, monkeypatch):
+    _container_project(tmp_path, ["[14][00][00]So what was in this crater you found today?",
+                                  "You hear all kinds of things here."], monkeypatch)
+    assert not any("residual" in p or "extracao" in p for p in cg.check(tmp_path)["problems"])
+
+
+def test_container_source_without_hook_stays_unchecked(tmp_path, monkeypatch):
+    _container_project(tmp_path, ["[14]"], monkeypatch, with_hook=False)
+    assert any("residual NAO checado" in p for p in cg.check(tmp_path)["problems"])
+
+
 def test_hex_binary_without_source_dir_blocks(tmp_path, monkeypatch):
     _hex_project(tmp_path, ["[14]"], monkeypatch)
     monkeypatch.delenv("T_DATA_DIR")

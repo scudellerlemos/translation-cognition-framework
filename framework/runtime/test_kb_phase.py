@@ -164,3 +164,36 @@ def test_onda_lists_one_off_and_respects_cap(tmp_path):
 
 def test_onda_drops_interjections():
     assert kp._interj("Uhhh") and kp._interj("Mmm") and kp._interj("Nrgh") and not kp._interj("Potum")
+
+
+def test_kind_separates_names_from_common_labels_by_frequency():
+    vocab = {"voice"}
+    zipf = {"barricade": 3.09, "dummy": 3.64, "enemy": 4.5, "rank": 4.4, "saraana": 0.0, "uruuru": 0.0, "sahara": 3.4, "ability": 4.96}.get
+    z = lambda w: zipf(w, 0.0)  # noqa: E731
+    k = lambda cand, rotulo=True, f=z: kp._kind({"cand": cand, "rotulo": rotulo}, vocab, f)  # noqa: E731
+    assert k("Voice") == "ui" and k("Barricade") == "ui" and k("Dummy") == "ui" and k("Enemy Rank") == "ui"
+    assert k("Saraana") == "nome" and k("Uruuru") == "nome" and k("Oshtor Cohort") == "nome"
+    assert k("Sahara", rotulo=False) == "nome" and k("Dummy", rotulo=False) == "nome"   # comum, mas em fala corrida
+    assert k("Ability", rotulo=False) == "ui"                                                  # corrente demais para ser nome
+    assert k("Barricade", f=None) == "nome" and k("Voice", f=None) == "ui"                    # sem wordfreq: so o vocabulario
+
+
+def test_so_rotulo_looks_at_every_occurrence():
+    assert kp._so_rotulo("Dummy", ["Dummy", "Training Dummy", "Hit the wall"])
+    assert not kp._so_rotulo("Sahara", ["Sahara", "He is confined in a prison on Sahara Island"])
+    assert not kp._so_rotulo("Ghost", ["nothing here"])
+
+
+def test_zipf_fn_uses_the_projects_source_language_and_degrades(tmp_path):
+    (tmp_path / "project.json").write_text('{"source_language": "en"}', encoding="utf-8")
+    z = kp._zipf_fn(tmp_path)
+    if z is not None:                                # wordfreq e opcional
+        assert z("dummy") >= kp._ZIPF_COMUM > z("saraana")
+    (tmp_path / "project.json").write_text('{"source_language": "xx"}', encoding="utf-8")
+    assert kp._zipf_fn(tmp_path) is None             # lingua sem dados: cai no vocabulario do jogo
+
+
+def test_onda_tags_every_candidate_with_a_kind(tmp_path):
+    _flat_project(tmp_path, ["When Oshtor arrived, Barricade fell.", "Then Oshtor left, Barricade rose."])
+    got = {r["cand"]: r["kind"] for r in kp.onda(tmp_path, ["_flat"])}
+    assert got.get("Oshtor") == "nome" and got.get("Barricade") in ("ui", "nome")

@@ -34,6 +34,18 @@ def _jsonl(p: Path) -> list[dict]:
     return out
 
 
+def drop_resolved(failures: list[dict], evs: list[dict]) -> list[dict]:
+    """Falha `scene/*_failed` de uma rodada anterior some quando a mesma cena fechou `verified` depois dela."""
+    done: dict[str, float] = {}
+    for e in evs:
+        if e.get("stage") == "scene" and e.get("result") == "verified":
+            sc = str(e.get("scene"))
+            done[sc] = max(done.get(sc, 0.0), e.get("t", 0.0))
+    return [f for f in failures
+            if not (f.get("stage") == "scene" and str(f.get("result")).endswith("_failed")
+                    and done.get(str(f.get("scene")), -1.0) > f.get("t", 0.0))]
+
+
 def report(root) -> dict:
     root = Path(root)
     evs = events.read(root)
@@ -86,7 +98,7 @@ def report(root) -> dict:
                 sc["wait_s"] = round(sc["wait_s"] + max(0.0, start - awaiting.pop(e["scene"])), 3)
             if res.startswith("awaiting"):
                 awaiting[e["scene"]] = e["t"]
-    return {"scenes": scenes, "gates": gates, "failures": failures, "n_events": len(evs),
+    return {"scenes": scenes, "gates": gates, "failures": drop_resolved(failures, evs), "n_events": len(evs),
             "runs": len({e.get("run") for e in evs}), "split": cost["split"], "by_activity": cost["by_activity"],
             "indicators": indicators(evs, scenes), "alerts": alerts.read(root),
             "schema_problems": sum(bool(events.validate(e)) for e in evs)}

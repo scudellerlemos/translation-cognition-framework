@@ -78,7 +78,7 @@ def test_complete_persists_spoiler_audit(env):
     out = paths.spoiler_audit(root)
     assert out.is_file()
     rep = json.loads(out.read_text(encoding="utf-8"))
-    assert rep == {"name_leaks": [], "gender_flags": [], "clean": True}
+    assert rep == {"name_leaks": [], "gender_flags": [], "tabelas_com_termo": [], "clean": True}
 
 
 def test_resumable_skips_verified(env):

@@ -258,6 +258,29 @@ def _normalizar_antes_do_plano(root: Path, scene: str, backend: str) -> None:
             print(_indent(chr(10).join(f"{o}: {m}" for o, m in bad[:30])))
 
 
+_ORDEM_RISCO = {"low": 0, "medium": 1, "high": 2, "critical": 3}
+
+
+def _piso_de_risco(root: Path, scene: str, scene_id: str) -> list[str]:
+    """Piso de risco por fala: o `risk_level` de uma fala so sobe entre rodadas da mesma cena. Rebaixar (ex.: high -> medium
+    para fugir da revisao do passo 5d) e defeito da traducao: devolve as falas rebaixadas. Sem rebaixamento, grava o novo piso.
+    Rebaixar de proposito = apagar `risk_piso_<id>.json` da cena (decisao humana)."""
+    tf = paths.translations(root, scene, scene_id)
+    if not tf.is_file():
+        return []
+    atual = {off: v.get("risk_level", "low") for off, v in json.loads(tf.read_text(encoding="utf-8")).get("lines", {}).items()
+             if isinstance(v, dict)}
+    pf = paths.scene_dir(root, scene) / f"risk_piso_{scene_id}.json"
+    piso = json.loads(pf.read_text(encoding="utf-8")) if pf.is_file() else {}
+    baixou = [f"{off}: {piso[off]} -> {nv}" for off, nv in atual.items()
+              if off in piso and _ORDEM_RISCO.get(nv, 0) < _ORDEM_RISCO.get(piso[off], 0)]
+    if baixou:
+        return baixou
+    novo = {off: max((piso.get(off, "low"), nv), key=lambda r: _ORDEM_RISCO.get(r, 0)) for off, nv in atual.items()}
+    paths.atomic_write(pf, json.dumps(novo))
+    return []
+
+
 def _erros_de_schema_da_cena(root: Path, scene_id: str) -> list:
     return [m for sev, art, m in validate.validate_project(root)
             if sev == "ERROR" and f"approved_{scene_id}." in str(art)]
@@ -326,6 +349,7 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
         print(_indent(out))
         if code != 0:
             _checkpoint(root, scene, {"status": "build_plan_failed"})
+            print(events.CORRECAO_MARCA + " (build_plan): ajuste a traducao da cena e rode de novo")
             return tr, None, {"status": "build_plan_failed", "scene": scene}
         _checkpoint(root, scene, {"status": "planned"})
 
@@ -348,6 +372,7 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
                 print(f"      SCHEMA: {len(bad)} erro(s) de token -- corrija a traducao:")
                 print(_indent(chr(10).join(bad[:20])))
                 _checkpoint(root, scene, {"status": "schema_failed", "verified": False})
+                print(events.CORRECAO_MARCA + " (schema): ajuste a traducao da cena e rode de novo")
                 return tr, None, {"status": "schema_failed", "scene": scene}
             verified = True
             _checkpoint(root, scene, {"status": "verified", "verified": True,
@@ -364,6 +389,7 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
             continue
         _persist_fitting_diagnostics(root, scene, scene_id, backend)
         _checkpoint(root, scene, {"status": "verify_failed", "verified": False})
+        print(events.CORRECAO_MARCA + " (verify): ajuste a traducao da cena e rode de novo")
         return tr, None, {"status": "verify_failed", "scene": scene}
 
     return tr, verified, None
@@ -559,6 +585,14 @@ def _run_scene(root, scene, *, backend="api", require_back=False, do_verify=True
     if early is not None:
         return early
 
+    baixou = _piso_de_risco(root, scene, scene_id)
+    if baixou:
+        print(events.CORRECAO_MARCA + f" (risco rebaixado): {len(baixou)} fala(s) com risk_level MENOR que o da rodada anterior; "
+              "restaure o risco (o rebaixamento tira a fala da revisao do passo 5d):")
+        print(_indent(chr(10).join(baixou[:30])))
+        _checkpoint(root, scene, {"status": "risk_rebaixado"})
+        return {"status": "risk_rebaixado", "scene": scene, "problems": baixou}
+
     # [3+5] build_plan + verify com escalonamento de fitting (ver _fitting_loop)
     tr, verified, early = _fitting_loop(root, scene, scene_id, cfg, backend, do_verify, tr)
     if early is not None:
@@ -582,7 +616,7 @@ def _run_scene(root, scene, *, backend="api", require_back=False, do_verify=True
                   n_high=len(highs), verified=bool(verified), backend=backend)
     events.emit(root, "quality", "ok" if verified else "unverified", scene, n_lines=mr["n_lines"],
                 n_high=mr["n_high"], back_pass_rate=mr["back_pass_rate"], reused=mr["reused"],
-                bypassed_gates=bypassed)
+                bypassed_gates=",".join(map(str, bypassed)))   # evento so leva escalar; a lista fica no checkpoint
     _imprimir_resumo(mr, backend, defer_back)
     print(f"OK run_scene {scene}: status final = {'verified' if verified else 'planned'}")
     return {"status": "verified" if verified else "planned", "scene": scene,

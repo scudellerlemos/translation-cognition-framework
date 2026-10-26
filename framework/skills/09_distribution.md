@@ -15,7 +15,7 @@ no jogador. Instalar, verificar e desinstalar, tudo conferido por hash.
 
 - `source_dat/` (originais, read-only) e `output/` (remontados pelo Passo 08)
 - `projects/<p>/distribution.json`: `titulo`, `titulo_curto`, `autor`, `idioma`, `exe`, `pasta_glob`, `subpasta`,
-  `padrao_arquivos`, `processos` (exes que travam os arquivos), `aviso` (linhas da janela), `icone_recorte`
+  `padrao_arquivos` (ou `arquivos`: lista `name`/`origem`/`original`/`path` quando os arquivos estão em pastas diferentes ou com outro nome no jogo), `processos` (exes que travam os arquivos), `aviso` (linhas da janela), `icone_recorte`
 - Opcional: arte do painel e capa (só entram no pacote/`.exe`, nunca no repo; atenção a direitos da arte)
 
 ## PASSOS

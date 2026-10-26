@@ -127,6 +127,7 @@ connectors/
     script_generator.py        ← candidato de `extract.py`/`reinsert.py` para engine desconhecida
     coverage_gate.py / adversarial_validator.py / connector_smoke.py ← dry-run de cobertura, overfitting, round-trip (oráculo)
     scope_scan.py / residual_text.py ← o que a pasta do jogo tem e o `dialogs.csv` não cobre (Fase 0)
+    scene_scope.py ← strings e byte_budget por categoria; separa tabelas de sistema das cenas (pergunta de escopo)
     unity_addressables/        ← `extract_template.py` (família Unity Addressables)
 ```
 

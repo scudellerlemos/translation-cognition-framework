@@ -37,6 +37,33 @@ def notify(root, step: str, result: str, scene: str | None = None, rc: int | Non
     return rec
 
 
+CORRECAO_STATUS = ("build_plan_failed", "verify_failed", "schema_failed")
+
+
+def correcoes_pendentes(root, min_idade_s: float = 0.0, fora: tuple[str, ...] = ()) -> list[str]:
+    """Cenas paradas no run_state por defeito da traducao (token, glifo, schema) que ninguem corrigiu. O `wave` nao
+    alerta essa parada na hora (a sessao corrige e roda de novo); quem a revisita depois alerta o que sobrou.
+    `min_idade_s`: so conta a parada com mais de tanto tempo (carencia para a correcao em andamento);
+    `fora`: cenas que a execucao atual esta refazendo. Parada ja alertada (mesmo `_ts`) nao entra de novo."""
+    p = paths.run_state(Path(root))
+    try:
+        scenes = json.loads(p.read_text(encoding="utf-8")).get("scenes", {}) if p.is_file() else {}
+    except (OSError, ValueError):
+        return []
+    visto = {r["scene"]: r["t"] for r in read(root) if r.get("result") == "correcao_pendente"}
+    agora = time.time()
+    return sorted(s for s, v in scenes.items()
+                  if v.get("status") in CORRECAO_STATUS and s not in fora
+                  and agora - v.get("_ts", 0) >= min_idade_s and visto.get(s, 0) < v.get("_ts", 0))
+
+
+def alertar_correcoes_pendentes(root, min_idade_s: float = 0.0, fora: tuple[str, ...] = ()) -> list[str]:
+    cenas = correcoes_pendentes(root, min_idade_s, fora)
+    for s in cenas:
+        notify(root, "run_scene", "correcao_pendente", s)
+    return cenas
+
+
 def _post(url: str, rec: dict) -> bool:
     if not url.startswith(("https://", "http://")):
         print(f"[alerts] AVISO: {WEBHOOK_ENV} precisa ser http(s); alerta nao enviado.", file=sys.stderr)
@@ -52,6 +79,19 @@ def _post(url: str, rec: dict) -> bool:
         return False
 
 
+def main() -> None:
+    """`python alerts.py correcoes <projeto> [--carencia S]`: alerta as cenas paradas por defeito da traducao. O vigia
+    do lote chama a cada passo, entao o alerta sai mesmo sem `resumo_lote.py` e sem onda seguinte."""
+    import argparse
+    ap = argparse.ArgumentParser(description=main.__doc__)
+    ap.add_argument("acao", choices=["correcoes"])
+    ap.add_argument("project")
+    ap.add_argument("--carencia", type=float, default=0.0, help="so conta parada com mais de tantos segundos")
+    a = ap.parse_args()
+    for s in alertar_correcoes_pendentes(a.project, a.carencia):
+        print(f"CORRECAO PENDENTE (alertada): {s}")
+
+
 def read(root) -> list[dict]:
     p = paths.alerts(Path(root))
     out = []
@@ -61,3 +101,7 @@ def read(root) -> list[dict]:
         except json.JSONDecodeError:
             continue
     return out
+
+
+if __name__ == "__main__":
+    main()

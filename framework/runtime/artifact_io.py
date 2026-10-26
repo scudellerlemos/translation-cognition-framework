@@ -54,6 +54,19 @@ def _read_json(p: Path):
         return None
 
 
+BACK_RISK_DEFAULT = ("high", "critical")
+
+
+def back_risk_levels(root) -> tuple:
+    """Niveis de risco que exigem back-translation. Padrao high+critical; `"back_translation_risk": ["critical"]`
+    no project.json restringe (decisao do usuario, so para aquele projeto). Valor invalido volta ao padrao."""
+    cfg = _read_json(paths.project_json(root))
+    val = cfg.get("back_translation_risk") if isinstance(cfg, dict) else None
+    if isinstance(val, list) and val and all(v in ("low", "medium", "high", "critical") for v in val):
+        return tuple(val)
+    return BACK_RISK_DEFAULT
+
+
 def plan_lines(root, scene) -> list:
     """Lista de linhas do translation_plan_<id>.json (ou [] se nao houver). Fonte unica do parse."""
     sid = scene_id_of(scene)
