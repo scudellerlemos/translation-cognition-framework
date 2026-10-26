@@ -66,11 +66,12 @@ def _regras(pc: dict) -> list[str]:
 def _glossario(pack: dict) -> list[str]:
     L = ["## 3. Glossario relevante (subconjunto desta cena)"]
     if pack["glossary_subset"]:
-        L.append("| termo | categoria | traducao | regra | spoiler |")
-        L.append("|---|---|---|---|---|")
+        curta = any(g.get("forma_curta") for g in pack["glossary_subset"])    # coluna so existe se o glossario a usa
+        L.append("| termo | categoria | traducao | regra | spoiler |" + (" forma curta (se a traducao nao couber no byte_budget) |" if curta else ""))
+        L.append("|---|---|---|---|---|" + ("---|" if curta else ""))
         for g in pack["glossary_subset"]:
             L.append(f"| {g['term']} | {g['category']} | {g['target_translation']} | "
-                     f"{g['handling_rule']} | {g['spoiler_level']} |")
+                     f"{g['handling_rule']} | {g['spoiler_level']} |" + (f" {g.get('forma_curta', '')} |" if curta else ""))
     else:
         L.append("_(nenhum termo do glossario aparece nesta cena)_")
     L.append("")
@@ -185,11 +186,15 @@ def _disciplina_orcamento(pc: dict) -> list[str]:
 def _linhas(pack: dict, pc: dict) -> list[str]:
     L = ["## 7. Linhas a traduzir"]
     L += _disciplina_orcamento(pc)
-    L.append("| offset | byte_budget | source |")
-    L.append("|---|---|---|")
+    tok = pc.get("newline_token") or ""
+    if tok:
+        L.append(f"> `nl` = quantas vezes o token de quebra `{tok}` aparece no source: o `t` precisa ter EXATAMENTE `nl`.")
+    L.append("| offset | byte_budget | nl | source |")
+    L.append("|---|---|---|---|")
     for r in pack["lines"]:
+        nl = r["source"].count(tok) if tok else 0
         src = r["source"].replace("|", "\\|")
-        L.append(f"| {r['offset']} | {r['byte_budget']} | {src} |")
+        L.append(f"| {r['offset']} | {r['byte_budget']} | {nl} | {src} |")
     L.append("")
     return L
 

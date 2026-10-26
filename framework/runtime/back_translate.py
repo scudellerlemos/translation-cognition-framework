@@ -55,7 +55,10 @@ def back_translate(root, scene, high_lines, *, backend="api", model=None) -> Bac
     if not high_lines:
         return {"status": DONE, "reviewed": 0, "path": None}
     if backend == "in-session":
-        _write_back_prompt(root, scene, scene_id, high_lines)
+        if _cega(root):
+            _write_back_prompts_cegos(root, scene, scene_id, high_lines)
+        else:
+            _write_back_prompt(root, scene, scene_id, high_lines)
         if _bt_fresh(out):
             return {"status": READY, "path": str(out), "reviewed": len(high_lines)}
         return {"status": AWAITING, "reviewed": len(high_lines),
@@ -84,6 +87,38 @@ def _write_back_prompt(root, scene, scene_id, high_lines):
             L.append(f"- notas  : {h['risk_notes']}")
         L.append("")
     paths.atomic_write(paths.back_prompt(root, scene, scene_id), "\n".join(L))
+
+
+def _cega(root) -> bool:
+    """`back_translation_cega` no project.json: a retrotraducao sai em duas passagens, a primeira SEM ver o source."""
+    p = Path(root) / "project.json"
+    try:
+        return bool(json.loads(p.read_text(encoding="utf-8")).get("back_translation_cega")) if p.is_file() else False
+    except (json.JSONDecodeError, OSError):
+        return False
+
+
+def _write_back_prompts_cegos(root, scene, scene_id, high_lines):
+    """Duas passagens (quem retraduz nao pode ter visto o source, senao o 'back_en' sai viciado pelo original):
+    A = `back_prompt_<id>.md`: so offset + target, grava `back_a_<id>.json`; B = `back_prompt_juiz_<id>.md`: source +
+    target + o `back_en` da A, julga pass|revise e grava o `back_translation_<id>.json` de sempre."""
+    a = [f"# Retrotraducao CEGA (passagem A) — cena {scene} ({len(high_lines)} linhas)", "",
+         "> Traduza cada `target` (pt-BR) para EN, so pelo texto abaixo. NAO abra o source nem o translations_*.json.",
+         f"> Saida: `back_a_{scene_id}.json` = {{\"entries\": [{{\"offset\": \"<CENA>:<offset>\", \"back_en\": \"...\"}}]}}.", ""]
+    b = [f"# Retrotraducao — juiz (passagem B) — cena {scene} ({len(high_lines)} linhas)", "",
+         f"> Rode so depois da passagem A. Leia `back_a_{scene_id}.json` (o `back_en` foi feito sem ver o source).",
+         "> Compare `back_en` com `source`; SENTIDO, ambiguidade, voz e timing preservados? Divergencia -> revise.",
+         f"> Saida: `back_translation_{scene_id}.json` = {{\"reviewed\": N, \"entries\": [",
+         ">   {offset, source, target, back_en, verdict: pass|revise, note} ]}.", ""]
+    for h in high_lines:
+        a += [f"## {h['offset']} ({h.get('speaker', '')})", f"- target : {h['target']}", ""]
+        b += [f"## {h['offset']} ({h.get('speaker', '')})", f"- source : {h['source']}", f"- target : {h['target']}"]
+        if h.get("risk_notes"):
+            b.append(f"- notas  : {h['risk_notes']}")
+        b.append("")
+    sd = paths.scene_dir(root, scene)
+    paths.atomic_write(paths.back_prompt(root, scene, scene_id), "\n".join(a))
+    paths.atomic_write(sd / f"back_prompt_juiz_{scene_id}.md", "\n".join(b))
 
 
 # Schema ESTRITO p/ a back-translation (garante JSON parseavel — sem ele o Opus as vezes devolvia

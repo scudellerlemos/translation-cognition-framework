@@ -106,7 +106,8 @@ def _load_glossary(root: Path, cfg: dict | None = None):
             db_rows = db.get_glossary(db_pid)
         tem = {(r.get("term") or "").lower() for r in db_rows}
         rows = [r for r in local_rows if (r.get("term") or "").lower() not in tem] + [{"term": r.get("term", ""), "handling_rule": r.get("handling_rule", ""),
-                "target_translation": r.get("translation", ""), "aliases": r.get("aliases", "")}
+                "target_translation": r.get("translation", ""), "aliases": r.get("aliases", ""),
+                "forma_curta": r.get("forma_curta", "")}
                for r in db_rows]
     else:
         g = paths.glossary(root)
@@ -121,6 +122,7 @@ def _load_glossary(root: Path, cfg: dict | None = None):
         rule = (r.get("handling_rule") or "").strip()
         tgt = (r.get("target_translation") or "").strip()
         aliases = [a.strip() for a in re.split(r"[;|]", r.get("aliases") or "") if a.strip()]
+        aliases += [a.strip() for a in re.split(r"[;|]", r.get("forma_curta") or "") if a.strip()]   # forma curta tambem e valida
         if rule == "manter_original":
             expected = [term] + aliases                      # nome proprio: deve aparecer verbatim, sempre
         elif tgt:

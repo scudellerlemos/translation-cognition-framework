@@ -93,6 +93,20 @@ jogo). A conta de bytes vem de `budget.py` (fonte única: UTF-8 real quando o co
 transliterada senão; exceção de +1 byte decidida pelo humano em `byte_budget_exceptions` no `project.json`).
 Os arquivos de trabalho ficam em `projects/<p>/tools_local/` (gitignored: trazem fala do jogo).
 
+## Acompanhamento do projeto (skills `panorama-ondas` e `levantar-melhorias`)
+
+Skills do projeto, versionadas em `.claude/skills/`, valem para qualquer jogo. Nenhuma altera o runtime.
+
+- **`panorama-ondas`** (`panorama.py projects/<p> [n_ondas]`): progresso real (falas e cenas `verified` sobre o total do
+  `dialogs.csv`), ordem dos capítulos (`artifacts/ordem_cenas.txt`, que o `extract.py` do conector grava; sem ele
+  o script usa ordem numérica e avisa "NÃO CONFIRMADA") e o plano das próximas ondas. Grava o panorama completo em
+  `artifacts/panorama_ondas.md` (local: `artifacts/` é default-deny). Todo relato de progresso traz o total do jogo.
+  `extrai_ordem.py` é só o extrator de ordem do conector Utawarerumono.
+- **`levantar-melhorias`**: ao fim de cada onda (no lote, a cada 3), compara os erros vividos na sessão principal com a
+  seção "Melhorias para o framework" do `ROADMAP.md` do projeto e acrescenta só o que é novo ou parcial, com evidência
+  e data. Não implementa conserto: implementar é decisão separada (PATCH/MINOR/MAJOR, ADR se couber). No fechamento do
+  projeto, essa seção é a fonte do levantamento de lições para o framework.
+
 ## Sessão: contexto e medição de custo (caminho de sessão)
 
 Regra, não sugestão:

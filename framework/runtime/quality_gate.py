@@ -173,6 +173,14 @@ def main():
         for k in unc:
             print(f"  {k['scene']} {k['offset']} ({k['speaker']}): {k['reason']}")
             print(f"      pt  : {k['target'][:90]}")
+        por_cena: dict[str, dict[str, int]] = {}
+        for k in unc:
+            c = por_cena.setdefault(k["scene"], {})
+            c[k.get("risk", "?")] = c.get(k.get("risk", "?"), 0) + 1
+        print("  Passo 5c — retrotraduzir (um subagente Opus para todas): "
+              + "; ".join(f"{s} ({', '.join(f'{n} {r}' for r, n in sorted(c.items()))})" for s, c in sorted(por_cena.items())))
+        print("  Lê artifacts/scenes/<CENA>/back_prompt_<CENA>.md e grava back_translation_<CENA>.json "
+              "(offset como string \"<CENA>:<offset>\"); depois rode o wave sem cenas.")
     if esc:
         print(f"ESCALONAMENTO — {len(esc)} fala(s) esperando decisao humana em {hitl.queue_path(Path(a.project))} "
               f"(preencha alias ou correcao e rode hitl.py resolve).")

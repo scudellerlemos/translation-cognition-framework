@@ -253,6 +253,35 @@ def run(project: str, scenes: list[str], backend: str = "in-session", require_ba
     return rc
 
 
+def precheck(project: str, scenes: list[str]) -> list[str]:
+    """Confere a traducao ja escrita contra o pacote da cena SEM rodar a onda: chave de offset desconhecida, contagem do
+    token de quebra (`nl`) e orcamento de bytes. Nao grava nada; devolve os problemas (vazio = pode rodar o wave)."""
+    import context_pack
+    root, bad = Path(project), []
+    for sc in scenes:
+        pack = json.loads(paths.pack(root, sc).read_text(encoding="utf-8"))
+        tp = paths.translations(root, sc, context_pack.scene_id_of(sc))
+        if not tp.is_file():
+            bad.append(f"{sc}: sem translations_*.json")
+            continue
+        lines = json.loads(tp.read_text(encoding="utf-8")).get("lines", {})
+        known = {r["offset"] for r in pack["lines"]}
+        bad += [f"{sc}: chave '{k}' nao e offset do pacote (use o offset completo da coluna `offset`)"
+                for k in lines if k not in known]
+        for r in pack["lines"]:
+            e = lines.get(r["offset"])
+            if e is None:
+                continue
+            t = e.get("t", "")
+            n_src, n_tgt = r["source"].count(context_pack.TOKEN), t.count(context_pack.TOKEN)
+            if n_src != n_tgt:
+                bad.append(f"{r['offset']}: quebras (nl) esperado {n_src} veio {n_tgt}")
+            budget = r.get("byte_budget") or 0
+            if budget and len(t.encode("utf-8")) > budget:
+                bad.append(f"{r['offset']}: {len(t.encode('utf-8'))} bytes > orcamento {budget}")
+    return bad
+
+
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
@@ -264,7 +293,13 @@ def main():
     ap.add_argument("--step-timeout", type=float, default=STEP_TIMEOUT, help="segundos maximos por passo (padrao 3600)")
     ap.add_argument("--max-usd", type=float, default=None,
                     help="teto de gasto da onda em USD (padrao: budget.max_usd_per_wave do project.json; sem ele, sem teto)")
+    ap.add_argument("--precheck", action="store_true",
+                    help="so confere as cenas (chave de offset, quebras `nl`, bytes) e sai; nao roda a onda")
     a = ap.parse_args()
+    if a.precheck:
+        bad = precheck(a.project, a.scene)
+        print("\n".join(bad) if bad else f"PRECHECK: ok ({len(a.scene)} cena(s))")
+        sys.exit(1 if bad else 0)
     sys.exit(run(a.project, a.scene, a.backend, a.require_back, a.step_timeout, a.max_usd))
 
 

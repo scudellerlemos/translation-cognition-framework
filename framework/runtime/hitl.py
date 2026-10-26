@@ -237,6 +237,31 @@ def open_items(root) -> list[dict]:
     return [r for r in read_queue(Path(root)) if not (r.get("alias") or r.get("correcao") or "").strip()]
 
 
+def grupos(root) -> list[tuple[str, int, int]]:
+    """Itens abertos de glossario agrupados por termo: [(termo, n_itens, n_cenas)], do mais repetido ao menos.
+    O mesmo termo duvidoso aparece em dezenas de cenas e a decisao do humano e uma so."""
+    por: dict[str, list[dict]] = {}
+    for r in open_items(root):
+        if r.get("term"):
+            por.setdefault(r["term"], []).append(r)
+    return sorted(((tm, len(rs), len({r["scene"] for r in rs})) for tm, rs in por.items()), key=lambda g: (-g[1], g[0]))
+
+
+def responder_termo(root, term: str, alias: str) -> int:
+    """Grava `alias` em TODOS os itens abertos do termo (o `resolve` aplica depois, como se o humano tivesse preenchido a planilha)."""
+    root = Path(root)
+    with paths.locked(queue_path(root)):
+        rows = read_queue(root)
+        n = 0
+        for r in rows:
+            if r.get("term") == term and not (r.get("alias") or r.get("correcao") or "").strip():
+                r["alias"] = alias
+                n += 1
+        if n:
+            _write_queue(root, rows)
+    return n
+
+
 def enqueue(root: Path, items: list[dict]) -> int:
     """Acrescenta itens novos (chave: cena+offset+termo). Item ja respondido nao e reaberto."""
     if not items:
@@ -496,7 +521,11 @@ def main():
     ap.add_argument("--reviewer", default=None, help="quem decide (obrigatorio fora do status)")
     ap.add_argument("--quote", default=None,
                     help="frase literal do humano, quando a decisao veio da conversa e quem registra e um assistente")
+    ap.add_argument("--termo", default=None, help="resolve: responde de uma vez todos os itens abertos deste termo")
+    ap.add_argument("--alias", default=None, help="resolve --termo: a forma aceita para o termo")
     a = ap.parse_args()
+    if bool(a.termo) != bool(a.alias):
+        ap.error("--termo e --alias andam juntos")
     if a.quote is not None:
         if not a.quote.strip():
             ap.error("--quote vazio: sem a frase literal do humano nao ha decisao a registrar")
@@ -520,6 +549,8 @@ def main():
         print(f"  onda     : {len(wave)} cena(s) verificada(s) sem visto"
               + (" — PONTO DE CONTROLE ABERTO" if len(wave) >= WAVE_SCENES else f" (abre com {WAVE_SCENES})"))
         print(f"  fila     : {len(open_items(root))} item(ns) aberto(s) em {queue_path(root)}")
+        for term, n_it, n_sc in grupos(root)[:RATIFY_TOP]:
+            print(f"      {n_it:5}x em {n_sc} cena(s)  {term}")
     elif a.cmd == "accept-scope":
         n_scenes, n_lines, _ = corpus(root)
         _log(root, kind="escopo", by=a.reviewer, scenes=n_scenes, lines=n_lines, action="accept")
@@ -542,6 +573,8 @@ def main():
         _log(root, kind="onda", by=a.reviewer, scenes=len(wave), action="ack")
         print(f"visto de {a.reviewer} em {len(wave)} cena(s); proxima onda liberada.")
     else:
+        if a.termo:
+            print(f"{responder_termo(root, a.termo, a.alias)} item(ns) de '{a.termo}' respondido(s) com alias '{a.alias}'.")
         r = resolve(root, a.reviewer)
         print(f"fila: {r['alias']} alias no glossario, {r['aceito']} aceite(s) do tradutor, "
               f"{r['correcao']} correcao(oes) aplicada(s), {r['open']} em aberto.")

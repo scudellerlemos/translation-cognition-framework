@@ -19,3 +19,14 @@ def test_failure_before_verified_is_dropped_but_later_or_other_scene_stays():
     fails = [e for e in evs if e["result"].endswith("_failed")]
     left = obs_report.drop_resolved(fails, evs)
     assert [(f["scene"], f["t"]) for f in left] == [("B", 3), ("C", 6), ("D", 4)]
+
+
+def test_falha_de_etapa_da_cena_some_depois_do_verified_mas_gate_global_fica():
+    evs = [_ev(1, "A", "fail", stage="build_plan"), _ev(2, "A", "verified"),
+           _ev(3, "B", "fail", stage="build_plan"),                       # B nunca fechou
+           _ev(4, "A", "fail", stage="build_plan"),                       # depois do verified de A: fica
+           _ev(1, "A", "block", stage="gate.connector")]                  # gate global: nao e da cena
+    fails = [e for e in evs if e["result"] in ("fail", "block")]
+    left = obs_report.drop_resolved(fails, evs)
+    assert [(f["scene"], f["stage"], f["t"]) for f in left] == [
+        ("B", "build_plan", 3), ("A", "build_plan", 4), ("A", "gate.connector", 1)]
