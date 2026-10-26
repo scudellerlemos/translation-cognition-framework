@@ -8,14 +8,14 @@
 > spoiler.** A tradução é o *domínio de validação*; o que se reusa é o **padrão de arquitetura**:
 > jobs cognitivos *stateless*, estado externalizado, orquestração determinística e gates de validação.
 >
-> Validado na prática traduzindo **um jogo real, EN→pt-BR, capítulos inteiros** (ver [Status](#status)).
+> Validado na prática traduzindo **um jogo real, EN→pt-BR, capítulos inteiros** (ver [Status](#status--outubro-2026)).
 
 ### Em 30 segundos
 
 | | |
 |---|---|
 | **O que é** | Engenharia que faz um LLM localizar obras narrativas longas sem perder consistência, voz nem controle de spoiler — tirando memória, governança e fluxo de **dentro** do modelo. |
-| **A prova** | Um jogo real **100% traduzido** EN→pt-BR: 16 capítulos, ~45.100 linhas, **round-trip byte-idêntico**, **~R$ 338,46** com **R$ 0 desperdiçado**. |
+| **A prova** | Quatro jogos reais **100% traduzidos** EN→pt-BR, em três engines. O de referência: 16 capítulos, ~45.100 linhas, **round-trip byte-idêntico**, **~R$ 338,46** com **R$ 0 desperdiçado**. |
 | **O diferencial** | A IA só **propõe** (tradução); **gates determinísticos julgam**; o **humano tem a palavra final**. Nada entra no dado canônico sem prova reproduzível. |
 
 > Quer ver o filme inteiro numa imagem? Vá direto ao [processo ponta a ponta](#o-processo-ponta-a-ponta)
@@ -62,7 +62,7 @@ são **código determinístico** (mesma entrada → mesma saída, sem rede, test
 ```mermaid
 %%{init: {'flowchart': {'wrappingWidth': 520}}}%%
 flowchart TB
-  C["<b>① COGNITION</b> — o que EXIGE IA (a única parte estocástica)<br/>translate · back_translate (verificação de alto risco)"]:::cog
+  C["<b>① COGNITION</b> — o que EXIGE IA (a única parte estocástica)<br/>translate · back_translate (verificação do risco exigido)"]:::cog
   S["<b>② STATE</b> — memória FORA da janela do modelo<br/>translation_memory · glossary · voice_cards · decision_index"]:::sta
   E["<b>③ EXECUTION</b> — orquestração determinística<br/>cena = job stateless O(cena) · context_pack · checkpoint/resume"]:::exe
   V["<b>④ VALIDATION</b> — gates que BLOQUEIAM<br/>round-trip · back-translation · fonte de KB · spoiler · naturalidade"]:::val
@@ -78,7 +78,7 @@ flowchart TB
 
 | Camada | Responsabilidade | Como pensar nela | Onde mora |
 |---|---|---|---|
-| **① Cognition** | Traduzir e verificar alto risco | "A única coisa que um humano não conseguiria automatizar." É fina e isolada de propósito. | `runtime/model.py`, `back_translate.py` |
+| **① Cognition** | Traduzir e verificar as falas de risco exigido | "A única coisa que um humano não conseguiria automatizar." É fina e isolada de propósito. | `runtime/model.py`, `back_translate.py` |
 | **② State** | Lembrar decisões entre cenas | "A memória que o chat *não* tem — vive em arquivos, não na janela." | `runtime/state_index.py` → `artifacts/state/` |
 | **③ Execution** | Rodar cada cena como job isolado | "Cada cena é uma função pura: recebe um pacote, devolve uma tradução, esquece o resto." | `runtime/run_scene.py`, `context_pack.py` |
 | **④ Validation** | Provar que cada passo está correto | "Portões: se o round-trip ou a fonte de KB falham, o pipeline **para**." | `runtime/kb_*`, `spoiler_check.py`, conector `verify_*`, `validation/` |
@@ -97,7 +97,7 @@ flowchart LR
   pack["context_pack<br/>monta contexto"]:::exe --> tr{{"translate<br/>IA · Sonnet"}}:::cog
   tr --> plan["build_plan<br/>monta plano/approved"]:::exe
   plan --> vf["verify<br/>round-trip + gates"]:::val
-  vf --> bt{{"back_translate<br/>IA · Opus (só alto risco)"}}:::cog
+  vf --> bt{{"back_translate<br/>IA · Opus (só o risco exigido)"}}:::cog
   bt --> cp[("checkpoint + TM<br/>grava estado")]:::sta
   classDef cog fill:#f6d6e8,stroke:#c0397b,color:#000;
   classDef sta fill:#fde6c4,stroke:#c97b1f,color:#000;
@@ -159,7 +159,7 @@ e, acima de tudo, o **humano (juiz final do sentido, da voz e da tela)**.
 | Ator | Papel | Faz | NÃO faz |
 |---|---|---|---|
 | 🩷 **IA-tradutora** | propõe a tradução | traduz cada linha (Haiku/Sonnet por complexidade) → `translation_plan` | gravar no canônico; decidir lore |
-| 🩷 **IA-revisora** (back-translation) | revisão automática **barata** de sentido | re-traduz pt-BR→EN só em alto risco e **aponta** (marca `revise`) | **dar veredito** — só sinaliza, não decide |
+| 🩷 **IA-revisora** (back-translation) | revisão automática **barata** de sentido | re-traduz pt-BR→EN só nos níveis de risco que o projeto exige (`back_translation_risk`) e **aponta** (marca `revise`) | **dar veredito** — só sinaliza, não decide |
 | 🟦🟩 **Gates determinísticos** | **juiz objetivo** (regras) | round-trip, fonte de KB, spoiler, largura de balão, glossário — **bloqueiam** | opinar sobre gosto literário |
 | 👤 **Humano-Ratificador** | **juiz** da verdade da KB | confirma entidade/gênero **com fonte** (`kb_ratified.csv`) | traduzir linha a linha |
 | 👤 **Humano-Revisor** | **juiz final** do **texto** | lê o XLSX, marca `CORRIGIR` → verbatim (R$ 0) ou nota | mexer no binário |
@@ -208,6 +208,7 @@ dinheiro vai (1º passe vs re-tradução vs back-translation) e provar `R$ 0 des
 | Batch | Batch API −50%, Carta cacheada compartilhada | metade do preço no 1º passe |
 | Recuperação por-linha | re-traduz só o que quebrou | retry barato e previsível |
 | Teto + estimativa | estimativa pré-voo + gate de submissão | gasto de pior-caso ≤ teto, conhecido antes |
+| Caminho de sessão | tradução na sessão do Claude Code, em ondas por lote, sem chamar a API | custo pago US$ 0; o equivalente de API fica no ledger (`api_equiv_usd`) |
 
 > A **governança** (acima) e a **engenharia** (aqui) se reforçam: gates determinísticos garantem que
 > nada entra no dado canônico sem prova; a economia garante que provar isso em escala **cabe no bolso**.
@@ -230,7 +231,7 @@ Os termos do projeto na primeira vez que você os encontra. Detalhe conceitual e
 | **KB** (Knowledge Base) | Glossário + lore + vozes **reconciliados de fonte confiável** e congelados **antes** de traduzir. |
 | **Voice Card** | Ficha de voz de um personagem (registro, tiques, léxico) que mantém a fala consistente em todo o corpus. |
 | **Round-Trip** | Extrair → reinserir **sem mudar nada** deve regenerar o binário byte a byte. É a prova de que não corrompemos o jogo (prova **bytes**, não qualidade da tradução). |
-| **Back-Translation** | Traduzir o pt-BR de volta ao inglês com **outro** modelo, só em linhas de alto risco, para checar se o sentido sobreviveu. |
+| **Back-Translation** | Traduzir o pt-BR de volta ao inglês com **outro** modelo, só nas linhas do risco que o projeto exige (`back_translation_risk`), para checar se o sentido sobreviveu. |
 | **Gate** | Verificação determinística que **bloqueia** o avanço se algo falha (round-trip, fonte de KB, spoiler, naturalidade). |
 | **Spoiler Ledger / frontier** | Registro de quando cada revelação acontece + uma "fronteira" que avança por capítulo, para nunca vazar nomes/fatos futuros. |
 | **Conector** | Código determinístico que extrai o texto do binário do jogo e o reinsere (round-trip). Específico por engine. |
@@ -355,9 +356,11 @@ o modelo, valida o plano, roda o round-trip do conector e grava o resultado veri
    banco com busca semântica obrigatória.
 4. Veja a terceira instância em [`projects/souldiers/`](projects/souldiers/README.md) — terceiro engine (Unity Addressables),
    pipeline de KB híbrida (Ollama local + ratificação humana) e onboarding de baixo custo.
-5. A quarta instância, `projects/trails_sky_sc/` (engine Falcom, em andamento), ainda não tem
-   `README.md` próprio — ver [Status](#status) e `docs/CHANGELOG.md` pelo estado atual.
-6. Para um projeto novo: copie `framework/templates/project.template.json`, preencha o manifesto e
+5. Veja `projects/utawarerumono_prelude/` — o jogo *Prelude to the Fallen* (Aquaplus, formato novo), traduzido pelo caminho de
+   sessão em lote; o estado e as lições estão no [`ROADMAP.md`](projects/utawarerumono_prelude/ROADMAP.md) do projeto.
+6. A instância `projects/trails_sky_sc/` (engine Falcom, em andamento) ainda não tem
+   `README.md` próprio — ver [Status](#status--outubro-2026) e `docs/CHANGELOG.md` pelo estado atual.
+7. Para um projeto novo: copie `framework/templates/project.template.json`, preencha o manifesto e
    rode o pipeline `00..09` — ou use `python framework/connectors/discover.py <dir-do-jogo>` para
    descoberta automática de engine (Generic Connector System).
 
@@ -396,14 +399,28 @@ Ver [CHANGELOG](docs/CHANGELOG.md) (histórico de mudanças) e [ROADMAP](docs/RO
 - Caminho de sessão em lote (`session_lot`, `wave`, `scene_dedup`, `touched`): a tradução roda na sessão do Claude Code, sem
   API, com os mesmos gates; reconferência só das falas tocadas e retrotradução julgada por fala ✅
 - Patcher de um clique (`framework/distribution/`): deltas bsdiff + manifesto, instalar/desinstalar reversível ✅
+- Lições do Prelude (v2.2.0): coluna `nl` e forma curta na tabela de falas, fila de decisões por termo, drift de cena
+  `verified`, retrotradução por nível de risco (`back_translation_risk`); a variante cega foi medida e não foi adotada ✅
 
 ### Utawarerumono: Mask of Deception — CONCLUÍDO ✅
 
 **16 capítulos (11–23 + 30, 31, 39), 146 cenas, ~45.100 linhas.** Traduzidas, verificadas, reinseridas. Projeto arquivado.
 
-- Round-trip byte-idêntico (resíduo=0) · back-translation de alto risco · controle de spoiler (reveal Ukon=Oshtor) ✅
+- Round-trip byte-idêntico (resíduo=0) · back-translation do risco exigido · controle de spoiler (reveal Ukon=Oshtor) ✅
 - Custo: **~R$ 338,46** (Sonnet R$ 260,17 · Opus R$ 40,01 · Haiku R$ 38,28) · **R$ 0 desperdiçado** ✅
 - Validado in-game: pt-BR renderiza na tela, jogo avança sem travar ✅
+
+### Utawarerumono: Prelude to the Fallen — CONCLUÍDO ✅
+
+**350 cenas (23.982 falas), todas `verified`**, traduzidas pelo caminho de sessão em lote (skill `rodar-onda`, janela do
+lote em Haiku, retrotradução só nas falas `critical`). Instância em `projects/utawarerumono_prelude/` (estado e decisões no
+`ROADMAP.md` do projeto).
+
+- Gates verdes (`quality_gate --fechar`, `glossary_lint --fechar`) e fila de escalonamento vazia ✅
+- Qualidade medida: amostra de 200 falas, **4 erros = 2,0%** (IC 95%: 0,8%–5,0%) ✅
+- Instalado e testado no jogo pelo usuário; textos de sistema do `.exe` traduzidos por extrator próprio do projeto ✅
+- Patcher de um clique construído e verificado como usuário sem Python (`verificar_exe.py`); **decisão do autor: o patch
+  não é distribuído** ✅
 
 ### Breath of Fire IV — TRADUZIDO E INSTALADO ✅ · patcher em beta, release pendente 🚧
 
@@ -452,8 +469,9 @@ não traduzidas. Detalhe em `docs/CHANGELOG.md` e `projects/trails_sky_sc/artifa
 |---|---|
 | Filmes / séries: pontos de extensão documentados, sem validação em produção (sem projeto real pra justificar) | quando houver piloto |
 | Packaging `.exe` (E4) | entregue em `framework/distribution/` (beta); falta publicar a release |
-| Benchmark do caminho de sessão contra o da API (PRD/HLD/FDD em `docs/benchmark_sessao/`): precisa de projeto novo e de teto de gasto | quando houver projeto novo |
+| Comparação do caminho de sessão com o da API num jogo menor (PRD/HLD/FDD em `docs/benchmark_sessao/`): precisa de aval e de teto de gasto. O benchmark de cota da assinatura já foi encerrado (`RELATORIO.md`: Haiku nas falas simples e agrupar cenas valem) | quando houver jogo menor |
 | Bundle de custo: tiering + back-batch codados mas sem medição viva pós-Souldiers | quando rodar próximo capítulo pago |
+| `forma_curta` do glossário (ADR 0024) ainda não é carregada por `framework/db/store.py` (só vale em projeto com glossário em arquivo) | quando um projeto em banco precisar |
 
 
 ---

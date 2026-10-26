@@ -71,6 +71,15 @@ gradual:
   UTF-8, `budget_reserves_terminator` reserva 1 byte para o terminador, e uma exceção pontual decidida
   pelo humano vai em `byte_budget_exceptions` do `project.json` (`effective_budget`).
 
+- **Forma curta do glossário (ADR 0024).** Quando o termo canônico estoura o orçamento, a coluna `forma_curta` do
+  glossário dá uma forma menor já aprovada; o tradutor a usa e o `glossary_lint` a aceita como alias.
+
+## Quem fala
+
+O `speaker` de cada fala é o que o extrator consegue ler do jogo; quando o formato não traz o falante, o tradutor
+infere. O conector deve extrair o falante sempre que o formato o guardar (passo 2c da skill `00_extraction`), e
+`python framework/connectors/scene_scope.py <projeto>` reporta `FALANTE: X de N` falas com falante vindo do jogo.
+
 ## Largura da caixa
 
 O limite de largura por linha (para a fala caber na caixa) não é um número fixo: com `"line_width":

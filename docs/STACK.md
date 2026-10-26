@@ -108,7 +108,7 @@ Usa a família **Claude**, pelo SDK oficial `anthropic`. Há **só duas chamadas
 |---|---|---|---|
 | Tradução (padrão) | `claude-sonnet-4-6` | `MODEL_TRANSLATE` | maioria das linhas |
 | Tradução (tier barato) | `claude-haiku-4-5` | `MODEL_TRANSLATE_CHEAP` | linhas de uma só linha de texto, no caminho de lote (−67% por linha) |
-| Verificação | `claude-opus-4-8` | `MODEL_BACK` | back-translation das linhas de risco alto (mais uma amostra de 5% das demais nas cenas de lote); último degrau da re-tradução por estouro de espaço |
+| Verificação | `claude-opus-4-8` | `MODEL_BACK` | back-translation das linhas dos níveis de risco exigidos (`back_translation_risk`; mais uma amostra de 5% das demais nas cenas de lote); último degrau da re-tradução por estouro de espaço |
 
 Decisões de engenharia nessa camada:
 
@@ -247,7 +247,7 @@ uma segunda chamada de modelo (`back_translate.py`):
 
 - **O que faz.** O Opus recebe a tradução em português, traduz de volta para o inglês e compara
   com a fonte. Devolve, por fala, um veredito `pass` ou `revise` e uma nota curta.
-- **Em que falas.** Nas que o próprio modelo de tradução classificou como `high` ou `critical`, e
+- **Em que falas.** Nas dos níveis de `back_translation_risk` do projeto (padrão `high` e `critical`; o Prelude usa só `critical`, ADR 0022), e
   em uma amostra de 5% das demais. A amostra é determinística: depende de
   `sha1(seed|cena|offset)`, então rodar duas vezes escolhe as mesmas falas.
 - **Não bloqueia.** O resultado marca a fala para revisão humana. Uma divergência de sentido é
@@ -292,7 +292,7 @@ run_scene(cena):
   → translate [IA]           só as falas sem reuso de TM
   → build_plan               valida e prepara a reinserção
   → verify (round-trip)      bytes conferem? → cena vira `verified`
-  → back_translate [IA]      só risco alto; marca para revisão, não bloqueia
+  → back_translate [IA]      só o risco exigido (`back_translation_risk`); marca para revisão, não bloqueia
   → checkpoint + state_index
 ```
 
@@ -376,5 +376,6 @@ Dois pontos de desenho:
 | `utawarerumono` | arquivos | Sonnet/Opus (API) | concluído — 16 capítulos, Batch API |
 | `bof4` | **SQLite + busca semântica** (obrigatória) | modelo da sessão (`in-session`) | traduzido e instalado — 305 cenas `verified` (27.021 falas); patcher em beta, release pendente; conector de referência Capcom e fixture de testes. Substituiu `breath_of_fire_4` (arquivos, 125 cenas), removido do repositório |
 | `souldiers` | arquivos | Haiku/Sonnet/Opus (Batch API) | concluído — 470 cenas, terceira engine (Unity Addressables) |
+| `utawarerumono_prelude` | arquivos | modelo da sessão (`in-session`), onda em lote | concluído e instalado — 350 cenas `verified` (23.982 falas); patcher de um clique |
 | `trails_sky_sc` | arquivos | — (ainda não traduzido pelo framework) | em andamento — quarta engine (Falcom); 71 cenas extraídas, cena-piloto com round-trip fechado |
 | `demo` | SQLite, busca semântica desligada (`semantic: false`) | — | exemplo sintético do README |

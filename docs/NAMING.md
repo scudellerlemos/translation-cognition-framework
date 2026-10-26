@@ -78,17 +78,20 @@ exige script de migração + revalidação de round-trip — não é um "rename 
 `translation_plan_<scene_id>.json`, `back_translation_<scene_id>.json`, `approved_<scene_id>.csv`,
 `pack.json`, `scene_prompt.md`, `run_state.json`, `api_ledger.jsonl`, `metrics.jsonl`,
 `translation_memory.jsonl`, `voice_cards.json`, `decision_index.json`, `spoiler_ledger.json`,
-`research_log.md`, `universe_knowledge_base.md`, `tone_analysis.md`.
+`research_log.md`, `universe_knowledge_base.md`, `tone_analysis.md`, `hitl_log.jsonl`, `events.jsonl`,
+`alerts.jsonl`, `kb_ratified.csv`, `back_a_<scene_id>.json` (passagem A da retrotradução cega).
 > O **infixo** `<scene_id>` é o VALOR (ex.: `12_03`), não o nome da variável — renomear a variável
 > `scene_id` no código NÃO muda o nome do arquivo gerado.
 
 **b) Comandos CLI** (caminho do módulo = comando que o usuário roda):
 `context_pack.py`, `state_index.py`, `model.py`, `run_scene.py`, `run_chapter.py`, `kb_gate.py`,
-`kb_phase.py`, `cost_report.py`, e os conectores `build_plan_chapter.py` / `verify_chapter.py`.
+`kb_phase.py`, `cost_report.py`, `wave.py`, `hitl.py`, `session_lot.py`, e os conectores `build_plan_chapter.py` / `verify_chapter.py`.
 
 **c) Chaves de `project.json`:**
 `connector.build_plan_script`, `connector.verify_script`, `kb_frontier`, `formatting_tokens`,
-`system_line_convention`, `length_constraints`, `target_charset_supported`, e o resto de `connector`.
+`system_line_convention`, `length_constraints`, `target_charset_supported`, e o resto de `connector`; mais `hitl`,
+`hitl_fila`, `back_translation_risk`, `back_translation_cega`, `byte_budget_exceptions`, `line_width`/`line_width_max`
+e `extraction_scope`/`system_scenes`.
 
 ## 5. O que É seguro renomear (clareza interna)
 

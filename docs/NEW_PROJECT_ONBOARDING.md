@@ -101,6 +101,17 @@ Já criado pelo `scaffold_project.py` (sem ele: copiar `framework/templates/proj
 
 Deixar como `"TBD"` qualquer campo que depende do mapeamento do Passo 00.
 
+Chaves opcionais que o scaffold ou a operação acrescentam (não são obrigatórias na criação):
+
+| Chave | Para que serve |
+|---|---|
+| `hitl` | o `scaffold_project.py` grava `true`: projeto novo nasce com humano no laço (`hitl.py`: aceite de escopo e escolha de caminho antes de traduzir). Projeto sem a chave segue como antes |
+| `hitl_fila` | `"diferida"`: a onda não para por escalonamento nem lore novo; o humano responde no fim do lote (ADR 0020) |
+| `back_translation_risk` | níveis de risco que exigem retrotradução (padrão `["high","critical"]`; ADR 0022) |
+| `back_translation_cega` | liga a retrotradução cega em duas passagens (desligada por padrão; medida e não adotada, ADR 0025) |
+| `extraction_scope` / `system_scenes` | `"dialogo"` ou `"completo"`; cenas de texto de sistema, que só vão pela sessão |
+| `line_width` / `line_width_max` / `byte_budget_exceptions` | largura de caixa e orçamento de bytes (ver `TRANSLATION_PIPELINE.md` e `CONNECTORS.md`) |
+
 ### 1. Mapear o formato (Passo 00 — Extração)
 
 O objetivo é entender **como o texto está guardado** no binário antes de escrever qualquer código.

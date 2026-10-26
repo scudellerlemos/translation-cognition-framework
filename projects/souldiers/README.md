@@ -72,7 +72,7 @@ artifacts/
   entities.csv, glossary.csv, research_log.md, tone_analysis.md, universe_knowledge_base.md
   scenes/                  ← 470 cenas verified (translations_*.json, translation_plan_*.json, ...)
   state/translation_memory.jsonl ← TM gerada (append-only)
-  run_state.json           ← 470/470 cenas verified
+  run_state.json           ← 485 entradas (470 do índice, todas verified, + 15 extras; ver a nota acima)
   api_ledger.jsonl         ← ledger de custo auditável
   qa_revisao/              ← XLSX de revisão humana (gerado, aguardando aplicação)
 ```

@@ -267,7 +267,7 @@ ORDER BY l2 LIMIT :k
 | Consulta | uma por fala da cena | uma por cena (os primeiros 2.000 caracteres do texto da cena) |
 | `k` (vizinhos por consulta) | 3 | 3 |
 | Teto por cena | 8 pares fonte→tradução | 3 decisões e 3 seções de KB |
-| Score mínimo | `rag_min_score` (calibrado em 0,55, ver abaixo; `null` = sem corte, que é o que o template e o bof4 trazem) | sem limiar; o corte é o `k` |
+| Score mínimo | `rag_min_score` (calibrado em 0,55, ver abaixo; `null` = sem corte; o template e os projetos com busca semântica trazem 0,55) | sem limiar; o corte é o `k` |
 | Score máximo | 0,999 (acima disso é match exato) | — |
 | Filtro | só `approved=1`, só do projeto | marca `reveal` já ultrapassada (default-deny) |
 | Deduplicação | por par (fonte, tradução), no SQL e no pacote | o que já entrou pelo caminho léxico não repete |
@@ -301,8 +301,8 @@ ruído observado foi **0,51**.
 
 **Valor escolhido: `rag_min_score = 0.55`**, acima do teto de ruído (0,51) e abaixo do piso das
 paráfrases (0,57). Foi medido no `translation_software` (shell de validação, depois removido); é configurável por
-projeto, em `rag_min_score` do `project.json`, porque depende do par de idiomas. O default do template é `null`
-(sem corte): o 0,55 só vale onde o projeto o declara.
+projeto, em `rag_min_score` do `project.json`, porque depende do par de idiomas. O template traz `0.55`; `null`
+(ou a chave ausente) volta a não ter corte. Para outro par de idiomas, refaça a medição antes de manter o valor.
 
 Limite dessa medição: 323 falas são uma fração do corpus completo (6.046 falas). A amostra serve
 para ver a **forma** da distribuição de scores, que depende só do texto, mas não mede cobertura em

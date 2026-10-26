@@ -1,6 +1,6 @@
 # Security — Translation Cognition Framework
 
-> Threat model e controles de segurança do harness. Última revisão: 2026-07-03.
+> Threat model e controles de segurança do harness. Última revisão: 2026-10-25.
 
 ---
 
@@ -119,6 +119,20 @@ posterior via hash); sem assinatura de código. Aceitável para uso pessoal/mono
 
 ---
 
+### 4b. Patcher distribuído (`framework/distribution/`)
+
+**Ameaça:** o `.exe` do jogador altera arquivos do jogo; um pacote adulterado ou uma falha no meio deixaria o jogo quebrado.
+
+**Controles:**
+- O pacote leva **delta** (bsdiff) e `manifest.json` com hashes, nunca o DAT remontado nem o original
+- Só toca arquivo cujo hash bate com o original; guarda backup `.bak`, confere o hash final e desfaz tudo se falhar
+- Recusa rodar com o jogo aberto (confere os processos do `distribution.json`)
+- `build_exe.py` recusa saída dentro de `dist/`; o `.exe` e o hash vão só em release do GitHub, e `dist/` e `output/` ficam fora do git
+
+**Gap residual:** o `.exe` não é assinado (o Windows pode avisar na primeira execução); a conferência é o hash publicado.
+
+---
+
 ### 5. Dependências (supply chain)
 
 **Controles atuais:**
@@ -128,9 +142,9 @@ posterior via hash); sem assinatura de código. Aceitável para uso pessoal/mono
 - `gitleaks` roda em `quality.yml` (job `secrets`) — segredo commitado no diff + histórico
 
 **Gap residual:**
-- Sem hashes de integridade (`pip-compile --generate-hashes`)
-- Aceitável para ferramenta pessoal; hashes de integridade só justificam o custo se o projeto
-  evoluir para uso compartilhado
+- Só o lock de desenvolvimento tem hash; as dependências opcionais (`requirements-kb.txt`, `requirements-ml.txt`)
+  são auditadas por CVE (`dep-audit-optional.yml`), sem hash
+- Aceitável para ferramenta pessoal
 
 ---
 

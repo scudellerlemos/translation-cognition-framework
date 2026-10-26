@@ -34,7 +34,7 @@ flowchart TB
       g2{{"2 traduz (IA), após scene_dedup"}}
       g3["3 build_plan: cobertura, tokens, bytes"]
       g4["4 verify_chapter: round-trip byte a byte"]
-      g5{{"5 retrotradução (IA)<br/>por fala, risco alto + 5%"}}
+      g5{{"5 retrotradução (IA)<br/>por fala, risco exigido + 5%"}}
       g6["6 checkpoint: verified, TM e banco crescem"]
       g0 --> g1 --> g2 --> g3 --> g4 --> g5 --> g6
     end
@@ -153,7 +153,7 @@ flowchart TB
   tr{{"model.translate<br/>IA"}}
   bp["build_plan_chapter<br/>cobertura, tokens, orçamento de bytes"]
   vf["verify_chapter<br/>round-trip byte a byte"]
-  bt{{"back_translate<br/>IA, só risco alto"}}
+  bt{{"back_translate<br/>IA, só o risco exigido"}}
   si["state_index<br/>TM, voice cards, decisões"]
   ob["cost_report / obs_report / session_usage<br/>custo e tempo"]
   st[("run_state.json<br/>api_ledger.jsonl")]
@@ -188,7 +188,7 @@ sequenceDiagram
   S->>R: run_scene de novo
   R->>C: build_plan e verify_chapter
   C-->>R: exit 0 (round-trip igual)
-  R-->>S: AGUARDANDO back-translation (se risco alto)
+  R-->>S: AGUARDANDO back-translation (se o risco for exigido pelo projeto)
   S->>R: run_scene de novo
   R->>R: checkpoint verified, state_index
   R-->>W: uma linha de status

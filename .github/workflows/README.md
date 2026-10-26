@@ -47,14 +47,17 @@ O que cada tarefa confere, em português:
 4. **Roda os testes do motor com cobertura** (runtime, validação, banco e skills) — além
    de passar, exige que pelo menos **90%** do código seja exercitado pelos testes (a
    "cobertura"). Abaixo disso, barra.
-5. **Roda os testes dos utilitários de conector e dos hooks** — os utilitários também com
+5. **Roda a suíte do motor no Windows** (`windows`: runtime, validação, banco, skills e distribuição, sem cobertura) — estado atômico, travas de arquivo e caminhos,
+   que se comportam diferente do Linux (é onde o projeto roda de verdade).
+6. **Roda os testes dos utilitários de conector e dos hooks** — os utilitários também com
    piso de **90%** de cobertura.
-6. **Roda os testes de contrato dos conectores** (um por jogo, mais o demo e o template) — confere o
+7. **Roda os testes de contrato dos conectores** (um por jogo, mais o demo e o template) — confere o
    *round-trip*: extrair o texto do jogo e reinserir **sem traduzir** tem que devolver o
    arquivo **byte a byte idêntico** ao original. É a prova de que o conector não corrompe
    o jogo. (Sem o arquivo do jogo, que não vai pro repositório, esses testes se "pulam"
    sozinhos.)
-7. **Agregador (`all-checks`)** — só fica verde se todas as tarefas acima passaram. É ele
+8. **Cobertura real da busca semântica** (`ml-coverage`, ver a seção 3.6).
+9. **Agregador (`all-checks`)** — só fica verde se todas as tarefas acima passaram. É ele
    que a proteção da branch `main` exige pra liberar o merge.
 
 ---
@@ -111,9 +114,21 @@ testes que exercitam a lógica real de indexação/busca vetorial (não os que u
 semântica (ex.: inverter a métrica de distância) passava pela suíte inteira sem ninguém notar.
 
 Este workflow é reutilizável (`workflow_call`): `test.yml` o chama no job `ml-coverage`, que está no `needs` do agregador `All checks` — por isso é obrigatório sem mexer na branch protection. Ele instala a stack ML de verdade (`requirements-ml.txt`) e roda esses testes sem skip, com
-um piso de cobertura **específico** desses dois módulos (85%, `.coveragerc-ml` na raiz). Mesma
-cadência semanal do `dep-audit-optional.yml` e pelo mesmo motivo de custo (torch +
-sentence-transformers do zero ~1min+ por run) — não roda em todo push/PR.
+um piso de cobertura **específico** desses dois módulos (85%, `.coveragerc-ml` na raiz). Desde
+2026-10-17 roda em todo PR e push na `main` (pelo job de `test.yml`), para a busca semântica ser
+exercitada sempre; o agendamento de domingo ficou como rede de segurança. O custo é o da stack
+pesada (torch + sentence-transformers do zero, ~1 min+ por run).
+
+---
+
+## 3.7. `perf.yml` — "Alguma operação ficou mais lenta?"
+
+Roda `framework/runtime/perf_bench.py` (`append_line`, `build_pack` e `state_index_tm`, sobre dados
+sintéticos) e compara com o baseline do próprio runner (`perf_baseline_ci.json`; sem ele, cai no
+baseline local do Windows). Regressão de mais de 2× vira aviso na run, e o `perf.json` fica como
+artefato para acompanhar a tendência. **Não bloqueia** e fica fora do agregador de propósito: tempo de CI
+é ruidoso, e barrar PR por ruído ensina a ignorar o aviso. O teste que falha de verdade é o
+`framework/runtime/test_perf_bench.py`.
 
 ---
 

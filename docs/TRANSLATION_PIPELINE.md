@@ -13,7 +13,7 @@ python framework/runtime/run_scene.py <projeto> <cena> [<cena> ...] [--backend i
 [2] translate      →  artifacts/scenes/<cena>/translations_<scene_id>.json           (IA; in-session espera o arquivo)
 [3] build_plan     →  artifacts/scenes/<cena>/{translation_plan_<scene_id>.json, approved_<scene_id>.csv}  (det. + valida)
 [4] verify         →  round-trip byte-idêntico + ponteiros within-file    (determinístico)
-[5] back_translate →  artifacts/scenes/<cena>/back_translation_<scene_id>.json        (IA; risk>=high; report-only)
+[5] back_translate →  artifacts/scenes/<cena>/back_translation_<scene_id>.json        (IA; nível de risco do projeto; report-only)
 [6] checkpoint     →  artifacts/run_state.json  + reconstrói artifacts/state/  (TM cresce)
 ```
 
@@ -22,15 +22,21 @@ python framework/runtime/run_scene.py <projeto> <cena> [<cena> ...] [--backend i
 **Reconferência só do que mudou (`touched.py`).** Ao fechar `verified`, o `run_scene` grava no `run_state` uma
 impressão digital por fala da tradução. Cena `verified` sem fala nova/alterada, com a mesma doutrina e o mesmo
 conector, é **pulada** (`[skip] ... use --full para reconferir`); `--full` força a passada completa
-(`--clean` também reconfere). `--jobs N` roda N cenas ao mesmo tempo, cada uma em seu processo (reconferência;
+(`--clean` também reconfere). `python framework/runtime/touched.py <projeto>` lista o **drift** (cena `verified` cujo
+texto mudou desde o fechamento; sai com código 1 se houver), para flagrar arquivo alterado à mão depois de
+verificado. A função `touched.origem(root, cena)` conta as falas por `intent` registrada (padrão `traducao`). `--jobs N` roda N cenas ao mesmo tempo, cada uma em seu processo (reconferência;
 o `run_state` tem trava) — a TM só cresce entre cenas em fila, então para traduzir em sequência use 1.
 
 ## Gates (bloqueiam o avanço)
 
 - **[3] build_plan_chapter** valida: cobertura total, token `\n` preservado, interjeição ≠ source,
   `risk >= medium` exige `risk_notes`. Falha → `status: build_plan_failed`.
-- **[5] back-translation** em `risk >= high` (mais amostra de 5% das demais em cenas do batch), depois do verify. Por padrão é **reportada** (não bloqueia); com
-  `--require-back` bloqueia até existir `back_translation_<scene_id>.json`.
+- **[5] back-translation** nas falas dos níveis de `back_translation_risk` do `project.json` (padrão `["high","critical"]`;
+  o Prelude usa `["critical"]`, ADR 0022), mais amostra de 5% das demais em cenas do batch, depois do verify. Por padrão
+  é **reportada** (não bloqueia); com `--require-back` bloqueia até existir `back_translation_<scene_id>.json`. O
+  `quality_gate` acusa `SEM COBERTURA` quando falta veredito de fala de nível exigido e lista as cenas pendentes. A
+  variante **cega** (`"back_translation_cega": true`: passagem A só com o target, juiz B com o source) existe, mas foi
+  medida e **não adotada** (ADR 0025): fica desligada.
 - **[4] verify_chapter** exige round-trip idêntico (approved={}), cada offset lido == approved
   transliterado, **resíduo = 0**, ponteiros resolvendo dentro do arquivo. Falha → `verify_failed`.
 - **Conferência visual no jogo** acontece na Fase 2 (piloto): o humano vê o trajeto do piloto instalado antes
@@ -58,6 +64,8 @@ Projeto novo nasce com a chave (scaffold); projeto sem ela segue como antes. Tod
   `escalate`, vai para `qa_revisao/para_revisar/escalonamento.csv`. O humano responde `alias` (a forma
   passa a valer: vira regra no glossário) ou `correcao` (texto certo) e roda `hitl.py resolve`. Item aberto
   bloqueia o `quality_gate`. Correção do `quality_review apply` que diverge do glossário também cai aqui.
+  O `status` agrupa a fila **por termo** (a mesma dúvida em várias falas é uma decisão só), e
+  `hitl.py resolve <projeto> --termo X --alias Y` responde o grupo inteiro de uma vez (as duas flags andam juntas).
 - **Triagem de risco** (`risk_triage.py`, só caminho de sessão) — antes da QA humana, um juiz barato lê
   os pares únicos fonte+tradução de risco baixo e devolve só os ids que merecem segundo olhar; `apply`
   sobe essas falas para `high`, e a retrotradução (`--require-back`) e o `quality_review export` cuidam delas. `risk_triage_run.py <projeto>` orquestra os lotes do `export` (uma chamada headless `claude -p` por
@@ -74,6 +82,29 @@ Projeto novo nasce com a chave (scaffold); projeto sem ela segue como antes. Tod
 cópias, `glossary_lint`, `quality_gate`, `session_usage rebuild`, `cost_report --summary` (mais `--by-scene` no log) e `obs_report` em sequência; a linha de custo traz o equivalente API da sessão por fase e o erro do medidor (caminho de sessão não paga API, então "$0" sozinho esconderia o gasto); o escopo é só das
 cenas pedidas (sem cena, roda só os gates e relatórios). Para no primeiro passo que falhar, grava a saída inteira em `artifacts/wave_last.log` (`wave_last_<cena>.log` se o pedido é de uma cena só, para subagentes em paralelo não se sobrescreverem) e devolve uma linha por passo. Mesmos comandos
 e gates; só troca N requisições da janela por uma. `obs_report` é enxuto por padrão (`--all` = todas as cenas).
+
+`wave.py <projeto> <cena> --precheck` confere a cena **sem gravar nada**: chave de offset desconhecida, contagem do
+token de quebra (coluna `nl`) e orçamento de bytes. É o que o `scene-translator` roda antes de cada rodada, já que
+o shell sem supervisão recusa comando composto. `--max-usd` é o teto de gasto da onda (parada dura) e
+`--step-timeout` limita cada passo.
+
+## Onda no lote (skill `rodar-onda`)
+
+A skill `.claude/skills/rodar-onda/` orquestra uma onda de ponta a ponta; **a onda de tradução roda via
+`lancar_lote.ps1` fora do Claude Code**, nunca dentro dele (a janela da conversa só propõe, confere e relata).
+Passos: 1 propor cenas (`panorama-ondas`) · 2 levantar o lore (`kb_phase.py ... onda`) · 3 lançar um
+`scene-translator` (Haiku) por cena ou grupo de cenas curtas · 4 esperar os relatórios (dado, não aval) · 5 conferir
+no disco com o `wave.py` · **5a** escalonamentos em lote · **5c** retrotradução em Opus dos níveis exigidos ·
+**5d** retradução em Sonnet das falas `critical` (ADR 0023: as `high` ficam com o Haiku) · **5e** `revise` na
+retrotradução (a tradução é revista, nunca o veredito editado, ADR 0021) · 6 custo · 7 `levantar-melhorias` ·
+8 atualizar a "Retomada" do ROADMAP · 9 fechar.
+
+No lote, `rodar_ondas.ps1` roda cada onda numa janela `claude -p` (Haiku por padrão, `-Modelo sonnet|opus` só por
+pedido), estima o tempo antes (`estimar_lote.py`), espera o reset quando bate o limite de cota
+(`cota_uso.py`, `espera_reset.py`), e no fim da onda `onda_fim.py` e `conformidade_onda.py` conferem o lote;
+`lote_status.py` mostra a situação numa tela e o `vigia_lote.sh` alimenta o Monitor. Fila de escalonamento e
+lore novo seguem o modo diferido (`"hitl_fila": "diferida"`, ADR 0020): a onda não para por eles, o humano responde
+no fim do lote.
 
 ## Texto repetido entre cenas (`scene_dedup.py`, os dois caminhos)
 
@@ -122,6 +153,15 @@ Regra, não sugestão:
 - Ao fechar uma medição: `python framework/runtime/session_usage.py rebuild <projeto>` refaz as linhas de sessão
   a partir das transcrições inteiras. Saída de mensagem sem `usage` final na transcrição é estimada pelo
   conteúdo e o relatório diz quanto do total é estimativa.
+
+## Tabela de falas do prompt e quem fala
+
+O `scene_prompt.md` traz a tabela de falas com a coluna `nl` (quantas vezes o token de quebra aparece no source: o `t`
+repete exatamente essa quantidade) e, na seção de glossário, a coluna `forma curta` quando algum termo da cena a tem
+(ADR 0024: forma menor aceita quando a canônica estoura o orçamento de bytes; o `glossary_lint` a trata como alias
+válido). O `speaker` de cada fala vem do extrator quando o formato traz o falante; senão é inferência do tradutor, e
+o passo 2c da skill `00_extraction` pede ao conector que diga onde o falante está. `scene_scope.py` reporta quantas
+falas têm falante extraído (`FALANTE: X de N`).
 
 ## Troca de caminho (sessão ↔ API)
 

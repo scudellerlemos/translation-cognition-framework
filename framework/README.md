@@ -1,7 +1,7 @@
 # Translation Cognition Framework — guia do framework
 
 > O processo + o motor para localizar obras narrativas longas: IA cercada na cognição, estado externalizado, gates determinísticos.
-> **Validado em produção:** 16 capítulos, 146 cenas, ~45.100 linhas, R$ 0 desperdiçado.
+> **Validado em produção:** quatro jogos traduzidos de ponta a ponta (Utawarerumono: Mask of Deception, Breath of Fire IV, Souldiers e Utawarerumono: Prelude), em três engines distintos.
 
 Esta página mostra a **organização do código** e como **instanciar um projeto novo**.
 Conceitos, arquitetura e o "porquê" das decisões → [README raiz](../README.md).
@@ -34,14 +34,15 @@ framework/
   SDD_RUNTIME.md    ← mapa skill→runtime: qual módulo executa cada etapa do SDD (00–09) + quem produz/consome cada artefato
   runtime/          ← harness (cena = job stateless): orquestração (run_scene/run_chapter/run_game,
                        kernel.py como fachada), contexto (context_pack), estado (state_index), IA
-                       (model + back_translate), KB (kb_gate/kb_review/kb_phase/kb_fetch/
+                       (model, fachada de model_api e model_session, + back_translate), KB (kb_gate/kb_review/kb_phase/kb_fetch/
                        kb_build_ollama/kb_reconcile — pipeline híbrido Ollama + ratificação humana),
                        conector (connector_gate/connector_mgr/fingerprint_monitor), spoiler
                        (spoiler_check), TM por série (tm_lookup/tm_updater), qualidade
-                       (quality_review/gate/fix, tm_correct), custo (cost, cost_report) — ~59
-                       módulos (`ls runtime/*.py` sem testes). Ver runtime/README.md
+                       (quality_review/gate/fix, tm_correct), custo (cost, cost_report), lote em
+                       sessão (wave, session_lot, touched, onda_fim) — 76 módulos
+                       (`ls runtime/*.py` sem testes). Ver runtime/README.md
   db/               ← store.py (SQLite: TM, glossário, voice cards, ledger), embedder, migrate_from_flat/export_to_flat
-  distribution/     ← build_package.py, build_exe.py, patcher.py — delta + patcher .exe de um clique (skill 09)
+  distribution/     ← build_package.py, build_exe.py, verificar_exe.py, patcher.py — delta + patcher .exe de um clique (skill 09)
   cli.py            ← CLI unificada (subcomandos do pipeline)
   validation/       ← validate.py, naturalness_lint.py, cost_model.py (gates determinísticos)
   templates/        ← project.template.json + profile/ para novos projetos
@@ -52,8 +53,9 @@ docs/               ← (raiz do repo) ARCHITECTURE, STACK (modelo/embedding/RAG
                        ROADMAP, adr/
 
 projects/
-  utawarerumono/    ← primeira instância de referência (jogo, EN→pt-BR) — completa
+  utawarerumono/    ← primeira instância de referência (Mask of Deception, EN→pt-BR) — completa
     connector/      ← extract.py, reinsert.py, table_schema (adaptados ao binário)
+  utawarerumono_prelude/ ← Utawarerumono: Prelude to the Fallen (mesma Aquaplus, outro formato) — concluída e instalada
   bof4/             ← BoF4 em modo banco + busca semântica obrigatória
   souldiers/        ← terceira instância (Unity Addressables) — concluída
   trails_sky_sc/    ← quarta instância (Falcom) — em andamento
@@ -106,7 +108,6 @@ No pipeline real, o conteúdo equivalente é **gerado** pelos passos 1–4; o pe
 semente e referência.
 
 Executar as skills em ordem de leitura (`framework/skills/_index.md` tem o fluxo `00..09` e os três blocos: preparação, laço por cena, fechamento). Cada skill:
-Executar as skills em ordem (`framework/skills/_index.md` tem o fluxo `00..09`). Cada skill:
 - Lê `project.json` + os artefatos do passo anterior
 - Tem um **Input Gate** que bloqueia execução fora de ordem
 - Produz artefatos em `projects/<seu-título>/artifacts/`
@@ -131,12 +132,14 @@ A entrega final (Passo 08) é o **binário traduzido + um patch** (ips/bps/xdelt
 
 ## MÍDIA SUPORTADA
 
-- **Jogos** — ✅ validado em três engines distintos:
+- **Jogos** — ✅ validado em quatro jogos e três engines distintos:
   - *Utawarerumono* (Aquaplus): **CONCLUÍDO** — 16 capítulos, 146 cenas, ~45.100 linhas, pt-BR in-game.
   - *Breath of Fire IV* (Capcom DAT): **CONCLUÍDO** — 305 cenas `verified` (27.021 falas), patcher em beta, release pendente (ver `projects/bof4/`).
   - *Souldiers* (Unity Addressables): **CONCLUÍDO** — 470 cenas, round-trip 100%, KB via Ollama híbrido.
+  - *Utawarerumono: Prelude to the Fallen* (Aquaplus, formato novo): **CONCLUÍDO e instalado** — 350 cenas `verified`
+    (23.982 falas) pelo caminho de sessão em lote, com patcher de um clique (ver `projects/utawarerumono_prelude/ROADMAP.md`).
   - *Trails in the Sky SC* (Falcom): **EM ANDAMENTO** — 4º engine, conector novo (`target_charset_supported`),
-    cena-piloto com round-trip real fechado; 67 cenas extraídas, tradução em curso.
+    cena-piloto com round-trip real fechado; 71 cenas extraídas, tradução em curso.
   - Ver `media-profiles/games.md`.
 - **Filmes** — 🚧 ponto de extensão. Ver `media-profiles/films.md`.
 - **Séries** — 🚧 ponto de extensão. Ver `media-profiles/series.md`.
@@ -148,7 +151,7 @@ A entrega final (Passo 08) é o **binário traduzido + um patch** (ips/bps/xdelt
 Além das skills (o *processo*), `framework/runtime/` é o *harness* que torna a execução sustentável:
 cada cena é um **job stateless e limitado** (contexto O(cena), não O(histórico)), o que elimina o
 estouro de sessão e viabiliza Sonnet a custo previsível. A LLM faz só cognição (traduzir / verificar
-alto risco); orquestração, estado, contexto e validação são determinísticos. Ver
+as falas de risco exigido); orquestração, estado, contexto e validação são determinísticos. Ver
 [`runtime/README.md`](runtime/README.md), [`docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md), a governança
 com desenhos em [`docs/GOVERNANCE.md`](../docs/GOVERNANCE.md) e a convenção de nomes em
 [`docs/NAMING.md`](../docs/NAMING.md).
@@ -173,6 +176,12 @@ pares de identidade dupla e gestão crítica de spoilers. **CONCLUÍDO:** 16 cap
 ~45.100 linhas, round-trip byte-idêntico, custo ~R$ 338,46, pt-BR in-game. Use como
 exemplo de manifesto, perfil e artefatos do pipeline.
 
+**`projects/utawarerumono_prelude/`** — instância do jogo *Utawarerumono: Prelude to the Fallen* (mesma
+Aquaplus, formato de dados diferente). **CONCLUÍDO e instalado:** 350 cenas `verified` (23.982 falas) pelo caminho de
+sessão em lote (`rodar-onda`), fila de decisões diferida, retrotradução só nas falas `critical` e patcher de um clique.
+Foi a instância que gerou as lições da v2.2.0 (`docs/CHANGELOG.md`). Sem `README.md` próprio: o estado fica no
+`ROADMAP.md` do projeto.
+
 **`projects/bof4/`** — segunda instância. Valida a portabilidade para engine Capcom, em modo banco com busca
 semântica obrigatória; é o conector de referência Capcom e fixture de testes. Substituiu `projects/breath_of_fire_4/`
 (arquivos; 125 cenas, pipeline 00–08 completo, custo ~$11 USD), removido do repositório.
@@ -184,7 +193,7 @@ custo ~$3,06 USD.
 
 **`projects/trails_sky_sc/`** — quarta instância, **EM ANDAMENTO**. Valida engine Falcom (remake
 *Sora no Kiseki 2nd Chapter*), conector escrito do zero (`target_charset_supported: true`, grava
-UTF-8 real). 67 cenas extraídas; cena-piloto `mp0010_01` fechou round-trip real contra o `.pac`.
+UTF-8 real). 71 cenas extraídas; cena-piloto `mp0010_01` fechou round-trip real contra o `.pac`.
 Ainda sem `README.md` próprio — ver `docs/CHANGELOG.md` e `artifacts/decision_log.md` pelo estado atual.
 
 ---
@@ -211,11 +220,12 @@ flowchart LR
     qc["secrets — gitleaks (diff + histórico)"]
     qd["deps — pip-audit (CVEs em requirements-dev)"]
   end
-  subgraph tests["test.yml — verificação funcional (11 checks + agregador)"]
+  subgraph tests["test.yml — verificação funcional (13 checks + agregador)"]
     direction TB
-    te["env-guard — .env nunca rastreado no git"]
+    te["env-guard — .env nunca rastreado + content guard"]
     tm["mypy — type-check do núcleo já tipado"]
     tcov["coverage — runtime+db+skills+validation ≥90% (matrix 3.11 · 3.12)"]
+    tw["windows — suíte do motor no Windows (estado atômico, locks)"]
     tb["connector-bof4 — contrato round-trip BoF4"]
     tu["connector-uta — contrato round-trip Utawarerumono"]
     tsoul["connector-souldiers — contrato round-trip Souldiers"]
@@ -224,6 +234,7 @@ flowchart LR
     tsk["connector-skeleton — contrato do template"]
     tio["connector-io — utilitários compartilhados (framework/connectors/*.py) ≥90%"]
     thk["hooks — testes de .claude/hooks/"]
+    tml["ml-coverage — embedder/validate_model com a stack ML real"]
   end
   subgraph smoke["api-smoke.yml — só cron/manual (1 job)"]
     sm["batch smoke da Batch API (~$0.002; pula sem ANTHROPIC_API_KEY)"]
@@ -232,7 +243,7 @@ flowchart LR
   classDef test fill:#d6e8f6,stroke:#1f6f9b,color:#000;
   classDef smoke fill:#eceff1,stroke:#607d8b,color:#000;
   class quality,ql,qs,qc,qd qual;
-  class tests,te,tm,tcov,tb,tu,tsoul,ttr,tdemo,tsk,tio,thk test;
+  class tests,te,tm,tcov,tw,tb,tu,tsoul,ttr,tdemo,tsk,tio,thk,tml test;
   class smoke,sm smoke;
 ```
 
@@ -248,7 +259,7 @@ flowchart LR
 
 ---
 
-## STATUS DO FRAMEWORK — setembro 2026
+## STATUS DO FRAMEWORK — outubro 2026
 
 ### Objetivos alcançados
 
@@ -272,9 +283,12 @@ flowchart LR
   `run_game`/`validate_project`/`write_pack`) — contratos tipados, sem dependência de Claude/MCP ✅
 - TM por série (`tm_lookup.py`/`tm_updater.py`): jogos da mesma franquia compartilham termos
   recorrentes, isolamento estrutural entre séries, alimentada pelo QA aprovado ✅
-- CI paralela reestruturada: 2 workflows por PR (+ 5 sob demanda: cron/dispatch/tag), checks sem
-  encadeamento (só o agregador `all-checks` usa `needs:`), falha nomeada por job ✅
-- Versionamento SemVer manual (`VERSION` + tag `vX.Y.Z`, ADR 0013): versão `2.1.0` (tag `v2.1.0` depois do merge) ✅
+- CI paralela reestruturada: 3 workflows por PR (`quality`, `test` e `perf`, este sem bloquear; +5 sob demanda:
+  cron/dispatch/tag), checks sem encadeamento (só o agregador `all-checks` usa `needs:`), falha nomeada por job ✅
+- Versionamento SemVer manual (`VERSION` + tag `vX.Y.Z`, ADR 0013): versão `2.2.0` (tag `v2.2.0` depois do merge) ✅
+- Caminho de sessão em lote (`session_lot`, `wave`, `touched`, skill `rodar-onda`): a tradução roda na sessão do Claude
+  Code, sem API, com os mesmos gates; fila de decisões diferida (ADR 0020); retrotradução por nível de risco (ADR 0022) ✅
+- Patcher de um clique (`framework/distribution/`): deltas bsdiff + manifesto, instalar/desinstalar reversível ✅
 - Suíte verde no CI (cobertura ≥90%)
 
 ### Dívidas técnicas do framework
@@ -282,7 +296,7 @@ flowchart LR
 | Dívida | Prioridade |
 |---|---|
 | Filmes / séries: pontos de extensão sem validação em produção (sem projeto real pra justificar) | quando houver piloto |
-| Packaging `.exe` / README de produto (E2-E4; a CLI instalável `tcf` já existe) | pós-validação, só se for publicar |
+| Publicar a release do patcher `.exe` (o pacote e o `.exe` já saem de `framework/distribution/`; falta o aval do autor) | só se for publicar |
 | Bundle de custo: tiering + back-batch codados, sem medição viva pós-Souldiers | quando rodar próximo capítulo pago |
 | `connector_gate.assert_fresh_read()` (D5): testada, sem caller em produção ainda | quando formalizar fluxo de edição de conector |
 

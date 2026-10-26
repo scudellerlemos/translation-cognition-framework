@@ -68,12 +68,19 @@ run_scene(cena)
   0. connector_gate + kb_gate (bloqueiam antes de qualquer chamada de modelo)
   1. context_pack  → pacote LIMITADO (doutrina cacheável + glossário-subset + voice cards dos
                      falantes + decisões relevantes + hits de TM + linhas+budgets) → scene_prompt.md
-  2. translate ............................► [IA: Sonnet]   (única parte não-determinística)
+  2. translate ............................► [IA: tradutor] (única parte não-determinística)
   3. build_plan_chapter (valida cobertura/tokens/risk_notes) → approved_<scene_id>.csv
   4. verify_chapter (round-trip byte-idêntico + ponteiros within-file)
-  5. high? back_translate .................► [IA: Opus]     (verificação de alto risco; report-only)
+  5. risco exigido? back_translate ........► [IA: Opus]     (padrão high+critical; o projeto restringe, ADR 0022)
   6. checkpoint (run_state.json) + state_index (TM cresce)
 ```
+
+Dois caminhos executam este mesmo fluxo e compartilham o núcleo (`pack_render.py`, `translation_rules.py`):
+o de **API** (`model_api.py`: cliente, streaming, retry, batch) e o de **sessão** (`model_session.py`: sem rede,
+a IA da sessão do Claude Code escreve o `translations_*.json`; `session_lot.py` junta várias cenas num prompt só).
+Uma **onda** é um lote de cenas do caminho de sessão; `wave.py` roda os passos mecânicos e o `rodar_ondas.ps1`/
+`lancar_lote.ps1` (em `.claude/skills/rodar-onda/`) dispara o lote fora do Claude Code, com estimativa de tempo,
+espera de cota e conferência de conformidade no fim.
 
 Reconferência barata: ao fechar `verified`, o `run_scene` grava em `run_state.json` o `t_hashes` (impressão
 digital por fala da tradução, `runtime/touched.py`) junto com `connector_hash`/`doctrine_hash`. Numa nova
@@ -84,10 +91,10 @@ quality_gate, cost_report, obs_report) num comando só, com a saída longa em `a
 
 ```mermaid
 flowchart LR
-  pack["context_pack<br/>det."] --> tr{{"translate<br/>IA · Sonnet"}}
+  pack["context_pack<br/>det."] --> tr{{"translate<br/>IA"}}
   tr --> plan["build_plan<br/>det."]
   plan --> vf["verify round-trip<br/>det."]
-  vf --> bt{{"back_translate<br/>IA · Opus (só alto risco)"}}
+  vf --> bt{{"back_translate<br/>IA · Opus (só o risco exigido)"}}
   bt --> cp["checkpoint + TM<br/>det."]
   classDef ia fill:#f6d6e8,stroke:#c0397b,color:#000;
   class tr,bt ia;
@@ -121,12 +128,25 @@ flowchart LR
 | Constantes, TypedDicts de contrato | Determinístico | `runtime/config.py` |
 | Preços, ledger de gasto | Determinístico | `runtime/cost.py` |
 | Cliente HTTP / retry / batch | Determinístico | `runtime/llm_client.py` |
-| **Tradução** | **IA** | `runtime/model.py` |
-| **Back-translation (alto risco)** | **IA** | `runtime/back_translate.py` |
+| Prompt de tradução (render do pacote) | Determinístico | `runtime/pack_render.py` |
+| Regras compartilhadas (quebra, bytes, tokens, dedup) | Determinístico | `runtime/translation_rules.py` |
+| Onda de cenas (mecânica, fechamento, conformidade) | Determinístico | `runtime/wave.py`, `session_lot.py`, `onda_fim.py` |
+| Reconferência só do que mudou | Determinístico | `runtime/touched.py` |
+| Humano no laço (fila, ratificação por termo) | Determinístico | `runtime/hitl.py` |
+| Eventos, alertas, observabilidade | Determinístico | `runtime/events.py`, `alerts.py`, `obs_report.py` |
+| Cota, estimativa e espera do lote | Determinístico | `runtime/cota_uso.py`, `estimar_lote.py`, `espera_reset.py`, `lote_status.py` |
+| **Tradução** | **IA** | `runtime/model_api.py` (API) e `model_session.py` (sessão), via fachada `model.py` |
+| **Back-translation (risco exigido)** | **IA** | `runtime/back_translate.py` |
 
-A única fronteira não-determinística é `model.py` + `back_translate.py` — por isso são finas e
+A única fronteira não-determinística é `model.py` (fachada de `model_api.py`/`model_session.py`) + `back_translate.py` — por isso são finas e
 isoladas. Ver `MODEL_INTERFACE.md`.
 
+> **Divisão de out/2026 (Onda 4, ADR 0019):** `model.py` virou fachada de `model_api.py` (caminho de API) e
+> `model_session.py` (caminho de sessão); o `render_prompt` saiu do `context_pack.py` para `pack_render.py` (uma
+> função por seção) e as regras comuns aos dois caminhos foram para `translation_rules.py`. Um teste de camadas
+> (`test_layering.py`) barra import cruzado entre núcleo, sessão e API, e `perf_ab.py` mede o A/B de desempenho do
+> guardrail.
+>
 > **Estrutura pós-refatoração (jun/2026):** `model.py` era um god-module. Extraído para módulos
 > folha sem deps circulares: `config.py` (constantes + TypedDicts) ← `cost.py` (ledger) ←
 > `llm_client.py` (HTTP) ← `back_translate.py` (back-translation) ← `model.py` (translate +
@@ -138,7 +158,11 @@ isoladas. Ver `MODEL_INTERFACE.md`.
 - **Contexto constante por execução** → a janela não cresce com o nº de capítulos (mata o estouro).
 - **Doutrina cacheável (~2,2K tok)** (estimativa por caracteres, 7,5 mil, não medida no tokenizer) cobrada ~1× via prompt-caching, não a cada cena.
 - **Consistência vem do store** (TM/glossário/voice cards), não da memória do chat.
-- **Model-mix**: Sonnet traduz, Opus verifica alto risco e re-traduz só o resíduo de fitting (ver `validation/cost_model.py`).
+- **Model-mix** (caminho de API): Sonnet traduz, Opus verifica alto risco e re-traduz só o resíduo de fitting (ver `validation/cost_model.py`).
+  No **caminho de sessão** (ondas do Prelude): a janela principal roda em Sonnet; o subagente `scene-translator`
+  traduz em Haiku (benchmark de cota, ~65% mais barato, sem diferença detectável de qualidade); as falas
+  `critical` são retraduzidas em Sonnet (passo 5d, ADR 0023) e a retrotradução fica em Opus, só nos níveis de
+  `back_translation_risk` do projeto (ADR 0022).
 
 Resultado: Sonnet passa a ser o default de tradução com contexto pequeno e curado. Ver
 `adr/0004-model-agnostic-interface.md` e a seção *Sonnet Readiness* do `ROADMAP.md`.
@@ -204,6 +228,21 @@ comprovado vivo, além do alvo acima:
   sob demanda; `release.yml` dispara só em tag `v*.*.*`. Detalhe do desenho em
   [`framework/README.md`](../framework/README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
 
+## Estado atual (outubro 2026) — SEGUNDA OBRA FECHADA
+
+O **Utawarerumono Prelude** foi traduzido de ponta a ponta pelo caminho de sessão (350 cenas, 23.982 falas),
+instalado e fechado em 2026-10-25. Em relação ao marco de junho, o que mudou na arquitetura (detalhe em
+[`CHANGELOG.md`](CHANGELOG.md), v2.1.0 e v2.2.0):
+
+- **Estado atômico e sob trava** (ADR 0017/0018): todo escritor grava com `atomic_write`; o gate da onda é por cena.
+- **Custo e observabilidade** (Onda 3): teto de gasto por onda com parada dura, conciliação do ledger com a
+  fatura, `run id` ligando ledger, eventos e métricas, alerta de falha de onda.
+- **Lições do Prelude devolvidas ao framework** (v2.2.0): coluna `nl` na tabela de falas e `--precheck` na onda,
+  fila de escalonamento agrupada por termo, `touched.drift`, coluna `forma_curta` no glossário (ADR 0024), passo
+  2c da extração (quem fala) e a retrotradução cega, medida e **não adotada** (ADR 0025).
+- **Guard de conteúdo**: `content_guard.py` (hook local + job `Guard` da CI) impede versionar fala do jogo,
+  binário e dado pessoal; `projects/*/artifacts/` é default-deny.
+
 ## Documentos relacionados
 
 - `GOVERNANCE.md` — quem propõe, quem aprova, quem aplica; gates, fonte de KB e loop humano/TM (com desenhos).
@@ -213,6 +252,13 @@ comprovado vivo, além do alvo acima:
 - `TRANSLATION_PIPELINE.md` — o fluxo de 1 cena ponta-a-ponta; checkpoint/resume.
 - `OBSERVABILITY.md` — métricas a coletar.
 - `DIAGRAMAS.md` — fluxo de ponta a ponta (humano e IA em cada passo), C4 (contexto, contêineres, componentes) do pipeline e do patcher, com sequências.
-- `benchmark_sessao/` — PRD, HLD e FDD do benchmark do caminho de sessão.
+- `CONCEPTS.md`, `GLOSSARIO.md`, `NAMING.md` — vocabulário, termos do domínio e convenção de nomes.
+- `CONTEXT_PACK.md`, `PROMPTS.md`, `TOKEN_ECONOMY.md` — o pacote de contexto, os prompts e onde o custo é economizado.
+- `RAG_ARCHITECTURE.md`, `STACK.md` — memória semântica (sqlite-vec) e a pilha tecnológica.
+- `CONNECTORS.md`, `NEW_PROJECT_ONBOARDING.md` — como se escreve um conector e se abre um projeto novo.
+- `QA_REVIEW.md` — revisão humana e amostragem.
+- `DB_MIGRATION_ROADMAP.md` — migração do estado em arquivos para o banco do projeto.
+- `ARCHITECTURE_REVIEW_2026-06.md` — revisão datada (retrato de junho/2026, não atualizado).
+- `benchmark_sessao/` — PRD, HLD, FDD, auditoria e relatório do benchmark do caminho de sessão (encerrado em 2026-10-19).
 - `ROADMAP.md` — backlog priorizado (P0–P3) + fases.
 - `adr/` — decisões arquiteturais registradas.
