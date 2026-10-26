@@ -1,16 +1,14 @@
 # RAG_ARCHITECTURE.md — arquitetura do RAG semântico
 
-Só o RAG, de ponta a ponta: de onde vem o dado, como vira vetor, como é consultado na hora de
-traduzir e o que impede vazamento de spoiler. Visão de stack inteira (modelo, execução,
-persistência) → [`STACK.md`](STACK.md). ROI medido → [ADR 0016](adr/0016-rag-roi-validado-reindex-obrigatorio.md).
+Só o RAG, de ponta a ponta: de onde vem o dado, como vira vetor, como é consultado na hora de traduzir e o que impede vazamento
+de spoiler. Stack inteira (modelo, execução, persistência) → [`STACK.md`](STACK.md). ROI medido → [ADR 0016](adr/0016-rag-roi-validado-reindex-obrigatorio.md).
 
-**Em uma frase:** o `context_pack` já recupera contexto por match léxico (TM exata, glossário, voice
-cards); o RAG semântico é um **suplemento rotulado e limitado** em cima disso — três retrievers
-sobre o mesmo SQLite do projeto, todos opcionais, nenhum no caminho crítico.
+**Em uma frase:** o `context_pack` já recupera contexto por match léxico (TM exata, glossário, voice cards); o RAG semântico é
+um **suplemento rotulado e limitado** por cima: três retrievers sobre o mesmo SQLite do projeto, todos opcionais, nenhum no caminho crítico.
 
 ---
 
-## 1. Visão geral
+## 1. Visão geral (C2)
 
 ```mermaid
 %%{init: {'flowchart': {'wrappingWidth': 520}}}%%
@@ -61,50 +59,33 @@ flowchart TB
 
 ### Para que serve a TM semântica
 
-Ela cobre o caso que o hash não pega: a fala **quase igual** a uma já traduzida. Uma vírgula ou
-uma palavra de diferença muda a chave da TM exata, e a fala vai ao modelo como se fosse nova. Sem
-referência, o modelo traduz do zero e pode escolher outro fraseado para o que, no jogo, é a mesma
-frase com uma variação.
+Ela cobre o caso que o hash não pega: a fala **quase igual** a uma já traduzida. Uma vírgula ou uma palavra de diferença muda a
+chave da TM exata, e a fala vai ao modelo como se fosse nova, que pode escolher outro fraseado para o que, no jogo, é a mesma
+frase. Jogos têm muito texto assim (a mesma pergunta de NPC com pontuação diferente, a mesma mensagem de sistema com outro nome
+de item), e traduções diferentes disso parecem descuido ao jogador.
 
-Jogos têm muito texto assim: a mesma pergunta de NPC com pontuação diferente, a mesma mensagem de
-sistema com outro nome de item, a fala que um personagem repete com pequena mudança. Para o
-jogador, traduções diferentes dessas falas parecem descuido.
-
-A TM semântica acha essas falas vizinhas e as coloca no prompt, com a tradução que foi aprovada,
-numa seção rotulada:
+A TM semântica acha essas falas vizinhas e as põe no prompt, com a tradução aprovada, numa seção rotulada:
 
 ```
 **Falas SIMILARES (nao identicas) — use p/ voz/fraseado, ADAPTE ao contexto:**
 - (~0.87) `<fala parecida>` -> `<tradução aprovada>`
 ```
 
-O par acima é ilustrativo. O número entre parênteses é o score de similaridade, que o modelo vê
-junto com o par.
+O par é ilustrativo; o número entre parênteses é o score de similaridade, que o modelo vê junto.
 
-Três propriedades definem o papel dela:
+- **É referência, não substituição.** A fala continua indo ao modelo, com a instrução de adaptar. Quem substitui é só o caminho exato.
+- **Não decide nada no pipeline.** Um vizinho ruim custa algumas linhas de prompt e pode ser ignorado; por isso o limiar pode ser mais permissivo que o de um reuso automático.
+- **Só mostra tradução aprovada:** o que serve de referência já passou no round-trip.
 
-- **É referência, não substituição.** A fala continua indo ao modelo. A instrução é adaptar, e não
-  copiar, porque a diferença entre as duas falas pode importar. Quem substitui é só o caminho
-  exato.
-- **Não decide nada no pipeline.** Um vizinho ruim custa algumas linhas de prompt e pode ser
-  ignorado pelo modelo. Por isso o limiar pode ser mais permissivo do que seria aceitável para
-  reuso automático.
-- **Só mostra tradução aprovada.** O que serve de referência já passou no round-trip.
-
-Na calibração do `rag_min_score` (abaixo), as faixas úteis foram as de fala quase idêntica (score
-de 0,83 a 0,89) e de paráfrase (0,71 a 0,89). É nelas que a referência ajuda.
-
-O que está e o que não está medido: a medição do ADR 0016 mostrou que o ganho de **custo** veio do
-reuso exato, e que ligar a busca semântica não piorou os lints de glossário e de naturalidade. O
-ganho de **consistência** da TM semântica é a intenção do desenho e ainda não foi medido
-isoladamente.
+Na calibração do `rag_min_score`, as faixas úteis foram a de fala quase idêntica (0,83 a 0,89) e a de paráfrase (0,71 a 0,89).
+O que está medido: o ADR 0016 mostrou que o ganho de **custo** veio do reuso exato e que ligar a busca semântica não piorou os
+lints de glossário e de naturalidade. O ganho de **consistência** da TM semântica é a intenção do desenho e ainda não foi medido isoladamente.
 
 ---
 
 ## 2. Modelo de dados
 
-Mesma estrutura para os três tipos (`_KIND_CONFIG` em `embedder.py`): tabela-fonte já atômica →
-tabela virtual `vec0` com o vetor → tabela de metadados que pina o modelo.
+Mesma estrutura para os três tipos (`_KIND_CONFIG` em `embedder.py`): tabela-fonte atômica → tabela virtual `vec0` com o vetor → tabela de metadados que pina o modelo.
 
 ```mermaid
 erDiagram
@@ -138,12 +119,9 @@ erDiagram
   }
 ```
 
-- **O que é embedado**: a coluna-fonte passada por `strip_codes` (sem códigos de controle do jogo).
-  Na TM é o `source` — a qualidade do `target` não entra no score.
-- **Sem chunking no embedder** ([ADR 0014](adr/0014-chunking-rag-na-ingestao-nao-no-embedder.md)):
-  conteúdo não-atômico (a KB em markdown) é quebrado **na ingestão**, por seção.
-- **Linha editada sai da busca**: trigger em `decisions.summary` / `kb.content` apaga o metadado de
-  embedding; `search_decisions` / `search_kb` fazem JOIN nele, então a linha some até o reindex.
+- **O que é embedado:** a coluna-fonte passada por `strip_codes` (sem códigos de controle do jogo). Na TM é o `source`; a qualidade do `target` não entra no score.
+- **Sem chunking no embedder** ([ADR 0014](adr/0014-chunking-rag-na-ingestao-nao-no-embedder.md)): conteúdo não-atômico (a KB em markdown) é quebrado **na ingestão**, por seção.
+- **Linha editada sai da busca:** um trigger em `decisions.summary` / `kb.content` apaga o metadado de embedding; `search_decisions` / `search_kb` fazem JOIN nele, então a linha some até o reindex.
 
 ---
 
@@ -170,18 +148,13 @@ flowchart TB
   class w st;
 ```
 
-- **Incremental**: pula o que já tem vetor. **Nunca derruba a escrita**: o dado já está em SQL
-  antes da chamada; falha de embedding nunca derruba a escrita.
-- **Custo é latência, não dinheiro**: ~9–12 s por cena para carregar o modelo (roda local); o
-  encode de uma linha é ~0,06 s. Processo isolado por projeto, sem daemon
-  ([ADR 0015](adr/0015-embedder-isolado-por-processo-nao-daemon-compartilhado.md)).
-- **Reindex é na aprovação, não no `build_plan`**: no `build_plan` a cena ainda está `approved=0`
-  e o embedder só embeda `approved=1`. Rodando depois do `approve_scene`, a cena N já é vizinha
-  semântica da cena N+1 (coberto por `test_verified_scene_is_semantically_searchable_end_to_end`).
+- **Incremental:** pula o que já tem vetor. **Nunca derruba a escrita:** o dado já está em SQL antes da chamada.
+- **Custo é latência, não dinheiro:** ~9–12 s por cena para carregar o modelo (roda local); o encode de uma linha é ~0,06 s. Processo isolado por projeto, sem daemon ([ADR 0015](adr/0015-embedder-isolado-por-processo-nao-daemon-compartilhado.md)).
+- **Reindex é na aprovação, não no `build_plan`:** no `build_plan` a cena ainda está `approved=0` e o embedder só embeda `approved=1`. Rodando depois do `approve_scene`, a cena N já é vizinha semântica da N+1 (`test_verified_scene_is_semantically_searchable_end_to_end`).
 
 ---
 
-## 4. Caminho de leitura — os três retrievers
+## 4. Caminho de leitura — os três retrievers (C3)
 
 ```mermaid
 flowchart TB
@@ -230,26 +203,18 @@ flowchart TB
   class s1,s2,s3 out;
 ```
 
-- **Filtro antes do top-k, sempre**: projeto, `approved` e exclusão do exato vão no SQL. Cortar
-  depois devolvia menos de k hits (ou zero, em fala curta tipo "Yes." com muitos exatos).
-- **Gate antes do corte, na KB e nas decisões**: a busca traz tudo em ordem de distância e o k é
-  contado só entre o que passou no gate — senão os k mais próximos ainda não revelados zeravam a seção.
-- **Busca exata, não aproximada**: scan linear sobre os vetores do projeto, pelo determinismo.
-  Reavaliar ANN a partir de ~50–100 mil vetores por projeto.
-- **Score** = `1 − L2²/2` sobre vetores unit-norm (idêntico 1,0 · ortogonal 0,0). `rag_min_score`
-  é por projeto, em `project.json`; calibração → [abaixo](#rag_min_score--calibração-com-dado-real).
-- **Sem reranker**: o pacote ordena por score (ordem estável). O FlashRank foi removido em
-  2026-10-07 — medido, não mudava o que entrava no pacote e custava ~200 ms por linha.
-- **Texto embedado sem códigos do jogo**: `strip_codes` remove os códigos de controle antes do
-  encode, para a similaridade medir o sentido da fala e não a formatação.
-- **Determinismo**: vetores pré-computados + ordenação estável → `context_pack` rodado 2× sai
-  byte-idêntico.
+- **Filtro antes do top-k, sempre:** projeto, `approved` e exclusão do exato vão no SQL. Cortar depois devolvia menos de k hits (ou zero, em fala curta como "Yes." com muitos exatos).
+- **Gate antes do corte, na KB e nas decisões:** a busca traz tudo em ordem de distância e o k é contado só entre o que passou no gate; senão os k mais próximos ainda não revelados zeravam a seção.
+- **Busca exata, não aproximada:** scan linear sobre os vetores do projeto, pelo determinismo. Reavaliar ANN a partir de ~50–100 mil vetores por projeto.
+- **Score** = `1 − L2²/2` sobre vetores unit-norm (idêntico 1,0 · ortogonal 0,0). `rag_min_score` é por projeto, em `project.json`; calibração → [abaixo](#rag_min_score--calibração-com-dado-real).
+- **Sem reranker:** o pacote ordena por score (ordem estável). O FlashRank foi removido em 2026-10-07: medido, não mudava o que entrava no pacote e custava ~200 ms por linha.
+- **Texto embedado sem códigos do jogo:** `strip_codes` tira os códigos de controle antes do encode, para a similaridade medir o sentido, não a formatação.
+- **Determinismo:** vetores pré-computados + ordenação estável → `context_pack` rodado 2× sai byte-idêntico.
 
 ### Implementação e parâmetros
 
-A consulta da TM semântica, com os filtros antes do `LIMIT`. Com o operador `MATCH ... k` do
-`vec0` o corte vinha primeiro, sobre a tabela inteira, e por isso a busca usa varredura com
-`vec_distance_l2`:
+A consulta da TM semântica, com os filtros antes do `LIMIT`. Com o operador `MATCH ... k` do `vec0` o corte vinha primeiro,
+sobre a tabela inteira, por isso a busca usa varredura com `vec_distance_l2`:
 
 ```sql
 SELECT ..., MIN(vec_distance_l2(v.embedding, :consulta)) AS l2
@@ -267,25 +232,21 @@ ORDER BY l2 LIMIT :k
 | Consulta | uma por fala da cena | uma por cena (os primeiros 2.000 caracteres do texto da cena) |
 | `k` (vizinhos por consulta) | 3 | 3 |
 | Teto por cena | 8 pares fonte→tradução | 3 decisões e 3 seções de KB |
-| Score mínimo | `rag_min_score` (calibrado em 0,55, ver abaixo; `null` = sem corte; o template e os projetos com busca semântica trazem 0,55) | sem limiar; o corte é o `k` |
+| Score mínimo | `rag_min_score` (calibrado em 0,55; `null` = sem corte; o template e os projetos com busca semântica trazem 0,55) | sem limiar; o corte é o `k` |
 | Score máximo | 0,999 (acima disso é match exato) | — |
 | Filtro | só `approved=1`, só do projeto | marca `reveal` já ultrapassada (default-deny) |
 | Deduplicação | por par (fonte, tradução), no SQL e no pacote | o que já entrou pelo caminho léxico não repete |
 | Ordenação | score decrescente, desempate pelo texto (saída estável) | idem |
 
-Sobre a calibração: o único parâmetro calibrado com dado real é o `rag_min_score`. O `k=3` e o
-teto de 8 são valores fixos de projeto, escolhidos para limitar o tamanho da seção; não houve
-experimento variando `k`. A medição de custo (ADR 0016) mostrou que o ganho não vinha dali, então
-afinar `k` ficou sem prioridade.
+O único parâmetro calibrado com dado real é o `rag_min_score`. O `k=3` e o teto de 8 são valores fixos de projeto, escolhidos
+para limitar o tamanho da seção; não houve experimento variando `k` (a medição do ADR 0016 mostrou que o ganho não vinha dali).
 
 ### `rag_min_score` — calibração com dado real
 
-`rag_min_score` é o score mínimo para um vizinho semântico entrar no prompt. O score é o cosseno
-entre a fala consultada e a fala-fonte indexada: 1,0 é idêntico, 0,0 é sem relação. Só o texto na
-língua de origem entra no cálculo; a tradução vai junto como metadado.
+É o score mínimo para um vizinho semântico entrar no prompt. O score é o cosseno entre a fala consultada e a fala-fonte
+indexada: 1,0 é idêntico, 0,0 é sem relação. Só o texto na língua de origem entra no cálculo; a tradução vai como metadado.
 
-A calibração usou um índice real: 12 cenas do Breath of Fire IV traduzidas pelo pipeline e
-aprovadas (323 falas, 323 vetores), e 40 consultas em 5 categorias.
+A calibração usou um índice real: 12 cenas do Breath of Fire IV traduzidas e aprovadas (323 falas, 323 vetores) e 40 consultas em 5 categorias.
 
 | Categoria da consulta | Exemplo | Score do melhor hit |
 |---|---|---|
@@ -295,19 +256,16 @@ aprovadas (323 falas, 323 vetores), e 40 consultas em 5 categorias.
 | Mesmo tema, conteúdo diferente | "Take this sword, it was forged by ancient smiths" | 0,37–0,51 |
 | Fora do domínio | "Preheat the oven to 200 degrees..." | 0,13–0,38 |
 
-Leitura: acima de 0,71 os hits são paráfrases de verdade, úteis como referência. Abaixo de 0,57
-eles casam só por vocabulário de tema (fantasia/RPG), sem relação de sentido. O maior score de
-ruído observado foi **0,51**.
+Acima de 0,71 os hits são paráfrases de verdade, úteis como referência. Abaixo de 0,57 casam só por vocabulário de tema
+(fantasia/RPG). O maior score de ruído observado foi **0,51**.
 
-**Valor escolhido: `rag_min_score = 0.55`**, acima do teto de ruído (0,51) e abaixo do piso das
-paráfrases (0,57). Foi medido no `translation_software` (shell de validação, depois removido); é configurável por
-projeto, em `rag_min_score` do `project.json`, porque depende do par de idiomas. O template traz `0.55`; `null`
-(ou a chave ausente) volta a não ter corte. Para outro par de idiomas, refaça a medição antes de manter o valor.
+**Valor escolhido: `rag_min_score = 0.55`**, acima do teto de ruído (0,51) e abaixo do piso das paráfrases (0,57). Foi medido
+no `translation_software` (shell de validação, depois removido); é configurável por projeto, em `rag_min_score` do `project.json`,
+porque depende do par de idiomas. O template traz `0.55`; `null` (ou a chave ausente) volta a não ter corte.
 
-Limite dessa medição: 323 falas são uma fração do corpus completo (6.046 falas). A amostra serve
-para ver a **forma** da distribuição de scores, que depende só do texto, mas não mede cobertura em
-produção. O modelo também só foi validado para inglês→português; para outro par de idiomas,
-`tcf db validate-model` refaz a medição.
+Limite da medição: 323 falas são uma fração do corpus completo (6.046 falas). Serve para ver a **forma** da distribuição de
+scores, que depende só do texto, mas não mede cobertura em produção. O modelo só foi validado para inglês→português; para outro
+par de idiomas, `tcf db validate-model` refaz a medição, e vale refazê-la antes de manter o valor.
 
 Fases e decisões de design do banco e do índice → [`DB_MIGRATION_ROADMAP.md`](DB_MIGRATION_ROADMAP.md).
 
@@ -315,8 +273,8 @@ Fases e decisões de design do banco e do índice → [`DB_MIGRATION_ROADMAP.md`
 
 ## 5. Gate de spoiler (`_reveal_allowed`)
 
-Vale para KB (léxico e semântico) e decisões semânticas. **Default-deny**: só entra o que é provadamente
-seguro. Decisões léxicas usam gate opt-in (`_decision_reveal_ok`): sem tag `reveal`, a decisão entra.
+Vale para KB (léxico e semântico) e decisões semânticas. **Default-deny**: só entra o que é provadamente seguro. Decisões
+léxicas usam gate opt-in (`_decision_reveal_ok`): sem tag `reveal`, a decisão entra.
 
 ```mermaid
 flowchart TB
@@ -334,10 +292,9 @@ flowchart TB
   class no bad;
 ```
 
-A garantia vem do dado explícito por item, não de casar texto. Consequência prática: seção de KB
-sem `reveal` tagueado nunca aparece — projeto novo precisa taguear para o nº2 render algo. A KB do
-bof4 tem `<!-- reveal: safe -->` por seção; a do utawarerumono, do souldiers e do demo não tem marca,
-então lá a KB semântica sai vazia.
+A garantia vem do dado explícito por item, não de casar texto. Consequência: seção de KB sem `reveal` tagueado nunca aparece, então
+projeto novo precisa taguear para o nº2 render algo. A KB do bof4 tem `<!-- reveal: safe -->` por seção; a do utawarerumono, do
+souldiers e do demo não tem marca, então lá a KB semântica sai vazia.
 
 ---
 
@@ -360,24 +317,14 @@ flowchart LR
   class e3,e4 warn;
 ```
 
-Nenhum caminho com `db` fica calado: sem a stack o `kb_gate` bloqueia antes de qualquer chamada de
-modelo, o opt-out (`db.semantic: false`) aparece como aviso, e "stack presente e quebrou" avisa —
-mascarar como "sem vizinhos" esconderia índice desatualizado.
+Nenhum caminho com `db` fica calado: sem a stack, o `kb_gate` bloqueia antes de qualquer chamada de modelo; o opt-out
+(`db.semantic: false`) aparece como aviso; "stack presente e quebrou" avisa, porque mascarar como "sem vizinhos" esconderia índice desatualizado.
 
 ---
 
-## 7. Na execução
+## 7. Na execução — o laço de reuso
 
-O laço completo de uma cena — consulta, reuso exato sem LLM, tradução, aprovação e volta para o
-índice — está desenhado [abaixo](#fluxo-em-execução--o-laço-de-reuso).
-
-Ponto que costuma confundir: **a economia medida (−24%, ADR 0016) vem do reuso exato**, que tira a
-linha do LLM. Os retrievers semânticos desta página só enriquecem o prompt das linhas novas.
-
-### Fluxo em execução — o laço de reuso
-
-O que acontece com **uma cena** em projeto com `db`, e por onde a tradução aprovada volta para
-alimentar a cena seguinte:
+O que acontece com **uma cena** em projeto com `db`, e por onde a tradução aprovada volta a alimentar a seguinte.
 
 ```mermaid
 flowchart TB
@@ -419,16 +366,9 @@ flowchart TB
   class reuse save;
 ```
 
-- **Onde está a economia** (laranja): uma fala cuja fonte já foi traduzida em outra cena **não vai
-  ao LLM** (`model._select_reuse`); a tradução aprovada é reusada. Uma cena 100% reaproveitada não
-  faz chamada nenhuma. Foi esse caminho que rendeu a redução de 24% de custo medida em 10 cenas
-  (ADR 0016). A busca semântica (roxo) só **informa** o prompt das falas novas; não corta tokens.
-- **Só vira TM o que passou no round-trip.** O `build_plan` grava a tradução com `approved=0`; o
-  `approve_scene` promove para `approved=1` depois do `verify`. As buscas exata e semântica só
-  leem `approved=1`, então uma tradução reprovada nunca contamina as cenas seguintes.
-- **O vetor nasce na aprovação.** `reindex_pending_embeddings` embeda as linhas aprovadas que ainda
-  não têm vetor, logo depois do `approve_scene`. A cena N+1 já enxerga a cena N. É incremental e
-  não derruba a escrita: o dado já está gravado em SQL antes da indexação.
+- **Onde está a economia** (laranja): uma fala cuja fonte já foi traduzida em outra cena **não vai ao LLM** (`model._select_reuse`); a tradução aprovada é reusada. Uma cena 100% reaproveitada não faz chamada nenhuma. Esse caminho rendeu a redução de 24% de custo medida em 10 cenas (ADR 0016). A busca semântica (roxo) só **informa** o prompt das falas novas; não corta tokens.
+- **Só vira TM o que passou no round-trip.** O `build_plan` grava com `approved=0`; o `approve_scene` promove a `approved=1` depois do `verify`. As buscas exata e semântica só leem `approved=1`, então uma tradução reprovada nunca contamina as cenas seguintes.
+- **O vetor nasce na aprovação.** `reindex_pending_embeddings` embeda as linhas aprovadas sem vetor logo depois do `approve_scene`; a cena N+1 já enxerga a N. É incremental e não derruba a escrita.
 
 ---
 
@@ -440,7 +380,7 @@ flowchart TB
 | Chunking na ingestão, nunca no embedder | 1 linha = 1 vetor; kind novo é só config | [ADR 0014](adr/0014-chunking-rag-na-ingestao-nao-no-embedder.md) |
 | Embedder por processo, sem daemon | isolamento entre projetos; reload aceito | [ADR 0015](adr/0015-embedder-isolado-por-processo-nao-daemon-compartilhado.md) |
 | Reindex no write-path é obrigatório | índice defasado devolve vazio sem erro | [ADR 0016](adr/0016-rag-roi-validado-reindex-obrigatorio.md) |
-| Semântico é suplemento rotulado | núcleo do pacote tem que ser determinístico | [`STACK.md`](STACK.md#rag-recuperação-semântica) |
+| Semântico é suplemento rotulado | o núcleo do pacote tem que ser determinístico | [`STACK.md`](STACK.md#rag-recuperação-semântica) |
 | RAG **não** entra em glossário nem voice cards | match léxico é preciso; semântico traria falso-positivo | [`STACK.md`](STACK.md#rag-recuperação-semântica) |
 
 ## Linha do tempo

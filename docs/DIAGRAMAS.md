@@ -5,6 +5,17 @@ Feitos a partir do código e de [`ARCHITECTURE.md`](ARCHITECTURE.md), [`SDD_RUNT
 e de `framework/distribution/`. Estão em `flowchart` do Mermaid (a sintaxe `C4*` do Mermaid ainda é experimental e
 renderiza mal no GitHub). Nenhum diagrama traz fala de jogo.
 
+**Como ler:** cada nível amplia o anterior.
+
+| Nível | Pergunta que responde | Pipeline | Patcher |
+|---|---|---|---|
+| Fluxo | em que ordem as coisas acontecem e quem decide | seção 1, "Fluxo de ponta a ponta" | seção 2, "Sequência" |
+| C1 · Contexto | quem usa e com quem o sistema fala | seção 1, "Nível 1" | seção 2, "Nível 1" |
+| C2 · Contêineres | de que blocos é feito | seção 1, "Nível 2" | seção 2, "Nível 2" |
+| C3 · Componentes | o que há dentro de um bloco | seção 1, "Nível 3" | seção 2, "Nível 3" |
+
+Cores: rosa = modelo (IA); laranja = decisão humana; o resto é código determinístico.
+
 ## 1. Pipeline de tradução
 
 ### Fluxo de ponta a ponta (hoje)
