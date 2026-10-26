@@ -79,6 +79,10 @@ def test_glossary_lint_has_form_accepts_inflection_and_abbreviation():
     assert has("selecionar", "selecione um topico")         # verbo
     assert has("penhasco", "penhas")                        # abreviacao
     assert has("planicies douradas", "nas planicies douradas")
+    assert has("evenkurugano(a)", "uma evenkurugana")       # flexao de genero escrita no glossario
+    assert has("evenkurugano(a)", "um evenkurugano")
+    assert has("mentiroso(a)", "seu mentiroso")
+    assert not has("evenkurugano(a)", "uma tumba")
     assert not has("mausoleu", "a tumba")
     assert not has("ponto de oceano", "ponto de mar")
 
