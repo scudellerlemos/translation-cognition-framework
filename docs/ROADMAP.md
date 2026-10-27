@@ -23,7 +23,7 @@
 > 305 cenas (27.021 falas) `verified`, diálogo + sistema + rótulos em imagem, 0 overflows, instância em modo banco
 > (`projects/bof4/`). Erro de 14,5% na amostra de qualidade (antes das correções posteriores). Patcher `.exe`
 > (`framework/distribution/`) testado em cópia dos originais e sem Python; release `v0.1.0-beta` publicada em 2026-10-27.
-> Fica com o autor o teste do `.exe` no jogo real e a conferência de largura de caixa na tela.
+> Teste do `.exe` no jogo real e conferência de largura de caixa na tela: dispensado por decisão do Felipe em 2026-10-27; não executado.
 > O ciclo anterior (125 cenas, ~$11,04) rodou em `projects/breath_of_fire_4`, removido do repositório.
 
 Nenhum débito remanescente no pipeline — TM semântica (B2) implementada e ativa (`framework/db/`).
@@ -293,7 +293,7 @@ Formatos cifrados/ofuscados exigem engenharia reversa — fora do escopo. O `evi
 
 → ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues:
 CLI `tcf`, README de produto, consolidar docs e `.exe`.
-As três primeiras já foram entregues; o `.exe` tem o código entregue (`build_package`, `patcher`, `build_exe`, beta testado em cópia); a release `v0.1.0-beta` saiu em 2026-10-27; resta o teste no jogo real, com o autor.
+As três primeiras já foram entregues; o `.exe` tem o código entregue (`build_package`, `patcher`, `build_exe`, beta testado em cópia); a release `v0.1.0-beta` saiu em 2026-10-27; o teste no jogo real foi dispensado pelo autor (2026-10-27, não executado).
 
 ---
 
