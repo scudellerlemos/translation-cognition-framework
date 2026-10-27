@@ -43,11 +43,14 @@ def estados(jogo, chave):
 
 
 with tempfile.TemporaryDirectory() as tmp:
-    jogo = pathlib.Path(tmp) / 'Biblioteca fora da Steam' / 'Utawarerumono Prelude to the Fallen'
-    for a in man['app']['arquivos']:
-        alvo = jogo / a['path']
+    jogo = pathlib.Path(tmp) / 'Biblioteca fora da Steam' / 'Jogo'
+    # lista explicita no distribution.json (app.arquivos) ou, nos projetos de padrao (*.DAT), os files do manifesto
+    pares = ([(a['path'], a['original']) for a in man['app']['arquivos']] if 'arquivos' in man['app']
+             else [(f.get('path', f['name']), f['name']) for f in man['files']])
+    for destino, original in pares:
+        alvo = jogo / destino
         alvo.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(orig / a['original'], alvo)
+        shutil.copy2(orig / original, alvo)
     confere('jogo falso nasce original', all(estados(jogo, 'sha_original')))
     confere('instalar sai 0', rodar('instalar', '--jogo', str(jogo)) == 0)
     confere('arquivos ficam traduzidos (hash final)', all(estados(jogo, 'sha_final')))
