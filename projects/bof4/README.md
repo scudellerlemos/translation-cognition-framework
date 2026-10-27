@@ -1,6 +1,6 @@
 # Breath of Fire IV — EN → pt-BR (modo banco)
 
-> **Estado (2026-10-14): traduzido e instalado. O patcher está em beta (testado em cópia); falta testar no jogo real e publicar.**
+> **Estado (2026-10-27): projeto fechado. Traduzido, instalado e publicado como `v0.1.0-beta`; o teste do `.exe` no jogo real fica com o autor.**
 
 Instância do framework para o jogo da Steam (conector Capcom DAT), em **modo banco**: SQLite (`bof4.db`, não
 versionado) como store e **busca semântica** obrigatória (`kb_gate`, stack de `requirements-ml.txt`).
