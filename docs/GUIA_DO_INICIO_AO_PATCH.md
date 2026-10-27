@@ -81,10 +81,25 @@ projects/<slug>/
    `extract.py` + `reinsert.py` de partida. Se o formato for cifrado ou comprimido, está fora do escopo do
    framework.
 3. **Confira a cobertura:** `python framework/connectors/coverage_gate.py <candidato.py> <pasta do jogo>`.
-4. **Extraia** (`tcf extract --help` mostra os argumentos). Sai um `dialogs.csv` por cena em
-   `artifacts/scenes/<cena>/`, com o orçamento de bytes de cada fala.
-5. **Round-trip:** extrair e remontar sem traduzir tem de devolver arquivos **byte a byte iguais** ao original.
-   É o gate mais importante da etapa: sem ele, nada seguinte vale.
+4. **Diga ao conector onde está o jogo.** Cada projeto declara em `project.json` → `connector.data_dir_env` o nome de
+   uma variável de ambiente (no bof4, `BOF4_DAT_DIR`). A pasta **nunca** é gravada no `project.json`. Aponte para
+   `source_dat/` (os originais), não para a pasta do jogo instalada:
+   ```bash
+   export BOF4_DAT_DIR=projects/bof4/source_dat      # PowerShell: $env:BOF4_DAT_DIR = "projects\bof4\source_dat"
+   ```
+   Se preferir, passe a pasta no comando com `--dat-dir`, como abaixo.
+5. **Extraia:**
+   ```bash
+   tcf extract projects/<slug> --dat-dir projects/<slug>/source_dat
+   # equivale a: python framework/skills/s00_extraction.py projects/<slug> --dat-dir projects/<slug>/source_dat
+   ```
+   Roda o `connector/extract.py` do projeto (limite de 300 s) e confere que o corpus foi gerado; sai com erro se
+   faltar a pasta do jogo. Saem um `dialogs.csv` por cena em `artifacts/scenes/<cena>/`, com o orçamento de bytes
+   de cada fala, e um `extraction_log.md` com as anomalias encontradas (idiomas misturados, truncamento).
+6. **Escopo:** `python framework/connectors/scope_scan.py projects/<slug> <pasta do jogo>` lista o que existe além
+   do diálogo (menu, ajuda, rótulos). Define se o projeto é só diálogo ou `completo` (`extraction_scope`).
+7. **Round-trip:** extrair e remontar sem traduzir tem de devolver arquivos **byte a byte iguais** ao original.
+   É o gate mais importante da etapa: sem ele, nada seguinte vale. O comando da remontagem é o da etapa 7.
 
 Conector novo é a parte difícil. Leia [`CONNECTORS.md`](CONNECTORS.md) e
 [`../framework/skills/00_extraction.md`](../framework/skills/00_extraction.md).
@@ -141,14 +156,36 @@ Detalhe: [`QA_REVIEW.md`](QA_REVIEW.md) e [`GOVERNANCE.md`](GOVERNANCE.md).
 
 ## 7. Remontar o jogo
 
-A reinserção (`reinsert.py` do conector) pega as falas aprovadas e grava os arquivos traduzidos em
-`projects/<slug>/output/`. Texto maior que o espaço do original é encurtado por uma cascata
-determinística (o modelo só entra no resíduo). Skills `08` e `08b`
-([`texto de sistema e rótulos em imagem`](../framework/skills/08b_system_text_labels.md)).
+A reinserção pega as falas aprovadas (`approved_*.csv` de cada cena) e grava os arquivos traduzidos em
+`projects/<slug>/output/`, com o mesmo nome e a mesma extensão do original. Nunca grava sobre o original.
+
+```bash
+python framework/skills/s08_reinsertion.py projects/<slug> --dat-dir projects/<slug>/source_dat
+```
+
+- Roda o `connector/reinsert.py` do projeto (limite de 600 s) e lista o que saiu em `output/`. Sai com erro se o
+  script falhar. O script é **executado, nunca refeito**: ninguém grava bytes à mão.
+- O mesmo comando, antes de traduzir qualquer coisa, serve para o round-trip da etapa 3. Compare `output/` com
+  `source_dat/`.
+- Texto maior que o espaço do original é encurtado por uma cascata determinística (cabe direto, reaponta o
+  ponteiro, corta). O modelo só entra no resíduo que nada resolve.
+- Antes de gravar, o script aborta se alguma tradução tiver caractere que a tabela do jogo não codifica.
+- Se o projeto tem texto de sistema ou rótulos em imagem, a skill
+  [`08b`](../framework/skills/08b_system_text_labels.md) roda junto desta etapa.
+- Se o `reinsert.py` ainda não existe, o agente avisa e só cria com a sua permissão, a partir de
+  `framework/connectors/_skeleton/reinsert.py`.
 
 ## 8. Testar no jogo
 
-1. Instale a tradução **numa cópia** dos arquivos do jogo, com o jogo fechado e com backup.
+1. **Instale** com o jogo fechado:
+   ```bash
+   python framework/runtime/session_lot.py projects/<slug> install projects/<slug>/output projects/<slug>/source_dat "<pasta DAT do jogo>"          # ensaio: só lista
+   python framework/runtime/session_lot.py projects/<slug> install projects/<slug>/output projects/<slug>/source_dat "<pasta DAT do jogo>" --go     # instala
+   ```
+   Copia só os arquivos de `output/` que diferem do original, guarda `<arquivo>.bak` (só de arquivo idêntico ao
+   original, e só se o `.bak` ainda não existe) e confere a cópia no fim. Atenção: esse comando casa `*.DAT`, ou
+   seja, serve ao conector Capcom DAT. Para outro formato de arquivo, use o patcher da etapa 9 numa cópia do jogo,
+   ou adapte o comando.
 2. Jogue o trecho do piloto. Tire **prints** e coloque-os em
    `projects/<slug>/artifacts/qa_revisao/teste_ingame/prints/` (a pasta existe só para isso; o conteúdo é ignorado
    pelo Git). O agente não captura a tela: ele depende dos seus prints.
