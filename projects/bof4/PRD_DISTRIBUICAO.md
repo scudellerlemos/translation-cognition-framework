@@ -111,11 +111,11 @@ sequenceDiagram
 | B. Texto + reinserção no PC do jogador | Distribui o texto traduzido e roda o conector no jogador | Menor pacote | Distribui o texto da tradução em si; exige Python e os DATs originais do jogador |
 | C. DAT completo | Publica os arquivos remontados | Mais simples | **Proibido**: é conteúdo do jogo |
 
-## 8. Canais de publicação (decidido: GitHub Releases em repositório separado + guia na Steam, ver seção 13)
+## 8. Canais de publicação (decidido: GitHub Releases + guia na Steam, ver seção 13)
 
 | Canal | Observação |
 |---|---|
-| GitHub Releases, em repositório separado só do patch | Público e versionado; o patch (deltas, manifesto, arte, `.exe`) nunca entra neste repositório do framework (regra `dist/` e `.bsdiff` no `content_guard`) e um pedido de remoção não atinge o framework MIT |
+| GitHub Releases | Já usamos o repositório; público e versionado |
 | Nexus Mods ou similar | Alcance maior entre jogadores; segue regras do próprio site |
 | Guia na Steam (comunidade) | Só aponta para a release; não hospeda arquivo |
 | Steam Workshop | Em princípio não se aplica: exige suporte do jogo ao Workshop (a confirmar) |
@@ -179,7 +179,7 @@ As datas são estimativas de planejamento, não compromisso.
 | # | Decisão | Definido | Motivo |
 |---|---|---|---|
 | 1 | Empacotamento | **A. Delta binário** (implementado com `bsdiff` via `bsdiff4`, não `xdelta3`; `framework/distribution/build_package.py`), dentro de um patcher `.exe` de um clique (sem Python no jogador) | Prioridade é a facilidade para o jogador; não publica o arquivo do jogo; verificável por hash |
-| 2 | Canal | **GitHub Releases em repositório separado só do patch (criado privado, vira público na release) + guia na comunidade Steam** apontando para a release | Release versionada e gratuita; o guia dá visibilidade sem hospedar arquivo. Nexus Mods fica para depois, se houver demanda |
+| 2 | Canal | **GitHub Releases + guia na comunidade Steam** apontando para a release | Release versionada e gratuita; o guia dá visibilidade sem hospedar arquivo. Nexus Mods fica para depois, se houver demanda |
 | 3 | Versão | `v0.1.0-beta` (SemVer); nova release a cada build da Steam ou lote de correções | Marca que a qualidade ainda é medida |
 | 4 | Limites conhecidos | **Publicar como limitações** na release; corrigir depois | Os cortes dependem de arte sem letras, fora do escopo de texto |
 | 5 | Amostra de qualidade | Beta sai com a linha de base de 14,5% (anterior às correções); **reamostrar antes da `v1.0.0`** | Beta serve para coletar erros reais; a reamostra custa revisão humana |

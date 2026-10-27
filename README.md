@@ -198,7 +198,7 @@ tcf translate projects/demo demo01      # sem instalar: python framework/cli.py 
 Roda o pipeline completo numa cena fictícia de 5 falas (`projects/demo/`) e grava o resultado verificado em
 `projects/demo/artifacts/scenes/demo01/`.
 
-**Para uma obra real:** copie `framework/templates/project.template.json` e siga o
+**Para uma obra real:** siga o [guia do início ao patch](docs/GUIA_DO_INICIO_AO_PATCH.md) (instalar, extrair, traduzir, revisar, testar no jogo e gerar o patch). Em resumo: copie `framework/templates/project.template.json` e siga o
 [guia do framework](framework/README.md), ou use `python framework/connectors/discover.py <dir-do-jogo>` para descobrir o engine.
 
 ---
