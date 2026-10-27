@@ -1,12 +1,24 @@
 # Roadmap — Breath of Fire IV (PT-BR, modo banco)
 
-> Última atualização: 2026-10-14
-> Status atual: **305/305 cenas `verified` (27.021 falas), Fases 0 a 4 fechadas; distribuição: patcher `.exe` beta testado em cópia, falta o teste no jogo real e a release** (ver "Retomada").
+> Última atualização: 2026-10-27
+> Status atual: **PROJETO FECHADO por decisão do Felipe em 2026-10-27, release `v0.1.0-beta` publicada (pré-lançamento); teste do `.exe` no jogo real com o ok do Felipe (abaixo).** Antes: **305/305 cenas `verified` (27.021 falas), Fases 0 a 4 fechadas; distribuição: patcher `.exe` beta testado em cópia, falta o teste no jogo real e a release** (ver "Retomada").
 > Histórico da Fase 0 (mapeamento do conector): estava em `projects/breath_of_fire_4/ROADMAP.md`, removido do repositório (segue no histórico do git).
 
 Os passos são seguidos na ordem. Nenhum gate é pulado; item aberto bloqueia o seguinte.
 
 ## Retomada (ler primeiro numa sessão nova)
+
+**Fechamento (2026-10-27, decisão do Felipe).** O trabalho do framework acabou: pipeline, gates e patcher verdes. Conferido nesse dia: manifesto
+com 305 de 305 arquivos (hash original e final batem com `source_dat/` e `output/`, 305 deltas), e o `.exe` passou nos 9 checks do
+`verificar_exe.py` sem Python no PATH (instalar, idempotência, desinstalar byte a byte, arquivo estranho e pasta errada recusados, janela abre).
+`verificar_exe.py` passou a aceitar manifesto de padrão `*.DAT` (PR #102). **Release publicada em 2026-10-27:** `v0.1.0-beta`
+(pré-lançamento, versão decidida no PRD; `v1.0.0` fica para depois da reamostragem de qualidade), tag no `476f2b7` com CI verde, asset
+`Patch_BoF4_PTBR_Gajshield.exe` com SHA-256 `5bfebb46…c7fa66`, texto com taxa de 14,5%, limites conhecidos e aviso de não afiliação.
+Critérios do PRD (seção 10): todos fechados. O critério 1 (instalar o `.exe` no jogo real, jogar o trajeto do piloto
+com prints e desinstalar) teve o **ok do Felipe em 2026-10-27**. Riscos de direitos: aceitos pelo Felipe, não reabrir. Não havia Artifact de revisão do bof4 para apagar. **Próximo passo do
+framework:** levantamento de lições do bof4 (ordem fixada pelo Felipe em 2026-10-12), só depois projeto novo.
+
+O bloco abaixo é o histórico de 2026-10-14.
 
 Atualizar antes de cada `/clear`. Estado em 2026-10-14 (fim do dia):
 

@@ -209,7 +209,7 @@ Roda o pipeline completo numa cena fictícia de 5 falas (`projects/demo/`) e gra
 |---|---|---|---|
 | Utawarerumono: Mask of Deception | Aquaplus `.sdat` | ✅ concluído: 146 cenas, ~45.100 linhas, ~R$ 338 | [`projects/utawarerumono/`](projects/utawarerumono/README.md) |
 | Utawarerumono: Prelude to the Fallen | Aquaplus (formato novo) | ✅ concluído e instalado: 350 cenas, 23.982 falas; erro medido 2,0% (IC 0,8–5,0%) | [`ROADMAP.md`](projects/utawarerumono_prelude/ROADMAP.md) |
-| Breath of Fire IV | Capcom DAT | ✅ traduzido e instalado: 305 cenas, 27.021 falas; 🚧 release do patcher pendente | [`projects/bof4/`](projects/bof4/README.md) |
+| Breath of Fire IV | Capcom DAT | ✅ fechado: 305 cenas, 27.021 falas; patcher na release `v0.1.0-beta` | [`projects/bof4/`](projects/bof4/README.md) |
 | Souldiers | Unity Addressables | ✅ concluído: 470 cenas do índice, ~US$ 3,06 | [`projects/souldiers/`](projects/souldiers/README.md) |
 | Trails in the Sky SC | Falcom `.pac` | 🚧 em andamento: 71 cenas extraídas, 1 cena-piloto com round-trip real | `projects/trails_sky_sc/artifacts/decision_log.md` |
 
