@@ -24,6 +24,7 @@ DENIED_PATHS = [(re.compile(rx), why) for rx, why in [
     (r"\.local\.md$", "nota local (*.local.md)"),
     (r"\.local\.csv$", "glossario privado / nome de spoiler (*.local.csv)"),
     (r"^projects/[^/]+/(output|source_dat|manual_tests)/", "binario do jogo (original ou remontado)"),
+    (r"^projects/[^/]+/dist/|\.bsdiff$", "pacote do patcher (deltas, manifesto, arte): vai em repositorio de release separado"),
     (r"^projects/[^/]+/artifacts/.*(dialogs\.csv|translations_[^/]*\.json|translation_plan[^/]*\.json"
      r"|approved_[^/]*\.csv|back_translation_[^/]*\.json|translation_memory\.jsonl)$", "roteiro/traducao de cena"),
     (r"^projects/[^/]+/artifacts/(evidence|research_cache)/", "print do jogo / texto bruto de fonte"),
