@@ -2,7 +2,7 @@
 
 > Status (2026-10-27): **`v0.1.0-beta` publicada** (pré-lançamento no GitHub Releases); pacote (305 deltas) e `.exe` testados numa
 > cópia dos originais, sem Python no PATH (instalar, idempotência, desinstalar, arquivo estranho, pasta errada, janela). Critério 1 da
-> seção 10 (`.exe` no jogo real e trajeto do piloto): dispensado por decisão do Felipe em 2026-10-27; não executado. Responsável: Felipe Scudeller. Este documento não contém texto do jogo nem
+> seção 10 (`.exe` no jogo real e trajeto do piloto): ok do Felipe em 2026-10-27. Responsável: Felipe Scudeller. Este documento não contém texto do jogo nem
 > binário; só processo, decisões e critérios. Nada aqui é parecer jurídico.
 
 ## 1. Contexto e problema
@@ -139,7 +139,7 @@ sequenceDiagram
 
 ## 10. Critérios de aceite
 
-- [x] (dispensado por decisão do Felipe em 2026-10-27; não executado) Em máquina limpa (jogo recém-baixado), instalar, jogar o trajeto do piloto e desinstalar volta ao hash original.
+- [x] (ok do Felipe em 2026-10-27) Em máquina limpa (jogo recém-baixado), instalar, jogar o trajeto do piloto e desinstalar volta ao hash original.
 - [x] Em jogo já traduzido ou de versão diferente, o patcher recusa sem alterar nada.
 - [x] Falha no meio da instalação (arquivo bloqueado) não deixa jogo em estado misto.
 - [x] Tabela de hashes do manifesto bate com os 305 arquivos traduzidos.
@@ -186,4 +186,4 @@ As datas são estimativas de planejamento, não compromisso.
 | 6 | Posição sobre direitos | Sem parecer jurídico prévio: a tradução é apresentada como **mod** da comunidade, só delta, sem asset do jogo, com plano de retirada | Decisão do Felipe; risco aceito por ele (seção 11) |
 
 Estado (2026-10-14): deltas, manifesto e patcher `.exe` feitos (`build_package.py`, `patcher.py`, `build_exe.py`; o `.exe` sai em
-`projects/bof4/output/`, ignorada no git; hash do manifesto confere com os 305 arquivos de `source_dat`/`output`). Em 2026-10-27: `v0.1.0-beta` publicada; o critério 1 da seção 10 (`.exe` no jogo real e trajeto do piloto) foi dispensado pelo Felipe, não executado.
+`projects/bof4/output/`, ignorada no git; hash do manifesto confere com os 305 arquivos de `source_dat`/`output`). Em 2026-10-27: `v0.1.0-beta` publicada; o critério 1 da seção 10 (`.exe` no jogo real e trajeto do piloto) teve o ok do Felipe.
