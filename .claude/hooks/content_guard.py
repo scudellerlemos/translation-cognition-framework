@@ -15,7 +15,8 @@ import subprocess
 import sys
 
 ALLOWED_EXT = {"py", "md", "json", "jsonl", "csv", "yml", "yaml", "txt", "toml", "sql", "ini", "cfg", "ps1", "sh",
-               "gitignore", "gitkeep", "gitattributes", "example", "coveragerc-ml"}
+               "gitignore", "gitkeep", "gitattributes", "example", "coveragerc-ml",
+               "ksy"}
 ALLOWED_NAMES = {"LICENSE", "VERSION", "CODEOWNERS"}
 # projects/demo e sintetico (dialogo ficticio) -- unico lugar onde dialogs.csv e versionado.
 _DEMO = re.compile(r"^projects/demo/artifacts/.*/dialogs\.csv$")
@@ -38,7 +39,7 @@ DENIED_PATHS = [(re.compile(rx), why) for rx, why in [
 # artifacts/). E onde os geradores escrevem -- um gerador novo que cite fala do jogo (caso das
 # worklists de kb_phase) nasce bloqueado ate alguem decidir aqui, olhando o conteudo, que pode.
 ARTIFACTS_ALLOWED = {
-    "api_ledger.jsonl", "cost_report.md", "decision_log.md", "entities.csv", "entities_candidates.json",
+    "api_ledger.jsonl", "capitulo_falas.json", "cost_report.md", "decision_log.md", "entities.csv", "entities_candidates.json",
     "extraction_log.md", "glossary.csv", "kb_phase_worklist.md", "kb_ratified.csv", "metrics.jsonl",
     "qa_effectiveness.jsonl", "qa_report.md", "reinsertion_report.md", "research_log.md", "residue.json",
     "run_state.json", "scenes_index.json", "spoiler_ledger.json", "tone_analysis.md",
